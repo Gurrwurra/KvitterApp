@@ -1,4 +1,4 @@
-package com.example.kvitter;
+package com.example.kvitter.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.kvitter.Activities.AddReceiptActivity;
+import com.example.kvitter.R;
 
 public class Validate_reciept extends AppCompatActivity {
 
