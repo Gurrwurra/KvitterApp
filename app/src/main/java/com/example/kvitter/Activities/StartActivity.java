@@ -1,11 +1,16 @@
-package com.example.kvitter;
+package com.example.kvitter.Activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.kvitter.Activities.AddReceiptActivity;
+import com.example.kvitter.Activities.LoginActivity;
+import com.example.kvitter.Activities.MyAccountActivity;
+import com.example.kvitter.Activities.MyReceiptActivity;
+import com.example.kvitter.R;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 

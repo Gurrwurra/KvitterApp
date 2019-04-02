@@ -1,4 +1,4 @@
-package com.example.kvitter;
+package com.example.kvitter.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.kvitter.R;
 
 public class AddReceiptActivity extends AppCompatActivity {
 
