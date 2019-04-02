@@ -96,9 +96,10 @@
         android:id="@+id/txt_specific_folder_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="102dp"
         android:text="Mapp"
-        tools:layout_editor_absoluteX="273dp"
-        tools:layout_editor_absoluteY="378dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txt_specific_folder"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/txt_specific_note_title"
