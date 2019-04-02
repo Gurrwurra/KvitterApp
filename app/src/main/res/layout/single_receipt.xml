@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     tools:context=".Activities.MyReceiptActivity">
 
     <TextView
-        android:id="@+id/txt_folderName"
+        android:id="@+id/txt_receiptName"
         android:layout_width="177dp"
         android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="FolderName"
+        android:text="txt_receiptName"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txt_note"
+        android:id="@+id/txt_amount"
         android:layout_width="371dp"
         android:layout_height="63dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:text="Note"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_folderName" />
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/receipt_List"
-        android:layout_width="395dp"
-        android:layout_height="199dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:visibility="gone"
+        android:text="txt_amount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_note" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_receiptName" />
+
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kvitter.Adapters.FolderAdapter;
+import com.example.kvitter.Adapters.ReceiptAdapter;
 import com.example.kvitter.R;
 
 import org.w3c.dom.Text;
@@ -18,29 +19,28 @@ import java.util.ArrayList;
 
 public class MyReceiptActivity extends AppCompatActivity {
     private TextView folder, note;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView folderView;
+    private RecyclerView.Adapter folderAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String[] testData = new String[20];
+    private String[] testData = new String[3];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_receipt);
-        recyclerView = findViewById(R.id.folder_list);
+        folderView = (RecyclerView)findViewById(R.id.folder_list);
+
         testData[0] = "Hobby";
         testData[1] = "Båt";
         testData[2] = "Hus";
 
-        recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
+        folderView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        folderView.setLayoutManager(layoutManager);
+        folderAdapter = new FolderAdapter(this,testData);
+        folderView.setAdapter(folderAdapter);
 
-        // specify an adapter (see also next example)
-        mAdapter = new FolderAdapter(this,testData);
-        recyclerView.setAdapter(mAdapter);
 
     }
 }
