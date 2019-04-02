@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kvitter.R;
+import com.example.kvitter.Validate_reciept;
 
 public class AddReceiptActivity extends AppCompatActivity {
 

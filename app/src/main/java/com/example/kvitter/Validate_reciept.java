@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.kvitter.Activities.AddReceiptActivity;
+
 public class Validate_reciept extends AppCompatActivity {
 
     private TextView title;
