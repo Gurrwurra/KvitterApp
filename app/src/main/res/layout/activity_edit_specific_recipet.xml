@@ -18,8 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txt_specific_name"
+    <EditText
+        android:id="@+id/txt_specific_name_edit"
         android:layout_width="144dp"
         android:layout_height="45dp"
         android:layout_marginStart="33dp"
@@ -27,42 +27,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <TextView
-        android:id="@+id/txt_specific_supplier"
+    <EditText
+        android:id="@+id/txt_specific_supplier_edit"
         android:layout_width="144dp"
         android:layout_height="45dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_name" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_specific_name_edit" />
 
-    <TextView
-        android:id="@+id/txt_specific_comment"
+    <EditText
+        android:id="@+id/txt_specific_comment_edit"
         android:layout_width="332dp"
-        android:layout_height="103dp"
+        android:layout_height="82dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="46dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_supplier" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_specific_supplier_edit" />
 
-    <TextView
-        android:id="@+id/txt_specific_folder"
+    <EditText
+        android:id="@+id/txt_specific_amount_edit"
         android:layout_width="144dp"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="49dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount" />
-
-    <TextView
-        android:id="@+id/txt_specific_amount"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
+        android:layout_marginStart="41dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="49dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_specific_name_edit"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
@@ -71,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="83dp"
         android:text="Rubrik"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_name"
+        app:layout_constraintBottom_toTopOf="@+id/txt_specific_name_edit"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -80,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="102dp"
         android:text="Belopp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount"
+        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount_edit"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
@@ -88,17 +81,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
+        android:layout_marginTop="21dp"
         android:text="Leverantör"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_supplier"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/txt_specific_supplier_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_specific_name_edit" />
 
     <TextView
         android:id="@+id/txt_specific_folder_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="133dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="102dp"
         android:text="Mapp"
-        tools:layout_editor_absoluteX="273dp"
-        tools:layout_editor_absoluteY="378dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier_title"
+        app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount_edit" />
 
     <TextView
         android:id="@+id/txt_specific_note_title"
@@ -107,27 +106,39 @@
         android:layout_marginStart="168dp"
         android:layout_marginEnd="168dp"
         android:text="Kommentar"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_comment"
+        app:layout_constraintBottom_toTopOf="@+id/txt_specific_comment_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_edit_specific_reciept"
+        android:id="@+id/btn_save_changes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="30dp"
-        android:text="Redigera"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment" />
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="128dp"
+        android:text="Spara ändringar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment_edit" />
 
     <Button
-        android:id="@+id/btn_share"
+        android:id="@+id/btn_delete_re"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="143dp"
-        android:layout_marginTop="30dp"
-        android:text="Dela"
-        app:layout_constraintStart_toEndOf="@+id/btn_edit_specific_reciept"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment" />
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="162dp"
+        android:text="Ta bort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_changes" />
+
+    <Spinner
+        android:id="@+id/spi_folder_edit"
+        android:layout_width="140dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="49dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier_edit"
+        app:layout_constraintTop_toBottomOf="@+id/txt_specific_folder_title" />
 </android.support.constraint.ConstraintLayout>
