@@ -26,6 +26,8 @@
         <activity android:name=".Activities.AddReceiptActivity" />
         <activity android:name=".Activities.MyReceiptActivity" />
         <activity android:name=".Activities.StartActivity" />
+        <activity android:name=".Specific_receipt" />
+        <activity android:name=".Validate_reciept" />
     </application>
 
 </manifest>
