@@ -1,13 +1,15 @@
-package com.example.kvitter;
+package com.example.kvitter.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MyAccountActivity extends AppCompatActivity {
+import com.example.kvitter.R;
+
+public class AddReceiptActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_account);
+        setContentView(R.layout.activity_add_receipt);
     }
 }
