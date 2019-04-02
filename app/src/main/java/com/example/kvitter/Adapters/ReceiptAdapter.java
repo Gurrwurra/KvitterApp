@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.MyAccountActivity;
+import com.example.kvitter.Activities.Specific_receipt;
 import com.example.kvitter.R;
-import com.example.kvitter.Specific_receipt;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
     private String[] mDataset;
