@@ -23,6 +23,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.btn_myReceipt).setOnClickListener(this);
         findViewById(R.id.btn_logOut).setOnClickListener(this);
     }
+    @Override
     public void onClick(View v) {
 
         Button btn = (Button) v;
