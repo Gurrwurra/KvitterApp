@@ -29,15 +29,16 @@ public class LoginActivity extends AppCompatActivity {
                 String password = pwd.getText().toString();
                 boolean validate = logic.validateUser(user, password);
 
-                if (validate == true) {
-                    Intent i = new Intent(getApplicationContext(), StartActivity.class);
-                    startActivity(i);
-                }
-                else {
+                //      if (validate == true) {
+                Intent i = new Intent(getApplicationContext(), StartActivity.class);
+                startActivity(i);
+            }
+            /*    else {
                     Toast toast = Toast.makeText(getApplicationContext(), "FAIL bre", Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
+        });*/
         });
     }
     private void bindViews() {
