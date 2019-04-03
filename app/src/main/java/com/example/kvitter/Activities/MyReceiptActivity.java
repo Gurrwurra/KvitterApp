@@ -1,5 +1,7 @@
 package com.example.kvitter.Activities;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -22,6 +24,7 @@ public class MyReceiptActivity extends AppCompatActivity {
     private RecyclerView folderView;
     private RecyclerView.Adapter folderAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private FloatingActionButton fab;
     private String[] testData = new String[3];
 
 
@@ -29,7 +32,8 @@ public class MyReceiptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_receipt);
-        folderView = (RecyclerView)findViewById(R.id.folder_list);
+
+        bindViews();
 
         testData[0] = "Hobby";
         testData[1] = "Båt";
@@ -41,6 +45,22 @@ public class MyReceiptActivity extends AppCompatActivity {
         folderAdapter = new FolderAdapter(this,testData);
         folderView.setAdapter(folderAdapter);
 
+        addListiners();
 
+    }
+
+    private void addListiners() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyReceiptActivity.this, AddFolderActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void bindViews() {
+        folderView = (RecyclerView)findViewById(R.id.folder_list);
+        fab = findViewById(R.id.FAB_folder);
     }
 }
