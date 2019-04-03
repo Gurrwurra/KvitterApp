@@ -14,7 +14,6 @@ import com.example.kvitter.R;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
