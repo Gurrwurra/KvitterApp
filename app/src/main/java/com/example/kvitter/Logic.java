@@ -4,7 +4,7 @@ public class Logic {
 
 
     public boolean validateUser(String usrName, String pwd) {
-        if (usrName.contains("Henke")&& pwd.contains("ebög")) {
+        if (usrName.contains("gurra")&& pwd.contains("snopp")) {
             return true;
         }
         else {
