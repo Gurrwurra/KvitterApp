@@ -37,8 +37,7 @@ public class Logic {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 String value = dataSnapshot.getValue(String.class);
-
-                Toast.makeText(context, value, Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Hello Javatpoint",Toast.LENGTH_SHORT).show();
             }
 
             @Override
