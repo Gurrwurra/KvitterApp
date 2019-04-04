@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.kvitter.Logic;
 import com.example.kvitter.R;
+import com.google.firebase.FirebaseApp;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText pwd, usrName;
@@ -21,6 +22,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         bindViews();
         Logic logic = new Logic();
+
+
+        FirebaseApp.initializeApp(this);
+        logic.testData(this);
 
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
