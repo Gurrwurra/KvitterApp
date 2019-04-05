@@ -104,7 +104,7 @@ public class Validate_reciept extends AppCompatActivity {
 
 
     private void saveReciept(){
-
+    String hej;
         if(filePath != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
