@@ -1,15 +1,23 @@
 package com.example.kvitter.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.kvitter.R;
+import com.example.kvitter.Util.ImageHelper;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AddReceiptActivity extends AppCompatActivity {
 
@@ -23,6 +31,10 @@ public class AddReceiptActivity extends AppCompatActivity {
     private EditText comment;
     private TextView file;
 
+    private String currentPhoto;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final String CURRENT_PHOTO = "currentPhoto";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +60,7 @@ public class AddReceiptActivity extends AppCompatActivity {
         recieptPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recieptPic.setImageResource(R.drawable.english);
+               takePhoto();
             }
         });
 
@@ -74,7 +86,60 @@ public class AddReceiptActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void takePhoto() {
+        dispatchTakePictureIntent();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = ImageHelper.createImageFile(getApplicationContext());
+            } catch (IOException ex) {
+            }
+            if (photoFile != null) {
+                currentPhoto = photoFile.getAbsolutePath();
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.KvitterApp",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            setPic();
+        }
+    }
+
+    private void setPic() {
+
+        recieptPic.setImageBitmap(ImageHelper.scaleImage(recieptPic.getWidth(), recieptPic.getHeight(), currentPhoto));
 
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(CURRENT_PHOTO, currentPhoto);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentPhoto = savedInstanceState.getString(CURRENT_PHOTO);
+        recieptPic.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                recieptPic.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                setPic();
+            }
+        });
     }
 }
