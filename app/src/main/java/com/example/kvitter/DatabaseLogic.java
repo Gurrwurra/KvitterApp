@@ -108,6 +108,30 @@ public class DatabaseLogic {
             toast.show();
         }
     }
+
+    public Query getSeq () {
+        db = FirebaseFirestore.getInstance();
+    //    CollectionReference collectionRef = db.collection("photo_sequence");
+   //     Query query = collectionRef.orderBy("seq", Query.Direction.DESCENDING).limit(1);
+     //   System.out.println(query.get().getResult().toString());
+
+        CollectionReference collectionRef = db.collection("photo_sequence");
+        Query query = collectionRef.orderBy("seq", Query.Direction.DESCENDING).limit(1);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(Objects.requireNonNull(task.getResult()).size() > 0){
+                }
+            }
+        });
+     return query;
+    }
+
+    public void print() {
+        Query t = getSeq();
+        System.out.println(getSeq());
+
+    }
     private void getMultiDocument(){
 /*
         db = FirebaseFirestore.getInstance();
