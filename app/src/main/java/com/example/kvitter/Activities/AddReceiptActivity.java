@@ -35,6 +35,7 @@ public class AddReceiptActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final String CURRENT_PHOTO = "currentPhoto";
+    private Uri photoURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,11 @@ public class AddReceiptActivity extends AppCompatActivity {
                 intent.putExtra("supplier", supplier.getText().toString());
                 intent.putExtra("comment", comment.getText().toString());
 
+                if(photoURI != null){
+                    intent.putExtra("uri", photoURI.toString());
+                }
+
+
                 if(file.getText().toString() != ""){
                     intent.putExtra("file", file.getText().toString());
                 }
@@ -102,7 +108,7 @@ public class AddReceiptActivity extends AppCompatActivity {
             }
             if (photoFile != null) {
                 currentPhoto = photoFile.getAbsolutePath();
-                Uri photoURI = FileProvider.getUriForFile(this,
+                photoURI = FileProvider.getUriForFile(this,
                         "com.example.KvitterApp",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
