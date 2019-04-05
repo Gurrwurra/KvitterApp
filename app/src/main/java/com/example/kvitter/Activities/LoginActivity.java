@@ -31,7 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText pwd, usrName;
-    private Button login, test;
+    private Button login, newUser;
 
 
     @Override
@@ -40,6 +40,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         bindViews();
 
+
+        newUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), NewUserActivity.class);
+                startActivity(i);
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void bindViews() {
-        test = (Button) findViewById(R.id.btn_test);
+        newUser = (Button) findViewById(R.id.btn_newUser);
         login = (Button) findViewById(R.id.btn_login);
         usrName = (EditText) findViewById(R.id.txt_usr);
         pwd = (EditText) findViewById(R.id.txt_pwd);

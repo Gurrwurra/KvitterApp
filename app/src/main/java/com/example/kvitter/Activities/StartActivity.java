@@ -10,6 +10,7 @@ import com.example.kvitter.Activities.AddReceiptActivity;
 import com.example.kvitter.Activities.LoginActivity;
 import com.example.kvitter.Activities.MyAccountActivity;
 import com.example.kvitter.Activities.MyReceiptActivity;
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
@@ -19,6 +20,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         setListiners();
+        DatabaseLogic logic = new DatabaseLogic();
 
     }
     private void setListiners() {

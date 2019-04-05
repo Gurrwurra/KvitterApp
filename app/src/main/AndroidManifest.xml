@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.NewUserActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -27,7 +28,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name=".Activities.AddFolderActivity"></activity>
+
+        <activity android:name=".Activities.AddFolderActivity" />
         <activity android:name=".Activities.AcceptDeleteActivity" />
         <activity android:name=".Activities.EditSpecificRecieptActivity" />
         <activity android:name=".Activities.ChoiceActivity" />
