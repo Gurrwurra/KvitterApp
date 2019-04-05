@@ -31,6 +31,8 @@ public class DatabaseLogic {
     private boolean exist;
 
     public boolean mailDoesExists(Context context, String value) {
+        //TODO HEJ
+        String bajs;
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("mail", value);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
