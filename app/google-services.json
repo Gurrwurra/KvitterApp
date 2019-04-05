@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "252969669312",
+    "firebase_url": "https://kvitterapp-21c55.firebaseio.com",
+    "project_id": "kvitterapp-21c55",
+    "storage_bucket": "kvitterapp-21c55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252969669312:android:e4bee220c7c8dbc2",
+        "android_client_info": {
+          "package_name": "com.example.kvitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252969669312-vhik7pdmiu034hroijsq1gm24aacb0p5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kvitter",
+            "certificate_hash": "ae6f4ada741516a0ac46b4ed8e98658007449196"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoJQpBkqlnWwg341EZHoLmEBRErymTwok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252969669312-s8rt1m9flu87c0iib11krigji83khuff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
