@@ -3,12 +3,14 @@ package com.example.kvitter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.Reciept;
+import com.example.kvitter.Util.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,10 +42,10 @@ import java.util.UUID;
 
 public class DatabaseLogic {
     private FirebaseFirestore db;
-    private boolean exist;
-
+    private boolean mailExist;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private boolean currentState;
 
     public boolean mailDoesExists(Context context, String value) {
         db = FirebaseFirestore.getInstance();
@@ -54,37 +56,64 @@ public class DatabaseLogic {
                 if(Objects.requireNonNull(task.getResult()).size() > 0){
                     Toast toast = Toast.makeText(context, "Konto med samma mejladress finns redan", Toast.LENGTH_LONG);
                     toast.show();
-                    exist = true;
+                    mailExist = true;
                 }else{
-                    exist = false;
+                    mailExist = false;
                 }
             }
         });
-        return exist;
+        return mailExist;
     }
-    public boolean persNoExists(Context context, String value) {
+    public void persNoExists( String value) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("personal_number", value);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(Objects.requireNonNull(task.getResult()).size() > 0){
-                    Toast toast = Toast.makeText(context, "Konto med samma personnummer finns redan", Toast.LENGTH_LONG);
-                    toast.show();
-                    exist = true;
+                    System.out.println("Personnumret hittades");
+                    state(true);
                 }else{
-                    exist = false;
+                    System.out.println("Felaktigt personnummer");
+                    state(false);
                 }
             }
         });
-        return exist;
+    }
+    public void pwdExists(String pwd, String persNo) {
+        db = FirebaseFirestore.getInstance();
+        Query query = db.collection("users").whereEqualTo("pwd", pwd);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(Objects.requireNonNull(task.getResult()).size() > 0){
+                    System.out.println("Lösenordet hittades");
+                    persNoExists(persNo);
+                }else{
+                    System.out.println("Felaktigt lösenord");
+                }
+            }
+        });
     }
 
+    public void state(boolean state) {
+        currentState = state;
+        validateUser();
+    }
+    public boolean validateUser() {
 
+        if (currentState == true) {
+            System.out.println("Inloggning suceeesss");
+            return true;
+        } else {
+            System.out.println("Inloggning faila");
+            return false;
+        }
+    }
     public void createUser(Context context, String firstname, String surname, String mail, String phone, String address, String city, String pwd, String personalNumber) {
         boolean mailExists = mailDoesExists(context, mail);
-        boolean persNoExists = persNoExists(context, personalNumber);
-        if (mailExists == false && persNoExists == false) {
+    //    boolean persNoExists = persNoExists( personalNumber);
+   //     if (mailExists == false && persNoExists == false) {
             db = FirebaseFirestore.getInstance();
             CollectionReference users = db.collection("users");
 
@@ -114,12 +143,11 @@ public class DatabaseLogic {
                             toast.show();
                         }
                     });
-        }
-        else {
+       // }
+      //  else {
             Toast toast = Toast.makeText(context, "Konto med dessa uppgifter finns redan", Toast.LENGTH_LONG);
             toast.show();
-
-        }
+       // }
     }
 
  //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
@@ -162,7 +190,6 @@ public class DatabaseLogic {
     }
 
     public void getSingleDocument(){
-
         db = FirebaseFirestore.getInstance();
         DocumentReference myRef = db.collection("user_data").document("pxVDocvZG1vmoBNpZvBE");
         myRef.get()
@@ -171,24 +198,11 @@ public class DatabaseLogic {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                         if (task.isSuccessful()) {
-                            //Toast toast = Toast.makeText(getApplicationContext(), document.getId() + " => " + document.getData(), Toast.LENGTH_LONG);
-                            //toast.show();
-
                             System.out.println(task.getResult());
-
-
                         } else {
-                            //Toast toast = Toast.makeText(getApplicationContext(), "Error getting documents: " + task.getException(), Toast.LENGTH_LONG);
-                            //toast.show();
                         }
                     }
                 });
-    }
-
-    private boolean validatePersonalNumber() {
-        boolean validate = false;
-
-        return validate;
     }
 
     private void saveReciept(Context context, Uri filePath, int seq){

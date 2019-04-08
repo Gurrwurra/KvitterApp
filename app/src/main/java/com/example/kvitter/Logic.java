@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.LoginActivity;
+import com.example.kvitter.Util.Validate;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -18,37 +19,32 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.support.constraint.Constraints.TAG;
 
 public class Logic {
-    private FirebaseFirestore db;
 
-    public boolean validateUser(String usrName, String pwd) {
-        if (usrName.contains("gurra")&& pwd.contains("snopp")) {
+    public boolean validateUser(String personalNumber, String pwd) {
+
+        DatabaseLogic dbLogic = new DatabaseLogic();
+        dbLogic.pwdExists(pwd,personalNumber);
+        /*    boolean persNumber = persNo.getState();
+        boolean persPwd = usrPwd.getState();
+
+        if (persNumber ==true && persPwd == true) {
+            System.out.println("Inloggning suceeesss");
             return true;
         }
         else {
+            System.out.println("Inloggning faila");
             return false;
         }
+        */
+        return true;
     }
-    public void getCurrentId(String personalNumber) {
-        db = FirebaseFirestore.getInstance();
-        CollectionReference questionRef = db.collection("users");
-        Query user = questionRef.whereEqualTo("personal_number", personalNumber);
-        questionRef.whereEqualTo("personal_number", personalNumber).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q : queryDocumentSnapshots
-                ) {
-                    System.out.println(q.getData().get("firstname")+ "\n" );
-                    System.out.println(user.get());
-                }
 
-            }
-        });
-
-
-    }
 
     public void testData(Context context){
         FirebaseDatabase database = FirebaseDatabase.getInstance();

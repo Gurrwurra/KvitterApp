@@ -21,7 +21,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_start);
         setListiners();
         DatabaseLogic logic = new DatabaseLogic();
-        logic.getCurrentId("199205225692");
+     //   logic.getCurrentId("199205225692");
 
     }
     private void setListiners() {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.Logic;
 import com.example.kvitter.R;
 import com.example.kvitter.Users;
@@ -40,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         bindViews();
 
-
         newUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,19 +50,24 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         login.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-
+                DatabaseLogic logic = new DatabaseLogic();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
-                //    boolean validate = logic.validateUser(user, password);
-
-                //      if (validate == true) {
-                Intent i = new Intent(getApplicationContext(), StartActivity.class);
-                startActivity(i);
-            }
-
-        });
+                logic.pwdExists(password,user);
+         /*     if (validate == true) {
+                  Intent i = new Intent(getApplicationContext(), StartActivity.class);
+                  startActivity(i);
+              }
+                else  {
+                      System.out.println("Funka inte");
+                  }
+                  */
+        }
+    });
     }
+
     private void bindViews() {
         newUser = (Button) findViewById(R.id.btn_newUser);
         login = (Button) findViewById(R.id.btn_login);
