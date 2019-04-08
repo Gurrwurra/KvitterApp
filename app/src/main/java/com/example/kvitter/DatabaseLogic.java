@@ -1,10 +1,13 @@
 package com.example.kvitter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.Uri;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.Reciept;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,6 +23,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Source;
 import com.google.firebase.firestore.auth.User;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -29,10 +36,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class DatabaseLogic {
     private FirebaseFirestore db;
     private boolean exist;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     public boolean mailDoesExists(Context context, String value) {
         db = FirebaseFirestore.getInstance();
@@ -130,7 +141,7 @@ public class DatabaseLogic {
     }
 
  //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
-    public void newSequenceNumber () {
+    public void newSequenceNumber (Context context, Uri filePath) {
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("photo_sequence").document("sequence");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -139,7 +150,7 @@ public class DatabaseLogic {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     int seqNumber =  Integer.parseInt(document.getData().get("seq_id").toString());
-                    System.out.println("test: " + seqNumber);
+                    saveReciept(context, filePath, seqNumber);
                     updateSequenceNumber(seqNumber);
                 } else {
                     System.out.println("Cached get failed:" + task.getException()); }
@@ -196,5 +207,43 @@ public class DatabaseLogic {
         boolean validate = false;
 
         return validate;
+    }
+
+    private void saveReciept(Context context, Uri filePath, int seq){
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Laddar upp...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("reciept/"+ UUID.randomUUID().toString() + "-" + seq);
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Uppladdat", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Misslyckad uppladdning:  "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uppladdat "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 }

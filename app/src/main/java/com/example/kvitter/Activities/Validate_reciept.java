@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,16 +36,11 @@ public class Validate_reciept extends AppCompatActivity {
 
     private Uri filePath;
 
-    FirebaseStorage storage;
-    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_validate_reciept);
-
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
 
         bindViews();
         validateValues();
@@ -64,7 +60,9 @@ public class Validate_reciept extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReciept();
+            DatabaseLogic logic = new DatabaseLogic();
+            logic.newSequenceNumber(Validate_reciept.this, filePath);
+
             }
         });
     }
@@ -102,40 +100,5 @@ public class Validate_reciept extends AppCompatActivity {
         deny = findViewById(R.id.btn_deny_validate);
     }
 
-
-    private void saveReciept(){
-    String he;
-        if(filePath != null)
-        {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Laddar upp...");
-            progressDialog.show();
-
-            StorageReference ref = storageReference.child("reciept/"+ UUID.randomUUID().toString());
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(Validate_reciept.this, "Uppladdat", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(Validate_reciept.this, "Misslyckad uppladdning:  "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uppladdat "+(int)progress+"%");
-                        }
-                    });
-        }
-    }
 
 }
