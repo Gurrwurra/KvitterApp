@@ -125,10 +125,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     }
 
     private void setPic() {
-
         recieptPic.setImageBitmap(ImageHelper.scaleImage(recieptPic.getWidth(), recieptPic.getHeight(), currentPhoto));
-
-
     }
 
     @Override

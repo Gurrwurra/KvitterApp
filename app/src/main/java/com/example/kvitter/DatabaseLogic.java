@@ -69,24 +69,6 @@ public class DatabaseLogic {
         return exist;
     }
 
-    public void getCurrentId(String personalNumber) {
-        db = FirebaseFirestore.getInstance();
-        CollectionReference questionRef = db.collection("users");
-        Query user = questionRef.whereEqualTo("personal_number", personalNumber);
-        questionRef.whereEqualTo("personal_number", personalNumber).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot q : queryDocumentSnapshots
-                     ) {
-                    System.out.println(q.getData().get("firstname")+ "\n" );
-                    System.out.println(user.get());
-                }
-
-            }
-        });
-
-
-    }
 
     public void createUser(Context context, String firstname, String surname, String mail, String phone, String address, String city, String pwd, String personalNumber) {
         boolean mailExists = mailDoesExists(context, mail);
