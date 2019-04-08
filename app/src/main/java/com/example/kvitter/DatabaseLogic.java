@@ -5,6 +5,7 @@ import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.example.kvitter.Util.Reciept;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -16,6 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Source;
+import com.google.firebase.firestore.auth.User;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -31,8 +35,6 @@ public class DatabaseLogic {
     private boolean exist;
 
     public boolean mailDoesExists(Context context, String value) {
-        //TODO HEJ
-        String bajs;
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("mail", value);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -67,6 +69,24 @@ public class DatabaseLogic {
         return exist;
     }
 
+    public void getCurrentId(String personalNumber) {
+        db = FirebaseFirestore.getInstance();
+        CollectionReference questionRef = db.collection("users");
+        Query user = questionRef.whereEqualTo("personal_number", personalNumber);
+        questionRef.whereEqualTo("personal_number", personalNumber).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot q : queryDocumentSnapshots
+                     ) {
+                    System.out.println(q.getData().get("firstname")+ "\n" );
+                    System.out.println(user.get());
+                }
+
+            }
+        });
+
+
+    }
 
     public void createUser(Context context, String firstname, String surname, String mail, String phone, String address, String city, String pwd, String personalNumber) {
         boolean mailExists = mailDoesExists(context, mail);
@@ -99,66 +119,59 @@ public class DatabaseLogic {
                         public void onFailure(@NonNull Exception e) {
                             Toast toast = Toast.makeText(context, "Error adding document" + e, Toast.LENGTH_LONG);
                             toast.show();
-
                         }
                     });
         }
         else {
             Toast toast = Toast.makeText(context, "Konto med dessa uppgifter finns redan", Toast.LENGTH_LONG);
             toast.show();
+
         }
     }
 
-    public Query getSeq () {
+ //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
+    public void newSequenceNumber () {
         db = FirebaseFirestore.getInstance();
-    //    CollectionReference collectionRef = db.collection("photo_sequence");
-   //     Query query = collectionRef.orderBy("seq", Query.Direction.DESCENDING).limit(1);
-     //   System.out.println(query.get().getResult().toString());
-
-        CollectionReference collectionRef = db.collection("photo_sequence");
-        Query query = collectionRef.orderBy("seq", Query.Direction.DESCENDING).limit(1);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        DocumentReference docRef = db.collection("photo_sequence").document("sequence");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(Objects.requireNonNull(task.getResult()).size() > 0){
-                }
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    int seqNumber =  Integer.parseInt(document.getData().get("seq_id").toString());
+                    System.out.println("test: " + seqNumber);
+                    updateSequenceNumber(seqNumber);
+                } else {
+                    System.out.println("Cached get failed:" + task.getException()); }
             }
         });
-     return query;
     }
-
-    public void print() {
-        Query t = getSeq();
-        System.out.println(getSeq());
-
-    }
-    private void getMultiDocument(){
-/*
+//UPDATES SEQ.NO IN DOCS BY 1.
+    public void updateSequenceNumber(int seqNo) {
+        int newSeq = seqNo +1;
+        Map<String, Object> seq = new HashMap<>();
+        seq.put("seq_id", newSeq);
         db = FirebaseFirestore.getInstance();
-
-        DocumentReference myRef = db.collection("user_data").
-                get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        System.out.println(document.getData());
-                                    }
-                                } else {
-                                    System.out.println(task.getException());
-                                }
-                            }
-                        });
-    */}
+        db.collection("photo_sequence").document("sequence")
+                .set(seq)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("DocumentSnapshots successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("Error writing document"+ e);
+                    }
+                });
+    }
 
     public void getSingleDocument(){
 
         db = FirebaseFirestore.getInstance();
-
-
         DocumentReference myRef = db.collection("user_data").document("pxVDocvZG1vmoBNpZvBE");
-
         myRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
