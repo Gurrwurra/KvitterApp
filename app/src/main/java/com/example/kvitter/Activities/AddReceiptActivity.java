@@ -31,6 +31,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     private EditText comment;
     private TextView file;
 
+
     private String currentPhoto;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -80,6 +81,7 @@ public class AddReceiptActivity extends AppCompatActivity {
                 intent.putExtra("amount", amount.getText().toString());
                 intent.putExtra("supplier", supplier.getText().toString());
                 intent.putExtra("comment", comment.getText().toString());
+                intent.putExtra("photoPath", currentPhoto);
 
 
                 if(photoURI != null) {
