@@ -86,6 +86,8 @@ public class AddReceiptActivity extends AppCompatActivity {
 
                 if(photoURI != null) {
                     intent.putExtra("uri", photoURI.toString() );
+                } else {
+                    intent.putExtra("uri", "Ingenting");
                 }
 
                 if(file.getText().toString() != ""){

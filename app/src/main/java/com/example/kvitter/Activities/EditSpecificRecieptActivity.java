@@ -38,7 +38,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         folder = findViewById(R.id.spi_folder_edit);
         comment = findViewById(R.id.txt_specific_comment_edit);
 
-        String[] x = new String[10];
+        String[] x = new String[3];
 
         x[0] = "test";
         x[1] = "Båt";
@@ -65,10 +65,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
 
         //TODO: radera och spara ändring
 
-
-
     }
-
 
     //TODO: ändra bild
 

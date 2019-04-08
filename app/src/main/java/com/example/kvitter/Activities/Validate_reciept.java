@@ -1,6 +1,5 @@
 package com.example.kvitter.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,16 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Validate_reciept extends AppCompatActivity {
 
@@ -65,8 +63,9 @@ public class Validate_reciept extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            DatabaseLogic logic = new DatabaseLogic();
-            logic.newSequenceNumber(Validate_reciept.this, filePath);
+                saveInformation();
+               /* DatabaseLogic logic = new DatabaseLogic();
+                logic.newSequenceNumber(Validate_reciept.this, filePath); */
 
             }
         });
@@ -86,7 +85,7 @@ public class Validate_reciept extends AppCompatActivity {
 
         filePath = Uri.parse(Extra.getString("uri"));
 
-        if(file_of != null){
+        if (file_of != null) {
             file.setText(file_of);
         }
 
@@ -112,5 +111,55 @@ public class Validate_reciept extends AppCompatActivity {
         deny = findViewById(R.id.btn_deny_validate);
     }
 
+    private void saveInformation() {
+
+        FirebaseFirestore db;
+
+        db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> recieptMap = new HashMap<>();
+        recieptMap.put("name", "Vi lägger till ett kvitto");
+        recieptMap.put("supplier", "XL-bygg");
+        recieptMap.put("amount", 1220);
+        recieptMap.put("comment", "Ett test igen");
+
+        ArrayList<Map>  recieptInfor = new ArrayList<>();
+
+        recieptInfor.add(recieptMap);
+
+        Map<String, Object> folderInformation = new HashMap<>();
+        folderInformation.put("receipts", recieptInfor);
+
+        ArrayList<Map> folderInfo = new ArrayList<>();
+        folderInfo.add(folderInformation);
+
+        Map<String, Object> folders = new HashMap<>();
+        folders.put("Default" ,folderInfo);
+
+        ArrayList<Map> foldersArray = new ArrayList<>();
+        foldersArray.add(folders);
+
+        Map<String, Object> recieptData = new HashMap<>();
+        recieptData.put("folder", foldersArray );
+
+        /*db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog")
+                .set(recieptData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast toast = Toast.makeText(Validate_reciept.this, "funkade!!!!!!!!!!!!!!", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast toast = Toast.makeText(Validate_reciept.this, "ABOOOOOO", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                });*/
+
+        db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog").update(recieptData);
+    }
 
 }

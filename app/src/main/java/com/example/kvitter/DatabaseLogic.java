@@ -136,7 +136,6 @@ public class DatabaseLogic {
         else {
             Toast toast = Toast.makeText(context, "Konto med dessa uppgifter finns redan", Toast.LENGTH_LONG);
             toast.show();
-
         }
     }
 
