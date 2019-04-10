@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.StartActivity;
@@ -22,8 +23,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -70,10 +73,17 @@ public class DatabaseLogic {
         });
         return mailExist;
     }
-    public void test() {
+    public void populateFolders() {
         db = FirebaseFirestore.getInstance();
-
-
+        DocumentReference query = db.collection("user_data").document(CurrentId.getUserId());
+        query.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                for (int i=0; i < documentSnapshot.getData().size(); i++) {
+                    System.out.println(documentSnapshot.getData().get(i));
+                }
+            }
+        });
     }
     public void persNoExists( String value,Context context) {
         db = FirebaseFirestore.getInstance();
@@ -108,21 +118,6 @@ public class DatabaseLogic {
             }
             }
             );
-    }
-
-    public void state(boolean state) {
-        currentState = state;
-        validateUser();
-    }
-    public boolean validateUser() {
-
-        if (currentState == true) {
-            System.out.println("Inloggning suceeesss");
-            return true;
-        } else {
-            System.out.println("Inloggning faila");
-            return false;
-        }
     }
     public void createUser(Context context, String firstname, String surname, String mail, String phone, String address, String city, String pwd, String personalNumber) {
         boolean mailExists = mailDoesExists(context, mail);
@@ -287,11 +282,7 @@ public class DatabaseLogic {
     }
 
     private void saveInformation(String[] receiptInfo, String photoName) {
-
-
-        FirebaseFirestore db;
-
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Map<String, Object> recieptMap = new HashMap<>();
         recieptMap.put("name", receiptInfo[0]);
@@ -300,12 +291,8 @@ public class DatabaseLogic {
         recieptMap.put("comment", receiptInfo[3]);
         recieptMap.put("photoRef", photoName);
 
-
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
 
         myRef.update("folder.Default.receipts", FieldValue.arrayUnion(recieptMap));
-
     }
-
-
 }

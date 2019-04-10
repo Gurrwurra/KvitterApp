@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.kvitter.Adapters.FolderAdapter;
 import com.example.kvitter.Adapters.ReceiptAdapter;
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 
 import org.w3c.dom.Text;
@@ -46,9 +47,8 @@ public class MyReceiptActivity extends AppCompatActivity {
         folderView.setAdapter(folderAdapter);
 
         addListiners();
-
+        populateFolders();
     }
-
     private void addListiners() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +58,12 @@ public class MyReceiptActivity extends AppCompatActivity {
             }
         });
     }
-
     private void bindViews() {
         folderView = (RecyclerView)findViewById(R.id.folder_list);
         fab = findViewById(R.id.FAB_folder);
+    }
+    private void populateFolders() {
+        DatabaseLogic logic = new DatabaseLogic();
+        logic.populateFolders();
     }
 }
