@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.ImageHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +48,7 @@ public class Validate_reciept extends AppCompatActivity {
 
 
     private Uri filePath;
-
+    private File fileOfPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,11 @@ public class Validate_reciept extends AppCompatActivity {
         setContentView(R.layout.activity_validate_reciept);
 
         bindViews();
-        validateValues();
+        try {
+            validateValues();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         setListiners();
     }
@@ -85,7 +92,7 @@ public class Validate_reciept extends AppCompatActivity {
         });
     }
 
-    private void validateValues() {
+    private void validateValues() throws IOException {
 
         Bundle Extra = getIntent().getExtras();
         String name = Extra.getString("name");
@@ -95,9 +102,11 @@ public class Validate_reciept extends AppCompatActivity {
         String file_of = Extra.getString("file");
         String photoPath = Extra.getString("photoPath");
 
-        Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
+        //Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
 
         filePath = Uri.parse(Extra.getString("uri"));
+
+        fileOfPhoto = new File(Extra.getString("fileOfPhoto"));
 
         if (file_of != null) {
             file.setText(file_of);
@@ -108,7 +117,11 @@ public class Validate_reciept extends AppCompatActivity {
         supplier.setText(supp);
         comment.setText(comm);
 
-        recieptImage.setImageBitmap(bitmap);
+        Uri uri = Uri.fromFile(fileOfPhoto);
+        Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
+        recieptImage.setImageBitmap(imageBitmap);
+
+        //recieptImage.setImageBitmap(bitmap);
 
     }
 

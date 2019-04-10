@@ -1,6 +1,7 @@
 package com.example.kvitter.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -37,6 +38,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final String CURRENT_PHOTO = "currentPhoto";
     Uri photoURI;
+    File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class AddReceiptActivity extends AppCompatActivity {
 
                 if(photoURI != null) {
                     intent.putExtra("uri", photoURI.toString() );
+                    intent.putExtra("fileOfPhoto", photoFile.toString());
                 } else {
                     intent.putExtra("uri", "Ingenting");
                 }
@@ -105,7 +108,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
+             photoFile = null;
             try {
                 photoFile = ImageHelper.createImageFile(getApplicationContext());
             } catch (IOException ex) {
@@ -124,12 +127,18 @@ public class AddReceiptActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            setPic();
+            try {
+                setPic();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void setPic() {
-        recieptPic.setImageBitmap(ImageHelper.scaleImage(recieptPic.getWidth(), recieptPic.getHeight(), currentPhoto));
+    private void setPic() throws IOException {
+        Uri uri = Uri.fromFile(photoFile);
+        Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
+        recieptPic.setImageBitmap(imageBitmap);
     }
 
     @Override
@@ -145,8 +154,13 @@ public class AddReceiptActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
                 recieptPic.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setPic();
+                try {
+                    setPic();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
+
 }
