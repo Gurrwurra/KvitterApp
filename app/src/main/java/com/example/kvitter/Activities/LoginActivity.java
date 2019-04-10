@@ -2,6 +2,7 @@ package com.example.kvitter.Activities;
 
 import android.content.Intent;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,23 +15,9 @@ import android.widget.Toast;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.Logic;
 import com.example.kvitter.R;
-import com.example.kvitter.Users;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-public class LoginActivity extends AppCompatActivity {
+
+public class LoginActivity extends AppCompatActivity{
     private EditText pwd, usrName;
     private Button login, newUser;
 
@@ -55,15 +42,8 @@ public class LoginActivity extends AppCompatActivity {
                 DatabaseLogic logic = new DatabaseLogic();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
-                logic.pwdExists(password,user);
-         /*     if (validate == true) {
-                  Intent i = new Intent(getApplicationContext(), StartActivity.class);
-                  startActivity(i);
-              }
-                else  {
-                      System.out.println("Funka inte");
-                  }
-                  */
+
+                logic.pwdExists(password,user,getApplicationContext());
         }
     });
     }

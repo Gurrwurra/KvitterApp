@@ -28,8 +28,7 @@ public class Logic {
 
     public boolean validateUser(String personalNumber, String pwd) {
 
-        DatabaseLogic dbLogic = new DatabaseLogic();
-        dbLogic.pwdExists(pwd,personalNumber);
+
         /*    boolean persNumber = persNo.getState();
         boolean persPwd = usrPwd.getState();
 
