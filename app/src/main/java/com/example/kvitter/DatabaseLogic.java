@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -164,7 +165,7 @@ public class DatabaseLogic {
     }
 
  //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
-    public void newSequenceNumber (Context context, Uri filePath) {
+    public void newSequenceNumber (Context context, Uri filePath, String[] receiptInfo) {
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("photo_sequence").document("sequence");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -173,7 +174,7 @@ public class DatabaseLogic {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     int seqNumber =  Integer.parseInt(document.getData().get("seq_id").toString());
-                    saveReciept(context, filePath, seqNumber);
+                    savePhoto(context, filePath, seqNumber, receiptInfo);
                     updateSequenceNumber(seqNumber);
                 } else {
                     System.out.println("Cached get failed:" + task.getException()); }
@@ -202,23 +203,8 @@ public class DatabaseLogic {
                 });
     }
 
-    public void getSingleDocument(){
-        db = FirebaseFirestore.getInstance();
-        DocumentReference myRef = db.collection("user_data").document("pxVDocvZG1vmoBNpZvBE");
-        myRef.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                        if (task.isSuccessful()) {
-                            System.out.println(task.getResult());
-                        } else {
-                        }
-                    }
-                });
-    }
-
-    private void saveReciept(Context context, Uri filePath, int seq){
+    private void savePhoto(Context context, Uri filePath, int seq, String[] receiptsInfo){
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -229,7 +215,11 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("reciept/"+ UUID.randomUUID().toString() + "-" + seq);
+            String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
+
+            saveInformation(receiptsInfo, photoName);
+
+            StorageReference ref = storageReference.child(photoName);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -255,4 +245,67 @@ public class DatabaseLogic {
                     });
         }
     }
+
+    private void createFolder(){
+
+        FirebaseFirestore db;
+
+        db = FirebaseFirestore.getInstance();
+
+        ArrayList<Map> recieptInfor = new ArrayList<>();
+
+        Map<String, Object> folderInformation = new HashMap<>();
+        folderInformation.put("receipts", recieptInfor);
+
+        ArrayList<Map> folderInfo = new ArrayList<>();
+        folderInfo.add(folderInformation);
+
+        Map<String, Object> folders = new HashMap<>();
+        folders.put("Default" ,folderInfo);
+
+        ArrayList<Map> foldersArray = new ArrayList<>();
+        foldersArray.add(folders);
+
+        Map<String, Object> recieptData = new HashMap<>();
+        recieptData.put("folder", foldersArray );
+
+        String user_id = CurrentId.getUserId();
+
+        db.collection("user_data").document(user_id)
+                .set(recieptData, SetOptions.mergeFields("folder"))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
+    private void saveInformation(String[] receiptInfo, String photoName) {
+
+
+        FirebaseFirestore db;
+
+        db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> recieptMap = new HashMap<>();
+        recieptMap.put("name", receiptInfo[0]);
+        recieptMap.put("supplier", receiptInfo[1]);
+        recieptMap.put("amount", receiptInfo[2]);
+        recieptMap.put("comment", receiptInfo[3]);
+        recieptMap.put("photoRef", photoName);
+
+
+        DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
+
+        myRef.update("folder.Default.receipts", FieldValue.arrayUnion(recieptMap));
+
+    }
+
+
 }
