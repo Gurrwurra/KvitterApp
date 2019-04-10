@@ -1,14 +1,18 @@
 package com.example.kvitter;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.Validate_reciept;
+import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.Reciept;
 import com.example.kvitter.Util.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,6 +60,7 @@ public class DatabaseLogic {
                 if(Objects.requireNonNull(task.getResult()).size() > 0){
                     Toast toast = Toast.makeText(context, "Konto med samma mejladress finns redan", Toast.LENGTH_LONG);
                     toast.show();
+
                     mailExist = true;
                 }else{
                     mailExist = false;
@@ -64,36 +69,44 @@ public class DatabaseLogic {
         });
         return mailExist;
     }
-    public void persNoExists( String value) {
+    public void test() {
+        db = FirebaseFirestore.getInstance();
+
+
+    }
+    public void persNoExists( String value,Context context) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("personal_number", value);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(Objects.requireNonNull(task.getResult()).size() > 0){
+            public void onSuccess(QuerySnapshot task) {
+                if(Objects.requireNonNull(task.size())> 0){
                     System.out.println("Personnumret hittades");
-                    state(true);
+                    CurrentId.setUserId(task.getDocuments().get(0).getId());
+                    Intent i = new Intent(context,StartActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
                 }else{
                     System.out.println("Felaktigt personnummer");
-                    state(false);
                 }
             }
         });
     }
-    public void pwdExists(String pwd, String persNo) {
+    public void pwdExists(String pwd, String persNo, Context context) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("pwd", pwd);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(Objects.requireNonNull(task.getResult()).size() > 0){
+            public void onSuccess(QuerySnapshot task) {
+                if(Objects.requireNonNull(task.size()) > 0){
                     System.out.println("Lösenordet hittades");
-                    persNoExists(persNo);
+                    persNoExists(persNo, context);
                 }else{
                     System.out.println("Felaktigt lösenord");
                 }
             }
-        });
+            }
+            );
     }
 
     public void state(boolean state) {

@@ -12,6 +12,7 @@ import com.example.kvitter.Activities.MyAccountActivity;
 import com.example.kvitter.Activities.MyReceiptActivity;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,7 +22,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_start);
         setListiners();
         DatabaseLogic logic = new DatabaseLogic();
-     //   logic.getCurrentId("199205225692");
+        System.out.println(CurrentId.getUserId());
 
     }
     private void setListiners() {
