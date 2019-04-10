@@ -14,10 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kvitter.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +68,8 @@ public class Validate_reciept extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveInformation();
+
+               saveInformation();
                /* DatabaseLogic logic = new DatabaseLogic();
                 logic.newSequenceNumber(Validate_reciept.this, filePath); */
 
@@ -111,19 +117,21 @@ public class Validate_reciept extends AppCompatActivity {
         deny = findViewById(R.id.btn_deny_validate);
     }
 
+
     private void saveInformation() {
+
 
         FirebaseFirestore db;
 
         db = FirebaseFirestore.getInstance();
 
         Map<String, Object> recieptMap = new HashMap<>();
-        recieptMap.put("name", "Vi lägger till ett kvitto");
-        recieptMap.put("supplier", "XL-bygg");
-        recieptMap.put("amount", 1220);
-        recieptMap.put("comment", "Ett test igen");
+        recieptMap.put("name", "Vi hahaha ett kvitto");
+        recieptMap.put("supplier", "lalala");
+        recieptMap.put("amount", 3);
+        recieptMap.put("comment", "bajs");
 
-        ArrayList<Map>  recieptInfor = new ArrayList<>();
+        ArrayList<Map> recieptInfor = new ArrayList<>();
 
         recieptInfor.add(recieptMap);
 
@@ -134,7 +142,7 @@ public class Validate_reciept extends AppCompatActivity {
         folderInfo.add(folderInformation);
 
         Map<String, Object> folders = new HashMap<>();
-        folders.put("Default" ,folderInfo);
+        folders.put("Hobby" ,folderInfo);
 
         ArrayList<Map> foldersArray = new ArrayList<>();
         foldersArray.add(folders);
@@ -142,8 +150,8 @@ public class Validate_reciept extends AppCompatActivity {
         Map<String, Object> recieptData = new HashMap<>();
         recieptData.put("folder", foldersArray );
 
-        /*db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog")
-                .set(recieptData)
+       db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog.folder.Hobby.receipts")
+                .set(recieptData, SetOptions.mergeFields("folder"))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -157,9 +165,16 @@ public class Validate_reciept extends AppCompatActivity {
                         Toast toast = Toast.makeText(Validate_reciept.this, "ABOOOOOO", Toast.LENGTH_LONG);
                         toast.show();
                     }
-                });*/
+                });
 
-        db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog").update(recieptData);
+        //db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog.folder.Hobby.receipts").update(recieptData);
+
+        //db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog").collection("folder").add(recieptData);
+
+        //db.collection("user_data").document("kLS4mOm1zc2GWQFBxxog").set(recieptData, SetOptions.merge());
+
     }
+
+
 
 }
