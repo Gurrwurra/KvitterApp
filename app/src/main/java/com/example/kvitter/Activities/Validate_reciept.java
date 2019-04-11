@@ -1,10 +1,14 @@
 package com.example.kvitter.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +31,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +54,7 @@ public class Validate_reciept extends AppCompatActivity {
 
     private Uri filePath;
     private File fileOfPhoto;
+    Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +92,10 @@ public class Validate_reciept extends AppCompatActivity {
                 receiptInfo[3] = comment.getText().toString();
 
                 DatabaseLogic logic = new DatabaseLogic();
-                logic.newSequenceNumber(Validate_reciept.this, filePath, receiptInfo);
+
+
+
+                logic.newSequenceNumber(Validate_reciept.this, uri, receiptInfo);
 
             }
         });
@@ -117,11 +126,10 @@ public class Validate_reciept extends AppCompatActivity {
         supplier.setText(supp);
         comment.setText(comm);
 
-        Uri uri = Uri.fromFile(fileOfPhoto);
+        uri = Uri.fromFile(fileOfPhoto);
         Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
         recieptImage.setImageBitmap(imageBitmap);
 
-        //recieptImage.setImageBitmap(bitmap);
 
     }
 

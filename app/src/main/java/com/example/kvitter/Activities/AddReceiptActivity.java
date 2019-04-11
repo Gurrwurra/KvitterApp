@@ -2,6 +2,8 @@ package com.example.kvitter.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -18,6 +20,8 @@ import com.example.kvitter.R;
 import com.example.kvitter.Util.ImageHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class AddReceiptActivity extends AppCompatActivity {

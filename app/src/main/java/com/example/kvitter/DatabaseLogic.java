@@ -4,16 +4,23 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.CursorLoader;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.ImageHelper;
 import com.example.kvitter.Util.Reciept;
 import com.example.kvitter.Util.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +45,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -203,6 +212,18 @@ public class DatabaseLogic {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        byte[] bytePhoto = null;
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = ImageHelper.getCorrectlyOrientedImage(context, filePath);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            bytePhoto = stream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         if(filePath != null)
         {
@@ -215,7 +236,7 @@ public class DatabaseLogic {
             saveInformation(receiptsInfo, photoName);
 
             StorageReference ref = storageReference.child(photoName);
-            ref.putFile(filePath)
+            ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -240,6 +261,7 @@ public class DatabaseLogic {
                     });
         }
     }
+
 
     private void createFolder(){
 
