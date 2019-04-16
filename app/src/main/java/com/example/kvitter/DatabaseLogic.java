@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.Validate_reciept;
+import com.example.kvitter.Adapters.FolderAdapter;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.ImageHelper;
 import com.example.kvitter.Util.Reciept;
@@ -84,32 +85,43 @@ public class DatabaseLogic {
         return mailExist;
     }
     public void populateFolders() {
-        db = FirebaseFirestore.getInstance();
-        CollectionReference doc = db.collection("user_data/HINCqfhWGB9XwGtGBtYl/Sommarstugan");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    // {receipts=[{amount=500, supplier=Willys, name=Test2, comment=test2, photoRef=reciept/4c789837-26ee-4582-906e-1a120b0544e1-35}]}
-                    System.out.println(document.getData().toString());
+                    String data = document.get("folder.!Sommarstugan").toString();
+                    System.out.println(data);
+                    /*
+                    String [] partOfData = data.split("!");
+
+
+                    for (int i=1; i < partOfData.length; i++) {
+                        String [] folderName = partOfData[i].split("=");
+                        folders.add(folderName[0]);
+                    }
+                    for (int j=0; j < folders.size(); j++) {
+                        System.out.println(folders.get(j));
+                    }
+               //     folderAdapter = new FolderAdapter(context,folders);
+              //      folderView.setAdapter(folderAdapter);
+                    //    stringValues(document.getData().toString()); */
+                    //TODO PLOCKA UT FÖRSTA STRING VÄRDET OCH LAGRA TILL LISTA FÖR ARRAYEN
                 } else {
                     System.out.println("Cached get failed:" + task.getException()); }
             }
         });
-        /*
-        Query query = db.collection("user_data").whereEqualTo(FieldPath.documentId(), "HINCqfhWGB9XwGtGBtYl");
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<DocumentSnapshot> q = queryDocumentSnapshots.getDocuments();
-                System.out.println(q.toString());
-                }
-
-        });
-        */
     }
+    public void stringValues(String x ) {
+        String[] myData = x.split(",");
+        for (String s: myData) {
+            System.out.println(s);
+        }
+    }
+
+
     public void persNoExists( String value,Context context) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("personal_number", value);
@@ -331,6 +343,6 @@ public class DatabaseLogic {
 
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
 
-        myRef.update("folder.Sommarstugan.receipts", FieldValue.arrayUnion(recieptMap));
+        myRef.update("folder.!Sommarstugan.receipts", FieldValue.arrayUnion(recieptMap));
     }
 }
