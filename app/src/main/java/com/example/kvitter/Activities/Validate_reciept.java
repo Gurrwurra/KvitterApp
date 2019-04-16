@@ -52,7 +52,6 @@ public class Validate_reciept extends AppCompatActivity {
     private Button deny;
 
 
-    private Uri filePath;
     private File fileOfPhoto;
     Uri uri;
 
@@ -103,17 +102,13 @@ public class Validate_reciept extends AppCompatActivity {
 
     private void validateValues() throws IOException {
 
+
         Bundle Extra = getIntent().getExtras();
         String name = Extra.getString("name");
         String amount_of = Extra.getString("amount");
         String supp = Extra.getString("supplier");
         String comm = Extra.getString("comment");
         String file_of = Extra.getString("file");
-        String photoPath = Extra.getString("photoPath");
-
-        //Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
-
-        filePath = Uri.parse(Extra.getString("uri"));
 
         fileOfPhoto = new File(Extra.getString("fileOfPhoto"));
 

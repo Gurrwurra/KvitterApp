@@ -235,7 +235,13 @@ public class DatabaseLogic {
                 });
     }
 
-
+    /**
+     * Uploads image to Firebase storage
+     * @param context
+     * @param filePath
+     * @param seq
+     * @param receiptsInfo
+     */
     private void savePhoto(Context context, Uri filePath, int seq, String[] receiptsInfo){
 
         storage = FirebaseStorage.getInstance();
@@ -291,6 +297,9 @@ public class DatabaseLogic {
     }
 
 
+    /**
+     * Creates default folder for the new registered user
+     */
     private void createFolder(){
 
         FirebaseFirestore db;
@@ -331,6 +340,11 @@ public class DatabaseLogic {
                 });
     }
 
+    /**
+     * Saves reveipt to default folder for a specific user
+     * @param receiptInfo
+     * @param photoName
+     */
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 //te
@@ -345,4 +359,5 @@ public class DatabaseLogic {
 
         myRef.update("folder.!Sommarstugan.receipts", FieldValue.arrayUnion(recieptMap));
     }
+
 }
