@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity{
                 DatabaseLogic logic = new DatabaseLogic();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
-
+                logic.populateFolders();
                 logic.pwdExists(password,user,getApplicationContext());
         }
     });

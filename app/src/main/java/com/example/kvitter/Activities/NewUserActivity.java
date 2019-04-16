@@ -43,12 +43,13 @@ public class NewUserActivity extends AppCompatActivity implements View.OnClickLi
         String userConfirmPwd = validatePwd.getText().toString();
         String userPersonalNumber = personalNumber.getText().toString();
         //TODO validate fields - Check with DB - Save to DB
+        DatabaseLogic logic = new DatabaseLogic();
+        logic.createUser(this,userFirstName,userSurname,userMail,userPhone,userAddress,userCity,userPwd,userPersonalNumber);
 
         Boolean checkFields = validateUserData(userMail,userPhone,userPwd,userConfirmPwd,userPersonalNumber);
         if (checkFields == true) {
             Toast.makeText(this,"Validering success!!!",Toast.LENGTH_SHORT).show();
-            DatabaseLogic logic = new DatabaseLogic();
-            logic.createUser(this,userFirstName,userSurname,userMail,userPhone,userAddress,userCity,userPwd,userPersonalNumber);
+
         }
         else {
             Toast.makeText(this,"gick inte igenom...",Toast.LENGTH_SHORT).show();
