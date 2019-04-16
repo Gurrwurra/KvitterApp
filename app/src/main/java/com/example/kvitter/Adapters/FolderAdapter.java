@@ -1,6 +1,7 @@
 package com.example.kvitter.Adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
-    private String[] mDataset;
+    private List<String> mDataset;
     private Context context;
 
     private RecyclerView folderView;
@@ -39,8 +51,6 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             note = itemView.findViewById(R.id.txt_note);
             folderName.setTag(itemView);
             folderName.setOnClickListener(this);
-            testData[0] = "Kvitto för knätch";
-            testData[1] = "Plankor";
             reciept.setVisibility(View.GONE);
         }
 
@@ -54,7 +64,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public FolderAdapter(Context context, String[] myDataset) {
+    public FolderAdapter(Context context, List<String> myDataset) {
         this.context = context;
         mDataset = myDataset;
     }
@@ -71,18 +81,35 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.folderName.setText(mDataset[position]);
-        holder.note.setText(mDataset[position]);
+        holder.folderName.setText(mDataset.get(position));
+        holder.note.setText(mDataset.get(position));
         holder.reciept.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
         holder.reciept.setLayoutManager(layoutManager);
         folderAdapter = new ReceiptAdapter(context, testData);
-        holder.reciept.setAdapter(folderAdapter);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String documentName = CurrentId.getUserId();
+        DocumentReference docRef = db.collection("user_data").document(documentName);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    holder.reciept.setAdapter(folderAdapter);
+                    // {receipts=[{amount=500, supplier=Willys, name=Test2, comment=test2, photoRef=reciept/4c789837-26ee-4582-906e-1a120b0544e1-35}]}
+                    //         System.out.println(document.getData().toString());
+                    testData[0] = document.get("folder.!Sommarstugan").toString();
+                    //    stringValues(document.getData().toString());
+                } else {
+                    System.out.println("Cached get failed:" + task.getException()); }
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 }
