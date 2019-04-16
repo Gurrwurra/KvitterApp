@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -84,15 +85,30 @@ public class DatabaseLogic {
     }
     public void populateFolders() {
         db = FirebaseFirestore.getInstance();
-        DocumentReference query = db.collection("user_data").document(CurrentId.getUserId());
-        query.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        CollectionReference doc = db.collection("user_data/HINCqfhWGB9XwGtGBtYl/Sommarstugan");
+        DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                for (int i=0; i < documentSnapshot.getData().size(); i++) {
-                    System.out.println(documentSnapshot.getData().get(i));
-                }
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    // {receipts=[{amount=500, supplier=Willys, name=Test2, comment=test2, photoRef=reciept/4c789837-26ee-4582-906e-1a120b0544e1-35}]}
+                    System.out.println(document.getData().toString());
+                } else {
+                    System.out.println("Cached get failed:" + task.getException()); }
             }
         });
+        /*
+        Query query = db.collection("user_data").whereEqualTo(FieldPath.documentId(), "HINCqfhWGB9XwGtGBtYl");
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<DocumentSnapshot> q = queryDocumentSnapshots.getDocuments();
+                System.out.println(q.toString());
+                }
+
+        });
+        */
     }
     public void persNoExists( String value,Context context) {
         db = FirebaseFirestore.getInstance();
@@ -129,7 +145,7 @@ public class DatabaseLogic {
             );
     }
     public void createUser(Context context, String firstname, String surname, String mail, String phone, String address, String city, String pwd, String personalNumber) {
-        boolean mailExists = mailDoesExists(context, mail);
+     //   boolean mailExists = mailDoesExists(context, mail);
     //    boolean persNoExists = persNoExists( personalNumber);
    //     if (mailExists == false && persNoExists == false) {
             db = FirebaseFirestore.getInstance();
@@ -319,7 +335,7 @@ public class DatabaseLogic {
      */
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+//te
         Map<String, Object> recieptMap = new HashMap<>();
         recieptMap.put("name", receiptInfo[0]);
         recieptMap.put("supplier", receiptInfo[1]);
@@ -329,7 +345,7 @@ public class DatabaseLogic {
 
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
 
-        myRef.update("folder.Default.receipts", FieldValue.arrayUnion(recieptMap));
+        myRef.update("folder.Sommarstugan.receipts", FieldValue.arrayUnion(recieptMap));
     }
 
 }
