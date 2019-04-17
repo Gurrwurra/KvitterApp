@@ -1,5 +1,6 @@
 package com.example.kvitter.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import com.example.kvitter.R;
 public class LoginActivity extends AppCompatActivity{
     private EditText pwd, usrName;
     private Button login, newUser;
+    private ProgressDialog mProgress;
 
 
     @Override
@@ -27,6 +29,12 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         bindViews();
+
+        mProgress = new ProgressDialog(this);
+        mProgress.setTitle("Kollar uppgifter...");
+        mProgress.setMessage("Var snäll att vänta...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
 
         newUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,15 +47,17 @@ public class LoginActivity extends AppCompatActivity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgress.show();
                 DatabaseLogic logic = new DatabaseLogic();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
                 logic.populateFolders();
         //        logic.testMethod();
-                logic.pwdExists(password,user,getApplicationContext());
+                logic.pwdExists(password,user,getApplicationContext(), mProgress);
         }
     });
     }
+
 
     private void bindViews() {
         newUser = (Button) findViewById(R.id.btn_newUser);
