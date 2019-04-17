@@ -294,28 +294,44 @@ public class DatabaseLogic {
         }
     }
 
+    /**
+     * The user creates a new folder for receipts
+     * @param folderName
+     * @param context
+     */
+    public void addNewfolder(String folderName, Context context){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        System.out.println(CurrentId.getUserId());
+        DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
+
+        if(folderName != null || folderName != "") {
+
+            Map<String, Object> folder = new HashMap<>();
+            Map<String, Object> addFolder = new HashMap<>();
+            addFolder.put("!" + folderName, "");
+            folder.put("folder", addFolder);
+            myRef.set(folder, SetOptions.merge());
+
+            Toast.makeText(context, "Mappen " + folderName + " har lagts till.", Toast.LENGTH_SHORT).show();
+        }else{
+            //TODO: Kolla om mappen användaren skapar redan finns
+            Toast.makeText(context, "Namnet på mappen finns redan.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
     /**
      * Creates default folder for the new registered user
      */
     public void createFolder(String user_id){
-        /*
-        FirebaseFirestore db;
 
-        db = FirebaseFirestore.getInstance();
-        ArrayList<Map> recieptInfor = new ArrayList<>();
-        Map<String, Object> folderInformation = new HashMap<>();
-        folderInformation.put("receipts", recieptInfor);
-        ArrayList<Map> folderInfo = new ArrayList<>();
-        folderInfo.add(folderInformation);
 
-        Map<String, Object> folders = new HashMap<>();
-        folders.put("Default" ,folderInfo);
 
-*/
         Map<String, Object> recieptData = new HashMap<>();
         recieptData.put("folder", "folder");
-     //   String user_id = CurrentId.getUserId();
+
 
         db.collection("user_data").document(user_id)
                 .set(recieptData, SetOptions.mergeFields("folder"))
@@ -352,7 +368,7 @@ public class DatabaseLogic {
 */
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
 
-        myRef.update("folder.!Hobby.receipts", FieldValue.arrayUnion(data));
+        myRef.update("folder.!Default.receipts", FieldValue.arrayUnion(data));
     }
 
 }
