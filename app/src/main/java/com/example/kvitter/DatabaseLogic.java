@@ -115,7 +115,7 @@ public class DatabaseLogic {
             }
         });
     }
-    public void persNoExists( String value,Context context) {
+    public void persNoExists( String value,Context context, ProgressDialog mProgress) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("personal_number", value);
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -124,16 +124,18 @@ public class DatabaseLogic {
                 if(Objects.requireNonNull(task.size())> 0){
                     System.out.println("Personnumret hittades");
                     CurrentId.setUserId(task.getDocuments().get(0).getId());
+                    mProgress.dismiss();
                     Intent i = new Intent(context,StartActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }else{
-                    System.out.println("Felaktigt personnummer");
+                    mProgress.dismiss();
+                    Toast.makeText(context, "Felaktig inlogningsinformation", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
-    public void pwdExists(String pwd, String persNo, Context context) {
+    public void pwdExists(String pwd, String persNo, Context context, ProgressDialog mProgress) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("pwd", pwd);
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -141,9 +143,11 @@ public class DatabaseLogic {
             public void onSuccess(QuerySnapshot task) {
                 if(Objects.requireNonNull(task.size()) > 0){
                     System.out.println("Lösenordet hittades");
-                    persNoExists(persNo, context);
+                    persNoExists(persNo, context, mProgress);
                 }else{
-                    System.out.println("Felaktigt lösenord");
+                    mProgress.dismiss();
+
+                    Toast.makeText(context, "Felaktig inlogningsinformation", Toast.LENGTH_LONG).show();
                 }
             }
             }
