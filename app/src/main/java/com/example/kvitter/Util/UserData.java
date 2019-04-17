@@ -11,6 +11,9 @@ public class UserData {
         this.photoRef = photoRef;
         this.supplier = supplier;
     }
+    public UserData() {
+
+    }
 
     public String getFolderName() {
         return folderName;

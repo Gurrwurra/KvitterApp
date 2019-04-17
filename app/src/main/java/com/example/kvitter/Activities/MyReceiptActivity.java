@@ -63,29 +63,6 @@ public class MyReceiptActivity extends AppCompatActivity {
         folderView = (RecyclerView)findViewById(R.id.folder_list);
         fab = findViewById(R.id.FAB_folder);
     }
-    private void populatesFolders() {
-        String documentName = CurrentId.getUserId();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("user_data").document(documentName);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    // {receipts=[{amount=500, supplier=Willys, name=Test2, comment=test2, photoRef=reciept/4c789837-26ee-4582-906e-1a120b0544e1-35}]}
-                    //         System.out.println(document.getData().toString());
-           //         testData[0] = document.get("folder.Sommarstugan").toString();
-                    System.out.println();
-             testData[0] = "Test1" + document.get("folder");
-             testData[1] = "Test2";
-             testData[2] = "Test3";
-                    folderView.setAdapter(folderAdapter);
-             //    stringValues(document.getData().toString());
-                } else {
-                    System.out.println("Cached get failed:" + task.getException()); }
-            }
-        });
-    }
 
     private void populateFolders(Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

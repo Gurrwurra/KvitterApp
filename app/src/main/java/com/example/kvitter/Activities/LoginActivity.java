@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity{
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
                 logic.populateFolders();
+        //        logic.testMethod();
                 logic.pwdExists(password,user,getApplicationContext());
         }
     });

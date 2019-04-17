@@ -23,6 +23,7 @@ import com.example.kvitter.Adapters.FolderAdapter;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.ImageHelper;
 import com.example.kvitter.Util.Reciept;
+import com.example.kvitter.Util.UserData;
 import com.example.kvitter.Util.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -84,7 +85,9 @@ public class DatabaseLogic {
         });
         return mailExist;
     }
+
     public void populateFolders() {
+        List<String> folders = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -92,36 +95,26 @@ public class DatabaseLogic {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    String data = document.get("folder.!Sommarstugan").toString();
+    //HÄMTAR FOLDERNAME OCH LAGRAR I ARRAY (FOLDERS)
+                    String data = document.get("folder.!Default").toString();
                     System.out.println(data);
-                    /*
-                    String [] partOfData = data.split("!");
-
-
-                    for (int i=1; i < partOfData.length; i++) {
-                        String [] folderName = partOfData[i].split("=");
-                        folders.add(folderName[0]);
+                    String [] partOfData = data.split(";");
+                    for (int i=0; i < partOfData.length; i++) {
+                        System.out.println(partOfData[i]);
+                        //  folders.add(partOfData[i]);
                     }
+/*
+    //HÄMTAR ALL DATA FÖR SPECIFIKT FOLDER SOM FINNS I ARRAYEN
                     for (int j=0; j < folders.size(); j++) {
-                        System.out.println(folders.get(j));
-                    }
-               //     folderAdapter = new FolderAdapter(context,folders);
-              //      folderView.setAdapter(folderAdapter);
-                    //    stringValues(document.getData().toString()); */
-                    //TODO PLOCKA UT FÖRSTA STRING VÄRDET OCH LAGRA TILL LISTA FÖR ARRAYEN
+                        String path = folders.get(j);
+                        String doc = document.get("folder.!" +path).toString();
+                        System.out.println(doc + "\n");
+                    }*/
                 } else {
                     System.out.println("Cached get failed:" + task.getException()); }
             }
         });
     }
-    public void stringValues(String x ) {
-        String[] myData = x.split(",");
-        for (String s: myData) {
-            System.out.println(s);
-        }
-    }
-
-
     public void persNoExists( String value,Context context) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("personal_number", value);
@@ -301,16 +294,12 @@ public class DatabaseLogic {
      * Creates default folder for the new registered user
      */
     private void createFolder(){
-
         FirebaseFirestore db;
 
         db = FirebaseFirestore.getInstance();
-
         ArrayList<Map> recieptInfor = new ArrayList<>();
-
         Map<String, Object> folderInformation = new HashMap<>();
         folderInformation.put("receipts", recieptInfor);
-
         ArrayList<Map> folderInfo = new ArrayList<>();
         folderInfo.add(folderInformation);
 
@@ -345,19 +334,23 @@ public class DatabaseLogic {
      * @param receiptInfo
      * @param photoName
      */
+
+    //String folderName, String name, String amount, String comment, String photoRef, String supplier)
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-//te
+        UserData data = new UserData("Default;", receiptInfo[0]+";", ";"+receiptInfo[2]+";",
+                receiptInfo[3]+";", photoName+";",receiptInfo[1]+";");
+/*
         Map<String, Object> recieptMap = new HashMap<>();
         recieptMap.put("name", receiptInfo[0]);
         recieptMap.put("supplier", receiptInfo[1]);
         recieptMap.put("amount", receiptInfo[2]);
         recieptMap.put("comment", receiptInfo[3]);
         recieptMap.put("photoRef", photoName);
-
+*/
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
 
-        myRef.update("folder.!Sommarstugan.receipts", FieldValue.arrayUnion(recieptMap));
+        myRef.update("folder.!Default.receipts", FieldValue.arrayUnion(data));
     }
 
 }
