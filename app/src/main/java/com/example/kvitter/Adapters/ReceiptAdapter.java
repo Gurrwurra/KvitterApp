@@ -13,8 +13,10 @@ import com.example.kvitter.Activities.MyAccountActivity;
 import com.example.kvitter.Activities.Specific_receipt;
 import com.example.kvitter.R;
 
+import java.util.List;
+
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
-    private String[] mDataset;
+    private List<String> mDataset;
     private Context context;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -41,7 +43,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ReceiptAdapter(Context context, String[] myDataset) {
+    public ReceiptAdapter(Context context, List<String> myDataset) {
         this.context = context;
         mDataset = myDataset;
     }
@@ -57,14 +59,14 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.receiptName.setText(mDataset[position]);
+        holder.receiptName.setText(mDataset.get(position));
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 }
 

@@ -23,17 +23,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
     private List<String> mDataset;
     private Context context;
-
-    private RecyclerView folderView;
+    private List<String> receiptList = new ArrayList<>();
     private RecyclerView.Adapter folderAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String[] testData = new String[3];
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -42,6 +41,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         // each data item is just a string in this case
         public TextView folderName, note;
         public RecyclerView reciept;
+
 
         public ViewHolder(View itemView) {
 
@@ -76,6 +76,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         return new ViewHolder(v);
     }
 
+
+
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -86,30 +88,33 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         holder.reciept.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
         holder.reciept.setLayoutManager(layoutManager);
-        folderAdapter = new ReceiptAdapter(context, testData);
+        String folderName = mDataset.get(position);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String documentName = CurrentId.getUserId();
-        DocumentReference docRef = db.collection("user_data").document(documentName);
+        DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    //HÄMTAR FOLDERNAME OCH LAGRAR I ARRAY (FOLDERS)
+                    String data = document.get("folder.!"+folderName).toString();
+                    String [] partOfData = data.split(",");
+                    for (int i=1; i < partOfData.length; i++) {
+                        receiptList.add(partOfData[i]);
+                    }
+                    folderAdapter = new ReceiptAdapter(context, receiptList);
                     holder.reciept.setAdapter(folderAdapter);
-                    // {receipts=[{amount=500, supplier=Willys, name=Test2, comment=test2, photoRef=reciept/4c789837-26ee-4582-906e-1a120b0544e1-35}]}
-                    //         System.out.println(document.getData().toString());
-                    testData[0] = document.get("folder.!Sommarstugan").toString();
-                    //    stringValues(document.getData().toString());
-                } else {
+                }
+                else {
                     System.out.println("Cached get failed:" + task.getException()); }
             }
         });
     }
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
+
 }
