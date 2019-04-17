@@ -30,7 +30,7 @@ import java.util.Objects;
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
     private List<String> mDataset;
     private Context context;
-    private List<String> receiptList = new ArrayList<>();
+    private List<String> receipts = new ArrayList<>();
     private RecyclerView.Adapter folderAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -42,9 +42,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         public TextView folderName, note;
         public RecyclerView reciept;
 
-
         public ViewHolder(View itemView) {
-
             super(itemView);
             folderName = itemView.findViewById(R.id.txt_folderName);
             reciept = itemView.findViewById(R.id.receipt_List);
@@ -53,16 +51,16 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             folderName.setOnClickListener(this);
             reciept.setVisibility(View.GONE);
         }
-
         @Override
         public void onClick(View v) {
             if (v.getId() == folderName.getId()){
-                reciept.setVisibility(View.VISIBLE);
-            }
-            }
-
+                if (reciept.getVisibility() == View.VISIBLE) {
+                    reciept.setVisibility(View.GONE);
+                }
+                else {
+                    reciept.setVisibility(View.VISIBLE);
+                } } }
     }
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public FolderAdapter(Context context, List<String> myDataset) {
         this.context = context;
@@ -76,45 +74,24 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         return new ViewHolder(v);
     }
 
-
-
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.folderName.setText(mDataset.get(position));
+            holder.reciept.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(context);
+            holder.reciept.setLayoutManager(layoutManager);
+            folderAdapter = new ReceiptAdapter(context, mDataset);
+            holder.reciept.setAdapter(folderAdapter);
+        }
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.folderName.setText(mDataset.get(position));
-        holder.note.setText(mDataset.get(position));
-        holder.reciept.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(context);
-        holder.reciept.setLayoutManager(layoutManager);
-        String folderName = mDataset.get(position);
+      //  holder.note.setText(mDataset.get(position));
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    //HÄMTAR FOLDERNAME OCH LAGRAR I ARRAY (FOLDERS)
-                    String data = document.get("folder.!"+folderName).toString();
-                    String [] partOfData = data.split(",");
-                    for (int i=1; i < partOfData.length; i++) {
-                        receiptList.add(partOfData[i]);
-                    }
-                    folderAdapter = new ReceiptAdapter(context, receiptList);
-                    holder.reciept.setAdapter(folderAdapter);
-                }
-                else {
-                    System.out.println("Cached get failed:" + task.getException()); }
-            }
-        });
-    }
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
-
 }
+

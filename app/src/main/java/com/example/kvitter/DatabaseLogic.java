@@ -172,6 +172,7 @@ public class DatabaseLogic {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Toast toast = Toast.makeText(context, "DocumentSnapshot written with ID: " + documentReference.getId(), Toast.LENGTH_LONG);
+                            createFolder(documentReference.getId());
                             toast.show();
                         }
                     })
@@ -293,7 +294,8 @@ public class DatabaseLogic {
     /**
      * Creates default folder for the new registered user
      */
-    private void createFolder(){
+    public void createFolder(String user_id){
+        /*
         FirebaseFirestore db;
 
         db = FirebaseFirestore.getInstance();
@@ -306,13 +308,10 @@ public class DatabaseLogic {
         Map<String, Object> folders = new HashMap<>();
         folders.put("Default" ,folderInfo);
 
-        ArrayList<Map> foldersArray = new ArrayList<>();
-        foldersArray.add(folders);
-
+*/
         Map<String, Object> recieptData = new HashMap<>();
-        recieptData.put("folder", foldersArray );
-
-        String user_id = CurrentId.getUserId();
+        recieptData.put("folder", "folder");
+     //   String user_id = CurrentId.getUserId();
 
         db.collection("user_data").document(user_id)
                 .set(recieptData, SetOptions.mergeFields("folder"))
@@ -328,7 +327,6 @@ public class DatabaseLogic {
                     }
                 });
     }
-
     /**
      * Saves reveipt to default folder for a specific user
      * @param receiptInfo
@@ -338,7 +336,7 @@ public class DatabaseLogic {
     //String folderName, String name, String amount, String comment, String photoRef, String supplier)
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        UserData data = new UserData("Default;", receiptInfo[0]+";", ";"+receiptInfo[2]+";",
+        UserData data = new UserData("Hobby;", receiptInfo[0]+";", ";"+receiptInfo[2]+";",
                 receiptInfo[3]+";", photoName+";",receiptInfo[1]+";");
 /*
         Map<String, Object> recieptMap = new HashMap<>();
@@ -350,7 +348,7 @@ public class DatabaseLogic {
 */
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
 
-        myRef.update("folder.!Default.receipts", FieldValue.arrayUnion(data));
+        myRef.update("folder.!Hobby.receipts", FieldValue.arrayUnion(data));
     }
 
 }
