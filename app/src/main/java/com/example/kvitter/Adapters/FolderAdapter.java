@@ -7,28 +7,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kvitter.R;
-import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.Data;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
-    private List<String> mDataset;
+    private List<Data> mDataset;
     private Context context;
     private List<String> receipts = new ArrayList<>();
     private RecyclerView.Adapter folderAdapter;
@@ -51,18 +44,21 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             folderName.setOnClickListener(this);
             reciept.setVisibility(View.GONE);
         }
+
         @Override
         public void onClick(View v) {
-            if (v.getId() == folderName.getId()){
+            if (v.getId() == folderName.getId()) {
                 if (reciept.getVisibility() == View.VISIBLE) {
                     reciept.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     reciept.setVisibility(View.VISIBLE);
-                } } }
+                }
+            }
+        }
     }
+
     // Provide a suitable constructor (depends on the kind of dataset)
-    public FolderAdapter(Context context, List<String> myDataset) {
+    public FolderAdapter(Context context, List<Data> myDataset) {
         this.context = context;
         mDataset = myDataset;
     }
@@ -70,28 +66,57 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.single_folder, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_folder, parent, false);
         return new ViewHolder(v);
     }
-
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.folderName.setText(mDataset.get(position));
-            holder.reciept.setHasFixedSize(true);
-            layoutManager = new LinearLayoutManager(context);
-            holder.reciept.setLayoutManager(layoutManager);
-            folderAdapter = new ReceiptAdapter(context, mDataset);
-            holder.reciept.setAdapter(folderAdapter);
-        }
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-      //  holder.note.setText(mDataset.get(position));
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+            String folderName = mDataset.get(position).getName();
+            holder.folderName.setText(folderName);
+            holder.reciept.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(context);
+            holder.reciept.setLayoutManager(layoutManager);
+            AddReceiptsToFolder(holder,folderName);
+        }
+
+    // - get element from your dataset at this position
+    // - replace the contents of the view with that element
+    //  holder.note.setText(mDataset.get(position));
+
+    // Return the size of your dataset (invoked by the layout manager)
+    private void AddReceiptsToFolder(ViewHolder holder, String folderName) {
+            String[] testData = new String[4];
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        //HÄMTAR FOLDERNAME OCH LAGRAR I ARRAY (FOLDERS)
+                        String data = document.get("folder.!" + folderName).toString();
+                        System.out.println("DATA SOM BEHÖVS" + data);
+                        String[] partOfData = data.split(",");
+                        for (int i = 0; i < partOfData.length; i++) {
+               //             testData.add(partOfData[i]);
+                            System.out.println(partOfData[i] + " "+ folderName);
+                        }
+                    } else {
+                        System.out.println("Cached get failed:" + task.getException());
+                    }
+                }
+            });
+        testData[0] = "test 1";
+        testData[1] = "test 2";
+        testData[2] = "test 3";
+        testData[3] = "test 4";
+        folderAdapter = new ReceiptAdapter(context, testData);
+        holder.reciept.setAdapter(folderAdapter);
     }
 }
 

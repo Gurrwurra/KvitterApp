@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kvitter.DataEngine;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.Logic;
 import com.example.kvitter.R;
@@ -29,7 +30,10 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         bindViews();
-
+        DataEngine engine = new DataEngine();
+     //   engine.addUser("Henrik", "Nilsson", 1992);
+      //  engine.addUser("Felicia", "Persson", 1993);
+     //   engine.readData();
         mProgress = new ProgressDialog(this);
         mProgress.setTitle("Kollar uppgifter...");
         mProgress.setMessage("Var snäll att vänta...");

@@ -18,11 +18,13 @@ import com.example.kvitter.Adapters.ReceiptAdapter;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.Data;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
@@ -36,7 +38,6 @@ public class MyReceiptActivity extends AppCompatActivity {
     private RecyclerView.Adapter folderAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton fab;
-    private String[] testData = new String[3];
     List<String> folders = new ArrayList<>();
 
     @Override
@@ -70,18 +71,20 @@ public class MyReceiptActivity extends AppCompatActivity {
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                List<Data> list = new ArrayList<>();
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     String data = document.get("folder").toString();
                     String [] partOfData = data.split("!");
                     for (int i=1; i < partOfData.length; i++) {
                         String [] folderName = partOfData[i].split("=");
-                        folders.add(folderName[0]);
+                        list.add(new Data(folderName[0],null,Data.TYPE_FOLDER));
+                    //    folders.add(folderName[0]);
                     }
-                    for (int j=0; j < folders.size(); j++) {
-                        System.out.println(folders.get(j));
+                    for (int j=0; j < list.size(); j++) {
+                        System.out.println(list.get(j).getName() + " " + list.get(j).getType());
                     }
-                    folderAdapter = new FolderAdapter(context,folders);
+                    folderAdapter = new FolderAdapter(context,list);
                     folderView.setAdapter(folderAdapter);
                     //    stringValues(document.getData().toString());
                     //TODO PLOCKA UT FÖRSTA STRING VÄRDET OCH LAGRA TILL LISTA FÖR ARRAYEN

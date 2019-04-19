@@ -15,6 +15,7 @@ import com.example.kvitter.Activities.MyReceiptActivity;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -25,11 +26,17 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView welcome;
+    private List<UserData> test;
+    private UserData user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setListiners();
         DatabaseLogic logic = new DatabaseLogic();
         getText();
+
     }
     private void setListiners() {
         findViewById(R.id.btn_account).setOnClickListener(this);
