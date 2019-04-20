@@ -92,9 +92,7 @@ public class MyReceiptActivity extends AppCompatActivity {
                             String[] eachObject = fulLData.split("\\{");
                             System.out.println("COMPLETE DATA" + " => " + fulLData);
                             populateFolders(fulLData);
-
                             for(int i=0; i< folderData.size(); i++) {
-                                //POPULATE WITH FOLDERNAME
                                 testData.add(new UserData(folderData.get(i), UserData.FOLDER_TYPE));
                                 for (int j = 2; j < eachObject.length; j++) {
                                     String[] eachDataInObject = eachObject[j].split(",");
@@ -105,25 +103,15 @@ public class MyReceiptActivity extends AppCompatActivity {
                                     String[] photoRef = eachDataInObject[4].split("=");
                                     String[] folder = eachDataInObject[5].split("=");
                                     String curFolder = folder[folder.length-1];
-                                    curFolder.replace("}","");
-                                    //  testData.add(new UserData("Renovering", "test3 - nålar", "1000", "test", "asdsacssa21", "Beijer", UserData.RECIEPT_TYPE));
-                                    if (curFolder.substring(0,curFolder.length()-1).contains(folderData.get(i))) {
-                                        testData.add(new UserData(folderData.get(i), name[name.length - 1], amount[amount.length - 1], comment[comment.length - 1], photoRef[photoRef.length - 1], supplier[supplier.length - 1], UserData.RECIEPT_TYPE));
-                                    }
-                                    /*   System.out.println("amount: " + amount[amount.length-1] +
-                                            "\nsupplier: " + supplier[supplier.length-1] +
-                                             "\nname: " + name[name.length-1] +
-                                            "\ncomment: " + comment[comment.length-1] +
-                                            "\nphotoRef: " + photoRef[photoRef.length-1] +
-                                            "\nfolder: " + folder[folder.length-1]
-                                    ); */
+                                    if (curFolder.contains(folderData.get(i))) {
 
+                                        testData.add(new UserData(folderData.get(i), name[name.length - 1], amount[amount.length - 1], comment[comment.length - 1], photoRef[photoRef.length - 1], supplier[supplier.length - 1], UserData.RECIEPT_TYPE));
+                                        System.out.println("vad är dett?"+ amount[amount.length-1]);
+                                    }
                                 }
-                           //     populateReciepts(fulLData,folderData.get(i));
                             }
                         }
-                        //SKRIVA UT TESTDATA (KÖRA METODER OCH ANNAT)
-                        MyAdapter adapter = new MyAdapter(testData);
+                        MyAdapter adapter = new MyAdapter(testData,context);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, OrientationHelper.VERTICAL, false);
                         folderView = folderView.findViewById(R.id.folder_list);
                         folderView.setLayoutManager(linearLayoutManager);
@@ -132,34 +120,7 @@ public class MyReceiptActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void populateReciepts(String data, String folderName) {
-         List<String> test = new ArrayList<>();
-        System.out.println("FolderName::::: " + folderName);
-        String[] eachObject = data.split("\\{");
-        for (int i = 2; i < eachObject.length; i++) {
-            System.out.println("Detta ska bara skriva ut 2 gånger för : " + folderName );
-            //  System.out.println("each object: " + eachObject[i]);
-            String[] eachDataInObject = eachObject[i].split(",");
-            String [] correctName = new String[1];
-            for (int j = 0; j < eachDataInObject.length; j++) {
-                //        System.out.println("each data in object: " + eachDataInObject[j]);
-                String [] specificFolderName = eachDataInObject[5].split("=");
-                correctName = specificFolderName[1].split("\\}");
-                if (correctName[0].equals(folderName)) {
-                    test.add(eachDataInObject[j]);
-                    for (int k=0; k <test.size(); k++) {
-                        System.out.println("Vad skrivs här?: " + test.get(k));
-                    }
-                    //  testData.add(new UserData("Renovering", "test3 - nålar", "1000", "test", "asdsacssa21", "Beijer", UserData.RECIEPT_TYPE));
-                    //    testData.add(new UserData(correctName[0],))
-                    //        System.out.println("test " + dataElements[dataElements.length-1]);
-                    //          System.out.println("data to save? " + eachDataInObject[j]);
-                }
 
-            }
-
-        }
-    }
     private void populateFolders(String data) {
         //  System.out.println("full data: " + data);
 
@@ -171,12 +132,12 @@ public class MyReceiptActivity extends AppCompatActivity {
             String[] eachDataInObject = eachObject[i].split(",");
 
             for (int j = 0; j < eachDataInObject.length; j++) {
-                //        System.out.println("each data in object: " + eachDataInObject[j]);
+             //           System.out.println("each data in object: " + eachDataInObject[j]);
                 String [] folderName = eachDataInObject[5].split("=");
                 String [] correctName = folderName[1].split("\\}");
                 if (!folderData.contains(correctName[0])) {
                     folderData.add(correctName[0]);
-                    //               System.out.println("test " + correctName[0]);
+                            //       System.out.println("test " + correctName[0]);
                 }
             }
         }
