@@ -339,8 +339,8 @@ public class DatabaseLogic {
             }
         }
         */
-        UserData userData = new UserData("Hobby", receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1]);
-        db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
+        UserData userData = new UserData("Hobby",receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
+        db.collection("testData").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
         /*
         Map<String,Object> docData = new HashMap<>();
         docData.put("folderName", "Default");

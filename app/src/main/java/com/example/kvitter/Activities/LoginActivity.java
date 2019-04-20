@@ -31,9 +31,10 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
         bindViews();
         DataEngine engine = new DataEngine();
+     //   engine.createAdapter();
      //   engine.addUser("Henrik", "Nilsson", 1992);
       //  engine.addUser("Felicia", "Persson", 1993);
-     //   engine.readData();
+
         mProgress = new ProgressDialog(this);
         mProgress.setTitle("Kollar uppgifter...");
         mProgress.setMessage("Var snäll att vänta...");
