@@ -54,6 +54,7 @@ public class Validate_reciept extends AppCompatActivity {
 
     private File fileOfPhoto;
     Uri uri;
+    int validatePhotoOrigin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,6 @@ public class Validate_reciept extends AppCompatActivity {
 
                 DatabaseLogic logic = new DatabaseLogic();
 
-
-
                 logic.newSequenceNumber(Validate_reciept.this, uri, receiptInfo);
 
             }
@@ -109,8 +108,8 @@ public class Validate_reciept extends AppCompatActivity {
         String supp = Extra.getString("supplier");
         String comm = Extra.getString("comment");
         String file_of = Extra.getString("file");
+        String fileOfPh = Extra.getString("fileOfPhoto");
 
-        fileOfPhoto = new File(Extra.getString("fileOfPhoto"));
 
         if (file_of != null) {
             file.setText(file_of);
@@ -121,10 +120,15 @@ public class Validate_reciept extends AppCompatActivity {
         supplier.setText(supp);
         comment.setText(comm);
 
-        uri = Uri.fromFile(fileOfPhoto);
-        Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
-        recieptImage.setImageBitmap(imageBitmap);
-
+      if(fileOfPh != null) {
+            fileOfPhoto = new File(fileOfPh);
+            uri = Uri.fromFile(fileOfPhoto);
+            Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
+            recieptImage.setImageBitmap(imageBitmap);
+        }else
+        {
+            recieptImage.setVisibility(View.GONE);
+        }
 
     }
 

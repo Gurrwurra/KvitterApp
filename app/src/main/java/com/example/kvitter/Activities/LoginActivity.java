@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity{
                 userAttempt.setPersonalNumber(user);
                 userAttempt.setPassword(password);
                 CurrentUser.setUser(userAttempt);
-                engine.validateUser(getApplicationContext());
+                engine.validateUser(getApplicationContext(), mProgress);
         }
     });
     }
