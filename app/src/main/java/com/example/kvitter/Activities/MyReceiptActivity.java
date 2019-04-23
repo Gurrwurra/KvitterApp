@@ -45,7 +45,7 @@ public class MyReceiptActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyReceiptActivity.this, AddFolderActivity.class);
+                Intent intent = new Intent(MyReceiptActivity.this, newFolderActivity.class);
                 startActivity(intent);
             }
         });
@@ -84,9 +84,9 @@ public class MyReceiptActivity extends AppCompatActivity {
                                     String[] comment = eachDataInObject[3].split("=");
                                     String[] photoRef = eachDataInObject[4].split("=");
                                     String[] folder = eachDataInObject[5].split("=");
+                                    String[] type = eachDataInObject[6].split("=");
                                     String curFolder = folder[folder.length-1];
-                                    if (curFolder.contains(folderData.get(i))) {
-
+                                    if (curFolder.contains(folderData.get(i)) && type[type.length-1].contains("1")) {
                                         testData.add(new UserData(folderData.get(i), name[name.length - 1], amount[amount.length - 1], comment[comment.length - 1], photoRef[photoRef.length - 1], supplier[supplier.length - 1], UserData.RECIEPT_TYPE));
                                     }
                                 }

@@ -16,13 +16,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -38,109 +35,8 @@ import java.util.UUID;
 
 public class DatabaseLogic {
     private FirebaseFirestore db;
-    private boolean mailExist;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    private boolean currentState;
-
-    public boolean mailDoesExists(Context context, String value) {
-        db = FirebaseFirestore.getInstance();
-        Query query = db.collection("users").whereEqualTo("mail", value);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(Objects.requireNonNull(task.getResult()).size() > 0){
-                    Toast toast = Toast.makeText(context, "Konto med samma mejladress finns redan", Toast.LENGTH_LONG);
-                    toast.show();
-
-                    mailExist = true;
-                }else{
-                    mailExist = false;
-                }
-            }
-        });
-        return mailExist;
-    }
-
-    public void persNoExists( String value,Context context, ProgressDialog mProgress) {
-        db = FirebaseFirestore.getInstance();
-        Query query = db.collection("users").whereEqualTo("personal_number", value);
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot task) {
-                if(Objects.requireNonNull(task.size())> 0){
-
-                    System.out.println("Personnumret hittades");
-                    CurrentId.setUserId(task.getDocuments().get(0).getId());
-                    mProgress.dismiss();
-                    Intent i = new Intent(context,StartActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }else{
-                    mProgress.dismiss();
-                    Toast.makeText(context, "Felaktig inlogningsinformation", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-    public void pwdExists(String pwd, String persNo, Context context, ProgressDialog mProgress) {
-        db = FirebaseFirestore.getInstance();
-        Query query = db.collection("users").whereEqualTo("pwd", pwd);
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot task) {
-                if(Objects.requireNonNull(task.size()) > 0){
-                    System.out.println("Lösenordet hittades");
-                    persNoExists(persNo, context, mProgress);
-                }else{
-                    mProgress.dismiss();
-
-                    Toast.makeText(context, "Felaktig inlogningsinformation", Toast.LENGTH_LONG).show();
-                }
-            }
-            }
-            );
-    }
-    public void createUser(Context context, String firstname, String surname, String mail, String phone, String address, String city, String pwd, String personalNumber) {
-     //   boolean mailExists = mailDoesExists(context, mail);
-    //    boolean persNoExists = persNoExists( personalNumber);
-   //     if (mailExists == false && persNoExists == false) {
-            db = FirebaseFirestore.getInstance();
-            CollectionReference users = db.collection("users");
-
-            Map<String, Object> data = new HashMap<>();
-            data.put("firstname", firstname);
-            data.put("surname", surname);
-            data.put("mail", mail);
-            data.put("phone", phone);
-            data.put("address", address);
-            data.put("city", city);
-            data.put("pwd", pwd);
-            data.put("personal_number", personalNumber);
-
-            db.collection("users")
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Toast toast = Toast.makeText(context, "DocumentSnapshot written with ID: " + documentReference.getId(), Toast.LENGTH_LONG);
-                            createFolder(documentReference.getId());
-                            toast.show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast toast = Toast.makeText(context, "Error adding document" + e, Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    });
-       // }
-      //  else {
-            Toast toast = Toast.makeText(context, "Konto med dessa uppgifter finns redan", Toast.LENGTH_LONG);
-            toast.show();
-       // }
-    }
 
  //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
     public void newSequenceNumber (Context context, Uri filePath, String[] receiptInfo) {
@@ -207,7 +103,7 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-            saveInformation(receiptsInfo, photoName);
+            saveInformation("Renovering",receiptsInfo, photoName);
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -278,15 +174,16 @@ public class DatabaseLogic {
      */
 
     //String folderName, String name, String amount, String comment, String photoRef, String supplier)
-    private void saveInformation(String[] receiptInfo, String photoName) {
+    private void saveInformation(
+             String folderName,
+             String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-    /*    for (int i=0; i < receiptInfo.length; i++) {
-            if (receiptInfo[i]== null) {
-                receiptInfo[i] = " ";
-            }
+
+        if (folderName == null) {
+            folderName = "Default";
         }
-        */
-        UserData userData = new UserData("Renovering",receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
+
+        UserData userData = new UserData(folderName,receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
         db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
         /*
         Map<String,Object> docData = new HashMap<>();

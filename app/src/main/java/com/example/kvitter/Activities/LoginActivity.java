@@ -31,7 +31,8 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         bindViews();
-
+        DataEngine engine = new DataEngine();
+        engine.updateFolder();
         mProgress = new ProgressDialog(this);
         mProgress.setTitle("Kollar uppgifter...");
         mProgress.setMessage("Var snäll att vänta...");
@@ -49,7 +50,7 @@ public class LoginActivity extends AppCompatActivity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          //      mProgress.show();
+                mProgress.show();
                 DataEngine engine = new DataEngine();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();

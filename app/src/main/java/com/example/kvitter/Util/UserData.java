@@ -20,7 +20,6 @@ public class UserData {
         this.type = type;
     }
     public UserData() {
-
     }
     public int getType() {
         return type;

@@ -6,15 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kvitter.Activities.AddReceiptActivity;
+import com.example.kvitter.Activities.MyReceiptActivity;
 import com.example.kvitter.Activities.Specific_receipt;
+import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentReceipt;
-import com.example.kvitter.Util.Folders;
 import com.example.kvitter.Util.UserData;
-
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -71,13 +75,49 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return 0;
     }
-    public class FolderViewHolder extends RecyclerView.ViewHolder {
-        private TextView folderName;
+    public class FolderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private TextView folderName, txtFolderName;
+        private EditText editFolderName;
+        private ImageButton editFolder,saveFolder;
+
         public FolderViewHolder(View itemView) {
             super(itemView);
-            folderName = (TextView) itemView.findViewById(R.id.folder_name);
+            editFolderName = itemView.findViewById(R.id.edit_spec_folder);
+            editFolderName.setVisibility(View.GONE);
+            txtFolderName = itemView.findViewById(R.id.txt_editFolder_name);
+            txtFolderName.setVisibility(View.GONE);
+            folderName = itemView.findViewById(R.id.folder_name);
+            saveFolder = itemView.findViewById(R.id.btn_save_editFolderName);
+            saveFolder.setTag(itemView);
+            saveFolder.setOnClickListener(this);
+            saveFolder.setVisibility(View.GONE);
+            editFolder = itemView.findViewById(R.id.btn_edit_folder);
+            editFolder.setTag(itemView);
+            editFolder.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v) {
+            ImageButton btn = (ImageButton) v;
+            switch (btn.getId()) {
+                case R.id.btn_save_editFolderName: {
+                    //UPDATERA FOLDERNAME I DB
+                    System.out.println("save " + mList.get(getAdapterPosition()).getFolderName());
+                    editFolderName.setVisibility(View.GONE);
+                    txtFolderName.setVisibility(View.GONE);
+                    saveFolder.setVisibility(View.GONE);
+                    break;
+                }
+                case R.id.btn_edit_folder: {
+                        editFolderName.setVisibility(View.VISIBLE);
+                        txtFolderName.setVisibility(View.VISIBLE);
+                        saveFolder.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+
         }
     }
+
     public class ReceiptViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView recieptName;
         private TextView recieptAmount;

@@ -9,12 +9,15 @@ import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.User;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.CurrentUser;
+import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -56,9 +59,19 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                     }
                 });
     }
+    public void updateFolder() {
+    }
+
+    public void createFolder(Context context, String folderName) {
+        UserData data = new UserData(folderName,UserData.FOLDER_TYPE);
+        db = FirebaseFirestore.getInstance();
+        db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(data));
+        Toast toast = Toast.makeText(context, "NEW FOLDER ADDED! ", Toast.LENGTH_LONG);
+        toast.show();
+    }
     /*
-    CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
-     */
+CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
+ */
     public void createUser(Context context) {
         User user = CurrentUser.getUser();
         db = FirebaseFirestore.getInstance();
@@ -81,10 +94,8 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                     }
                 });
     }
-    public void createDataPath(String id) {
-        Map<String,Object> docData = new HashMap<>();
-        docData.put("data", "");
-        db.collection("data").document(id).set(docData);
+    public void updateReciept(UserData data, String newFolderName) {
+
     }
     /*
     VALIDATES PASSWORD AND PERSONAL NUMBER AND RETURNS StartActivity.class IF DATA IS CORRECT
