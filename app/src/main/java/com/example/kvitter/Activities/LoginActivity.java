@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kvitter.DataEngine;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.Logic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentUser;
 
 
 public class LoginActivity extends AppCompatActivity{
@@ -47,13 +49,15 @@ public class LoginActivity extends AppCompatActivity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mProgress.show();
-                DatabaseLogic logic = new DatabaseLogic();
+          //      mProgress.show();
+                DataEngine engine = new DataEngine();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
-                logic.populateFolders();
-        //        logic.testMethod();
-                logic.pwdExists(password,user,getApplicationContext(), mProgress);
+                User userAttempt = new User();
+                userAttempt.setPersonalNumber(user);
+                userAttempt.setPassword(password);
+                CurrentUser.setUser(userAttempt);
+                engine.validateUser(getApplicationContext());
         }
     });
     }
