@@ -7,8 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kvitter.DataEngine;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentUser;
 
 public class NewUserActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText firstname, surname, mail, phone, address, city, pwd, validatePwd, personalNumber;
@@ -42,58 +44,16 @@ public class NewUserActivity extends AppCompatActivity implements View.OnClickLi
         String userPwd = pwd.getText().toString();
         String userConfirmPwd = validatePwd.getText().toString();
         String userPersonalNumber = personalNumber.getText().toString();
-        //TODO validate fields - Check with DB - Save to DB
-        DatabaseLogic logic = new DatabaseLogic();
-        logic.createUser(this,userFirstName,userSurname,userMail,userPhone,userAddress,userCity,userPwd,userPersonalNumber);
-        Boolean checkFields = validateUserData(userMail,userPhone,userPwd,userConfirmPwd,userPersonalNumber);
-        if (checkFields == true) {
-            Toast.makeText(this,"Validering success!!!",Toast.LENGTH_SHORT).show();
 
+        if (userPwd.contains(userConfirmPwd)) {
+            User user = new User(userFirstName, userSurname, userAddress, userCity, userPhone, userPersonalNumber, userMail, userPwd);
+            CurrentUser.setUser(user);
+            DataEngine engine = new DataEngine();
+            engine.checkIfUserExists(this);
         }
         else {
-            Toast.makeText(this,"gick inte igenom...",Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(this, "Lösenorden stämmer inte överrens", Toast.LENGTH_LONG);
+            toast.show();
         }
-    }
-
-    private boolean validateUserData(String mail,String phone,String pwd,String validatePwd,String personalNumber) {
-        boolean validate = false;
-
-        boolean usrMail = validateMail(mail);
-        boolean usrPhone = validatePhone(phone);
-        boolean usrPwd = validatePassword(pwd,validatePwd);
-        boolean usrPersonalNo= validatePersonalNumber(personalNumber);
-        if (!usrMail == true && usrPhone == true && usrPwd == true && usrPersonalNo == true) {
-            validate = true;
-        }
-        return validate;
-    }
-    private boolean validateMail (String mail) {
-        //TODO validera mot databas så mail inte finns
-        boolean validate = false;
-        if (mail.contains("@")) {
-            validate = true;
-        }
-        return validate;
-    }
-    private boolean validatePhone (String phone) {
-        boolean validate = false;
-        if (phone.length() ==(10)) {
-            validate = true;
-        }
-        return validate;
-    }
-    private boolean validatePassword (String pwd, String validatePwd) {
-        boolean validate = false;
-        if (pwd.equals(validatePwd)) {
-            validate = true;
-        }
-        return validate;
-    }
-    private boolean validatePersonalNumber (String personalNumber) {
-        boolean validate = false;
-        if (personalNumber.length()==12) {
-            validate = true;
-        }
-        return validate;
     }
 }

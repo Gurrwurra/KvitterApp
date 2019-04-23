@@ -7,43 +7,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.kvitter.Adapters.FolderAdapter;
 import com.example.kvitter.Adapters.MyAdapter;
-import com.example.kvitter.Adapters.ReceiptAdapter;
-import com.example.kvitter.DataEngine;
-import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
-import com.example.kvitter.Util.Data;
 import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyReceiptActivity extends AppCompatActivity {
-    private TextView folder, note;
     private RecyclerView folderView;
-    private RecyclerView.Adapter folderAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton fab;
-    List<UserData> reciepts = new ArrayList<>();
     List<UserData> testData = new ArrayList<>();
     List<String> folderData = new ArrayList<>();
 
@@ -80,7 +62,7 @@ public class MyReceiptActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(context);
         folderView.setLayoutManager(layoutManager);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("data").document("HINCqfhWGB9XwGtGBtYl")
+        db.collection("data").document(CurrentId.getUserId())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -106,7 +88,6 @@ public class MyReceiptActivity extends AppCompatActivity {
                                     if (curFolder.contains(folderData.get(i))) {
 
                                         testData.add(new UserData(folderData.get(i), name[name.length - 1], amount[amount.length - 1], comment[comment.length - 1], photoRef[photoRef.length - 1], supplier[supplier.length - 1], UserData.RECIEPT_TYPE));
-                                        System.out.println("vad är dett?"+ amount[amount.length-1]);
                                     }
                                 }
                             }
@@ -122,23 +103,15 @@ public class MyReceiptActivity extends AppCompatActivity {
     }
 
     private void populateFolders(String data) {
-        //  System.out.println("full data: " + data);
-
         String[] eachObject = data.split("\\{");
-
         for (int i = 2; i < eachObject.length; i++) {
-            //  System.out.println("each object: " + eachObject[i]);
-
             String[] eachDataInObject = eachObject[i].split(",");
-
             for (int j = 0; j < eachDataInObject.length; j++) {
-             //           System.out.println("each data in object: " + eachDataInObject[j]);
-                String [] folderName = eachDataInObject[5].split("=");
+             String [] folderName = eachDataInObject[5].split("=");
                 String [] correctName = folderName[1].split("\\}");
                 if (!folderData.contains(correctName[0])) {
                     folderData.add(correctName[0]);
-                            //       System.out.println("test " + correctName[0]);
-                }
+               }
             }
         }
     }

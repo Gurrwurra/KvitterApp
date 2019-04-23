@@ -1,31 +1,17 @@
 package com.example.kvitter;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.CursorLoader;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.StartActivity;
-import com.example.kvitter.Activities.Validate_reciept;
-import com.example.kvitter.Adapters.FolderAdapter;
 import com.example.kvitter.Util.CurrentId;
-import com.example.kvitter.Util.Data;
 import com.example.kvitter.Util.ImageHelper;
-import com.example.kvitter.Util.Reciept;
 import com.example.kvitter.Util.UserData;
-import com.example.kvitter.Util.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,32 +19,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.Source;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -89,24 +62,6 @@ public class DatabaseLogic {
         return mailExist;
     }
 
-    public void populateFolders() {
-        db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("user_data").document("HINCqfhWGB9XwGtGBtYl");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    UserData data = (UserData) document.toObject(UserData.class);
-                      System.out.println("DATA TRANSFER IS COMPLETE!");
-
-                } else {
-                    System.out.println("Cached get failed:" + task.getException()); }
-            }
-        });
-    }
-// EN RECYLERVIEW (INNEHÅLLER FOLDER I RECYLER MED RECEIPTS) SOM HÄMTAS IN AV METOD FÖR ATT RETURNERA LISTA FRÅN SPECIFIK FOLDER.
-// EN LISTA MED FOLDERS [RECYLARVIEW}, VARJE VIEW(FOLDER) INNEHÅLLER LISTA (HOLDER) MED RECEIPTS, METOD SOM DÅ HÄMTAR SPECIFIKT FOLDERNAME OCH KÖR MOT DATABASEN FÖR ATT SKAPA LISTA MED ALLA KVITTON FÖR DEN FOLDER
     public void persNoExists( String value,Context context, ProgressDialog mProgress) {
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("personal_number", value);
@@ -234,11 +189,9 @@ public class DatabaseLogic {
      * @param receiptsInfo
      */
     private void savePhoto(Context context, Uri filePath, int seq, String[] receiptsInfo){
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         byte[] bytePhoto = null;
-
         Bitmap bitmap = null;
         try {
             bitmap = ImageHelper.getCorrectlyOrientedImage(context, filePath);
@@ -248,18 +201,13 @@ public class DatabaseLogic {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         if(filePath != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
-
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-
             saveInformation(receiptsInfo, photoName);
-
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -286,7 +234,6 @@ public class DatabaseLogic {
                     });
         }
     }
-
 
     /**
      * Creates default folder for the new registered user
@@ -339,7 +286,7 @@ public class DatabaseLogic {
             }
         }
         */
-        UserData userData = new UserData("Företag",receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
+        UserData userData = new UserData("Renovering",receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
         db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
         /*
         Map<String,Object> docData = new HashMap<>();
