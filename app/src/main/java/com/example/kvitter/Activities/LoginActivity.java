@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
         bindViews();
         DataEngine engine = new DataEngine();
+        //Testmetod för att updatera folderName
         engine.updateFolder();
         mProgress = new ProgressDialog(this);
         mProgress.setTitle("Kollar uppgifter...");
