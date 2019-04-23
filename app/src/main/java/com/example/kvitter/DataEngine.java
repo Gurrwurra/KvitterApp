@@ -1,5 +1,6 @@
 package com.example.kvitter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -89,7 +90,7 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
     /*
     VALIDATES PASSWORD AND PERSONAL NUMBER AND RETURNS StartActivity.class IF DATA IS CORRECT
      */
-    public void validateUser(Context context) {
+    public void validateUser(Context context, ProgressDialog mProgress) {
         User user = CurrentUser.getUser();
         String personalNumber = user.getPersonalNumber();
         String password = user.getPassword();
@@ -105,9 +106,11 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                                 CurrentId.setUserId(task.getResult().getDocuments().get(0).getId());
                                  Intent intent = new Intent(context, StartActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    mProgress.dismiss();
                                     context.startActivity(intent);
                             }
                             else {
+                                mProgress.dismiss();
                                 Toast toast = Toast.makeText(context, "Ops..Något blev fel, försök igen", Toast.LENGTH_LONG);
                                 toast.show();
                             }

@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          //      mProgress.show();
+                mProgress.show();
                 DataEngine engine = new DataEngine();
                 String user = usrName.getText().toString();
                 String password = pwd.getText().toString();
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity{
                 userAttempt.setPersonalNumber(user);
                 userAttempt.setPassword(password);
                 CurrentUser.setUser(userAttempt);
-                engine.validateUser(getApplicationContext());
+                engine.validateUser(getApplicationContext(), mProgress);
         }
     });
     }
