@@ -55,7 +55,6 @@ public class AddReceiptActivity extends AppCompatActivity {
 
     int validate = 0;
     Uri photoURI;
-    Uri photoURIInternal;
     File photoFile;
 
     @Override
