@@ -65,7 +65,6 @@ public class MyReceiptActivity extends AppCompatActivity {
         db.collection("data").document(CurrentId.getUserId())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {

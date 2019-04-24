@@ -75,10 +75,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return 0;
     }
-    public class FolderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView folderName, txtFolderName;
+    public class FolderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView folderName, txtFolderName, receiptName, recieptAmount;
         private EditText editFolderName;
-        private ImageButton editFolder,saveFolder;
+        private ImageButton editFolder, saveFolder;
 
         public FolderViewHolder(View itemView) {
             super(itemView);
@@ -94,7 +94,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             editFolder = itemView.findViewById(R.id.btn_edit_folder);
             editFolder.setTag(itemView);
             editFolder.setOnClickListener(this);
+            folderName.setTag(itemView);
+            folderName.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View v) {
             ImageButton btn = (ImageButton) v;
@@ -108,13 +111,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     break;
                 }
                 case R.id.btn_edit_folder: {
-                        editFolderName.setVisibility(View.VISIBLE);
-                        txtFolderName.setVisibility(View.VISIBLE);
-                        saveFolder.setVisibility(View.VISIBLE);
+                    editFolderName.setVisibility(View.VISIBLE);
+                    txtFolderName.setVisibility(View.VISIBLE);
+                    saveFolder.setVisibility(View.VISIBLE);
                     break;
                 }
             }
-
         }
     }
 

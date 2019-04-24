@@ -105,7 +105,7 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-            saveInformation("Renovering",receiptsInfo, photoName);
+            saveInformation("Företag",receiptsInfo, photoName);
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -163,9 +163,6 @@ public class DatabaseLogic {
      * Creates default folder for the new registered user
      */
     public void createFolder(String user_id){
-
-
-
         Map<String, Object> recieptData = new HashMap<>();
         recieptData.put("folder", "folder");
 
@@ -201,6 +198,8 @@ public class DatabaseLogic {
         }
 
         UserData userData = new UserData(folderName,receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
+    //    Map<String, Object> dataToStore = new HashMap<>();
+    //    dataToStore.put("test",userData);
         db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
         /*
         Map<String,Object> docData = new HashMap<>();
