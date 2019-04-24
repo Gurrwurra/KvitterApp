@@ -62,8 +62,17 @@ public class AddReceiptActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_receipt);
 
-        bindViews();
-        setListiners();
+
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            if (checkPermission())
+            {
+                bindViews();
+                setListiners();
+            } else {
+                requestPermission(); // Code for permission
+            }
+        }
     }
 
     private void bindViews(){
@@ -143,10 +152,7 @@ public class AddReceiptActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Build.VERSION.SDK_INT >= 23)
-        {
-            if (checkPermission())
-            {
+
                 if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
                     try {
                         setPic();
@@ -163,18 +169,6 @@ public class AddReceiptActivity extends AppCompatActivity {
                     }
                     validate = 1;
                 }
-            } else {
-                requestPermission(); // Code for permission
-            }
-        }
-        else
-        {
-
-            // Code for Below 23 API Oriented Device
-            // Do next code
-        }
-
-
     }
 
     private void setPic() throws IOException {
