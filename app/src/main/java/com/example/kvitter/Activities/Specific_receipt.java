@@ -5,14 +5,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentReceipt;
+import com.example.kvitter.Util.GlideApp;
+import com.example.kvitter.Util.MyAppGlideModule;
 import com.example.kvitter.Util.UserData;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class Specific_receipt extends AppCompatActivity {
     private TextView name, amount, supplier, comment,photoRef, folderName;
+    private ImageView receipt_image;
     private Button edit;
     private Button share;
 
@@ -28,6 +37,12 @@ public class Specific_receipt extends AppCompatActivity {
         supplier.setText(receipt.getSupplier());
         comment.setText(receipt.getComment());
         folderName.setText(receipt.getFolderName());
+
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference(receipt.getPhotoRef());
+
+        GlideApp.with(this /* context */)
+                .load(mStorage)
+                .into(receipt_image);
     }
 
     private void bindViews() {
@@ -38,6 +53,7 @@ public class Specific_receipt extends AppCompatActivity {
         supplier = findViewById(R.id.txt_specific_supplier);
         comment = findViewById(R.id.txt_specific_comment);
         folderName = findViewById(R.id.txt_specific_folder);
+        receipt_image = findViewById(R.id.specific_img);
     }
 
     private void addListiners() {
