@@ -94,6 +94,8 @@ public class Validate_reciept extends AppCompatActivity {
                 DatabaseLogic logic = new DatabaseLogic();
 
                 logic.newSequenceNumber(Validate_reciept.this, uri, receiptInfo);
+                Intent intent = new Intent(Validate_reciept.this, StartActivity.class);
+                startActivity(intent);
 
             }
         });

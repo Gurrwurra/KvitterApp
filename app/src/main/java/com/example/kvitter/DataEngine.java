@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,9 +55,53 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                     }
                 });
     }
-    public void updateFolder() {
-    }
 
+    public void updateFolder() {
+        /*
+        db.collection("data")
+                .whereArrayContains("data", "data")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        String data ="";
+                        System.out.println("hittar den detta? " + queryDocumentSnapshots.getDocuments());
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            System.out.println("test");
+                            UserData userData = documentSnapshot.toObject(UserData.class);
+                            userData.setName(documentSnapshot.get("data").toString());
+                            System.out.println(userData.getName());
+                            System.out.println(documentSnapshot.getData());
+
+                        }
+                    }
+
+                });
+
+                .whereEqualTo("data.folderName",true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    System.out.println("Finns redan konto med dessa uppgifter");
+
+                                    //    System.out.println(document.getId() + " => " + document.getData());
+                                }
+                            }
+                            else {
+                                System.out.println("fail");
+                            }
+
+                        } else {
+                            System.out.println("Error getting documents: " + task.getException());
+                        }
+                    }
+                });
+                */
+    }
     public void createFolder(Context context, String folderName) {
         UserData data = new UserData(folderName,UserData.FOLDER_TYPE);
         db = FirebaseFirestore.getInstance();
