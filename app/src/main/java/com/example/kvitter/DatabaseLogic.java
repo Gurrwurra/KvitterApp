@@ -197,7 +197,10 @@ public class DatabaseLogic {
         db.collection("data").document(CurrentId.getUserId())
                 .update(removeUserFromArrayMap);
 
-        receipt.setAmount("20");
+        receipt.setName(name);
+        receipt.setAmount(amount);
+        receipt.setSupplier(supplier);
+        receipt.setComment(comment);
 
        Map<String, Object> addUserToArrayMap = new HashMap<>();
        addUserToArrayMap.put("data", FieldValue.arrayUnion(receipt));

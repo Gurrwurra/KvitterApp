@@ -25,6 +25,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
     private Button delete;
     private Button save;
 
+    UserData receipt = CurrentReceipt.getReceipt();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,11 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         supplier = findViewById(R.id.txt_specific_supplier_edit);
         folder = findViewById(R.id.spi_folder_edit);
         comment = findViewById(R.id.txt_specific_comment_edit);
+
+        name.setText(receipt.getName());
+        amount.setText(receipt.getAmount());
+        supplier.setText(receipt.getSupplier());
+        comment.setText(receipt.getComment());
 
         String[] x = new String[3];
 
@@ -69,7 +75,6 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserData receipt = CurrentReceipt.getReceipt();
 
                 String name_rec = name.getText().toString();
                 String amount_rec = amount.getText().toString();
