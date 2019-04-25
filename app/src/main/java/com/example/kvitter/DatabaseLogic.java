@@ -106,7 +106,7 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-            saveInformation("Företag",receiptsInfo, photoName, context);
+            saveInformation("Företag",receiptsInfo, photoName);
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -114,6 +114,9 @@ public class DatabaseLogic {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(context, "Uppladdat", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, StartActivity.class);
+                            context.startActivity(intent);
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -189,7 +192,7 @@ public class DatabaseLogic {
      */
 
     //String folderName, String name, String amount, String comment, String photoRef, String supplier)
-    private void saveInformation(String folderName, String[] receiptInfo, String photoName, Context context) {
+    private void saveInformation(String folderName, String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         if (folderName == null) {
@@ -200,9 +203,6 @@ public class DatabaseLogic {
     //    Map<String, Object> dataToStore = new HashMap<>();
     //    dataToStore.put("test",userData);
         db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
-
-        Intent intent = new Intent(context, StartActivity.class);
-        context.startActivity(intent);
 
         /*
         Map<String,Object> docData = new HashMap<>();
