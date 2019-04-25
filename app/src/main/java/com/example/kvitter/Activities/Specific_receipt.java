@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.GlideApp;
@@ -24,6 +25,7 @@ public class Specific_receipt extends AppCompatActivity {
     private ImageView receipt_image;
     private Button edit;
     private Button share;
+    UserData receipt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class Specific_receipt extends AppCompatActivity {
         setContentView(R.layout.activity_specific_reciept);
         bindViews();
         addListiners();
-        UserData receipt = CurrentReceipt.getReceipt();
+        receipt = CurrentReceipt.getReceipt();
         name.setText(receipt.getName());
         amount.setText(receipt.getAmount());
         supplier.setText(receipt.getSupplier());
@@ -63,8 +65,10 @@ public class Specific_receipt extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Specific_receipt.this, EditSpecificRecieptActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(Specific_receipt.this, EditSpecificRecieptActivity.class);
+                startActivity(intent);*/
+                DatabaseLogic logic = new DatabaseLogic();
+                logic.updateReceipt(receipt);
             }
         });
 

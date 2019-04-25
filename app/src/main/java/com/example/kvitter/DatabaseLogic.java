@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.ImageHelper;
 import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -184,6 +185,26 @@ public class DatabaseLogic {
 
                     }
                 });
+    }
+
+    public void updateReceipt(UserData receipt){
+
+        db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> removeUserFromArrayMap = new HashMap<>();
+        removeUserFromArrayMap.put("arrayOfUsers", FieldValue.arrayRemove(receipt));
+
+        db.collection("data").document(CurrentId.getUserId())
+                .update(removeUserFromArrayMap);
+
+        receipt.setAmount("20");
+
+        Map<String, Object> addUserToArrayMap = new HashMap<>();
+        addUserToArrayMap.put("data", FieldValue.arrayUnion(receipt));
+
+
+        db.collection("data").document(CurrentId.getUserId())
+                .update(addUserToArrayMap);
     }
     /**
      * Saves reveipt to default folder for a specific user
