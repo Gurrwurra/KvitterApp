@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentReceipt;
+import com.example.kvitter.Util.UserData;
 
 public class EditSpecificRecieptActivity extends AppCompatActivity {
 
@@ -63,7 +66,20 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: radera och spara ändring
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserData receipt = CurrentReceipt.getReceipt();
+
+                String name_rec = name.getText().toString();
+                String amount_rec = amount.getText().toString();
+                String supplier_rec = supplier.getText().toString();
+                String comment_rec = comment.getText().toString();
+
+                DatabaseLogic logic = new DatabaseLogic();
+                logic.updateReceipt(receipt, name_rec, amount_rec, supplier_rec, comment_rec);
+            }
+        });
 
     }
 

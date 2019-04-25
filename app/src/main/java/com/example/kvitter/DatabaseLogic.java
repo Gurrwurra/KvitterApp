@@ -187,24 +187,23 @@ public class DatabaseLogic {
                 });
     }
 
-    public void updateReceipt(UserData receipt){
+    public void updateReceipt(UserData receipt, String name, String amount, String supplier, String comment){
 
         db = FirebaseFirestore.getInstance();
 
         Map<String, Object> removeUserFromArrayMap = new HashMap<>();
-        removeUserFromArrayMap.put("arrayOfUsers", FieldValue.arrayRemove(receipt));
+        removeUserFromArrayMap.put("data", FieldValue.arrayRemove(receipt));
 
         db.collection("data").document(CurrentId.getUserId())
                 .update(removeUserFromArrayMap);
 
         receipt.setAmount("20");
 
-        Map<String, Object> addUserToArrayMap = new HashMap<>();
-        addUserToArrayMap.put("data", FieldValue.arrayUnion(receipt));
+       Map<String, Object> addUserToArrayMap = new HashMap<>();
+       addUserToArrayMap.put("data", FieldValue.arrayUnion(receipt));
 
 
-        db.collection("data").document(CurrentId.getUserId())
-                .update(addUserToArrayMap);
+       db.collection("data").document(CurrentId.getUserId()).update(addUserToArrayMap);
     }
     /**
      * Saves reveipt to default folder for a specific user
