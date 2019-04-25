@@ -24,6 +24,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
 
     private Button delete;
     private Button save;
+    private Button change_pic;
 
     UserData receipt = CurrentReceipt.getReceipt();
     @Override
@@ -60,6 +61,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
 
         save = findViewById(R.id.btn_save_changes);
         delete = findViewById(R.id.btn_delete_re);
+        change_pic = findViewById(R.id.btn_change_pic);
     }
 
     private void addListiners() {
@@ -82,7 +84,15 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
                 String comment_rec = comment.getText().toString();
 
                 DatabaseLogic logic = new DatabaseLogic();
-                logic.updateReceipt(receipt, name_rec, amount_rec, supplier_rec, comment_rec);
+                logic.updateReceipt(receipt, name_rec, amount_rec, supplier_rec, comment_rec, null);
+            }
+        });
+
+        change_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditSpecificRecieptActivity.this, accept_changed_pic.class);
+                startActivity(intent);
             }
         });
 
