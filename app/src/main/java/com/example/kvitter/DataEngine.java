@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class DataEngine {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -109,6 +112,20 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
         Toast toast = Toast.makeText(context, "NEW FOLDER ADDED! ", Toast.LENGTH_LONG);
         toast.show();
     }
+
+    public void createFolderNewUser(String id){
+        db = FirebaseFirestore.getInstance();
+
+        System.out.println(CurrentId.getUserId());
+
+        ArrayList<String> array = new ArrayList<>();
+
+        HashMap<String, Object> folder = new HashMap<>();
+        folder.put("data", array);
+
+        db.collection("data").document(id).set(folder);
+
+    }
     /*
 CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
  */
@@ -121,6 +138,7 @@ CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast toast = Toast.makeText(context, "DocumentSnapshot written with ID: " + documentReference.getId(), Toast.LENGTH_LONG);
+                        createFolderNewUser(documentReference.getId());
                         toast.show();
                         Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);

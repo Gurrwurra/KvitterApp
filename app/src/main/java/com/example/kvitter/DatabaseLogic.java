@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.example.kvitter.Activities.StartActivity;
+import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.ImageHelper;
 import com.example.kvitter.Util.UserData;
@@ -105,7 +106,7 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-            saveInformation("Företag",receiptsInfo, photoName);
+            saveInformation("Företag",receiptsInfo, photoName, context);
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -188,9 +189,7 @@ public class DatabaseLogic {
      */
 
     //String folderName, String name, String amount, String comment, String photoRef, String supplier)
-    private void saveInformation(
-             String folderName,
-             String[] receiptInfo, String photoName) {
+    private void saveInformation(String folderName, String[] receiptInfo, String photoName, Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         if (folderName == null) {
@@ -201,6 +200,10 @@ public class DatabaseLogic {
     //    Map<String, Object> dataToStore = new HashMap<>();
     //    dataToStore.put("test",userData);
         db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
+
+        Intent intent = new Intent(context, StartActivity.class);
+        context.startActivity(intent);
+
         /*
         Map<String,Object> docData = new HashMap<>();
         docData.put("folderName", "Default");
