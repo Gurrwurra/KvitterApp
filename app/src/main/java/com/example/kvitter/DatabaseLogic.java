@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.example.kvitter.Activities.EditSpecificRecieptActivity;
+import com.example.kvitter.Activities.Specific_receipt;
 import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.CurrentId;
@@ -58,6 +60,7 @@ public class DatabaseLogic {
             }
         });
     }
+
 //UPDATES SEQ.NO IN DOCS BY 1.
     public void updateSequenceNumber(int seqNo) {
         int newSeq = seqNo +1;
@@ -79,6 +82,25 @@ public class DatabaseLogic {
                     }
                 });
     }
+
+
+    public void newSequenceNumberForNewPhoto (Context context, Uri filePath, UserData receipt) {
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("photo_sequence").document("sequence");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    int seqNumber =  Integer.parseInt(document.getData().get("seq_id").toString());
+                    updatePhoto(context, filePath, seqNumber, receipt);
+                    updateSequenceNumber(seqNumber);
+                } else {
+                    System.out.println("Cached get failed:" + task.getException()); }
+            }
+        });
+    }
+
 
     /**
      * Uploads image to Firebase storage
@@ -164,29 +186,6 @@ public class DatabaseLogic {
 
     }
 
-    /**
-     * Creates default folder for the new registered user
-     */
-    public void createFolder(String user_id){
-        Map<String, Object> recieptData = new HashMap<>();
-        recieptData.put("folder", "folder");
-
-
-        db.collection("user_data").document(user_id)
-                .set(recieptData, SetOptions.mergeFields("folder"))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
-
     public void deleteReceipt(UserData receipt){
         db = FirebaseFirestore.getInstance();
 
@@ -195,9 +194,26 @@ public class DatabaseLogic {
 
         db.collection("data").document(CurrentId.getUserId())
                 .update(removeReceipt);
+
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference desertRef = storageRef.child(receipt.getPhotoRef());
+
+        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+              //todo:meddelande
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                //todo:meddelande
+            }
+        });
     }
 
-    public void updateReceipt(UserData receipt, String name, String amount, String supplier, String comment){
+    public void updateReceipt(UserData receipt, String name, String amount, String supplier, String comment, String photoRef){
+
 
         db = FirebaseFirestore.getInstance();
 
@@ -206,6 +222,10 @@ public class DatabaseLogic {
 
         db.collection("data").document(CurrentId.getUserId())
                 .update(removeReceipt);
+
+        if(photoRef != null){
+            receipt.setPhotoRef(photoRef);
+        }
 
         receipt.setName(name);
         receipt.setAmount(amount);
@@ -217,6 +237,66 @@ public class DatabaseLogic {
 
 
        db.collection("data").document(CurrentId.getUserId()).update(addUserToArrayMap);
+    }
+
+    /**
+     * Uploads image to Firebase storage
+     * @param context
+     * @param filePath
+     * @param seq
+     */
+    private void updatePhoto(Context context, Uri filePath, int seq, UserData receipt){
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        byte[] bytePhoto = null;
+        Bitmap bitmap = null;
+
+        try {
+            bitmap = ImageHelper.getCorrectlyOrientedImage(context, filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bytePhoto = stream.toByteArray();
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Laddar upp...");
+            progressDialog.show();
+            String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
+            StorageReference ref = storageReference.child(photoName);
+            ref.putBytes(bytePhoto)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Nya bilden är uppladdad", Toast.LENGTH_SHORT).show();
+                            StorageReference storageRef = storage.getReference();
+                            StorageReference desertRef = storageRef.child(receipt.getPhotoRef());
+                            desertRef.delete();
+                            updateReceipt(receipt, receipt.getName(), receipt.getAmount(), receipt.getSupplier(), receipt.getComment(), photoName);
+                            Intent intent = new Intent(context, Specific_receipt.class);
+                            context.startActivity(intent);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Misslyckad uppladdning:  "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uppladdat "+(int)progress+"%");
+                        }
+                    });
+        }
     }
     /**
      * Saves reveipt to default folder for a specific user
