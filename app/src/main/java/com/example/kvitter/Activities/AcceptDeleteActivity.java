@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentReceipt;
+import com.example.kvitter.Util.UserData;
 
 public class AcceptDeleteActivity extends AppCompatActivity {
 
@@ -23,7 +26,14 @@ public class AcceptDeleteActivity extends AppCompatActivity {
     }
 
     private void addListiners() {
-        //TODO: deleta kvitto
+       accept.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               UserData receipt = CurrentReceipt.getReceipt();
+               DatabaseLogic logic = new DatabaseLogic();
+               logic.deleteReceipt(receipt);
+           }
+       });
 
         decline.setOnClickListener(new View.OnClickListener() {
             @Override

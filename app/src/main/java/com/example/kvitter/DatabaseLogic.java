@@ -187,15 +187,25 @@ public class DatabaseLogic {
                 });
     }
 
+    public void deleteReceipt(UserData receipt){
+        db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> removeReceipt = new HashMap<>();
+        removeReceipt.put("data", FieldValue.arrayRemove(receipt));
+
+        db.collection("data").document(CurrentId.getUserId())
+                .update(removeReceipt);
+    }
+
     public void updateReceipt(UserData receipt, String name, String amount, String supplier, String comment){
 
         db = FirebaseFirestore.getInstance();
 
-        Map<String, Object> removeUserFromArrayMap = new HashMap<>();
-        removeUserFromArrayMap.put("data", FieldValue.arrayRemove(receipt));
+        Map<String, Object> removeReceipt = new HashMap<>();
+        removeReceipt.put("data", FieldValue.arrayRemove(receipt));
 
         db.collection("data").document(CurrentId.getUserId())
-                .update(removeUserFromArrayMap);
+                .update(removeReceipt);
 
         receipt.setName(name);
         receipt.setAmount(amount);
