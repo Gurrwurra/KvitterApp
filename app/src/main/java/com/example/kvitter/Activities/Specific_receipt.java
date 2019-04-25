@@ -18,7 +18,6 @@ import com.example.kvitter.Util.UserData;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 public class Specific_receipt extends AppCompatActivity {
     private TextView name, amount, supplier, comment,photoRef, folderName;
