@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentReceipt;
+import com.example.kvitter.Util.UserData;
 
 public class EditSpecificRecieptActivity extends AppCompatActivity {
 
@@ -22,6 +25,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
     private Button delete;
     private Button save;
 
+    UserData receipt = CurrentReceipt.getReceipt();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,11 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         supplier = findViewById(R.id.txt_specific_supplier_edit);
         folder = findViewById(R.id.spi_folder_edit);
         comment = findViewById(R.id.txt_specific_comment_edit);
+
+        name.setText(receipt.getName());
+        amount.setText(receipt.getAmount());
+        supplier.setText(receipt.getSupplier());
+        comment.setText(receipt.getComment());
 
         String[] x = new String[3];
 
@@ -63,7 +72,19 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: radera och spara ändring
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String name_rec = name.getText().toString();
+                String amount_rec = amount.getText().toString();
+                String supplier_rec = supplier.getText().toString();
+                String comment_rec = comment.getText().toString();
+
+                DatabaseLogic logic = new DatabaseLogic();
+                logic.updateReceipt(receipt, name_rec, amount_rec, supplier_rec, comment_rec);
+            }
+        });
 
     }
 

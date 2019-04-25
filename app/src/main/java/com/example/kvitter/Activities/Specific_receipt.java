@@ -64,10 +64,8 @@ public class Specific_receipt extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(Specific_receipt.this, EditSpecificRecieptActivity.class);
-                startActivity(intent);*/
-                DatabaseLogic logic = new DatabaseLogic();
-                logic.updateReceipt(receipt);
+                Intent intent = new Intent(Specific_receipt.this, EditSpecificRecieptActivity.class);
+                startActivity(intent);
             }
         });
 
