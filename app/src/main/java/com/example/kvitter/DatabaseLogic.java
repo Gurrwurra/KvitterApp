@@ -275,7 +275,10 @@ public class DatabaseLogic {
                             StorageReference storageRef = storage.getReference();
                             StorageReference desertRef = storageRef.child(receipt.getPhotoRef());
                             desertRef.delete();
-                            updateReceipt(receipt, receipt.getName(), receipt.getAmount(), receipt.getSupplier(), receipt.getComment(), photoName);
+                            DataEngine engine = new DataEngine();
+                            receipt.setPhotoRef(photoName);
+                            engine.updateReciept(receipt.getName(),receipt);
+                       //     updateReceipt(receipt, receipt.getName(), receipt.getAmount(), receipt.getSupplier(), receipt.getComment(), photoName);
                             Intent intent = new Intent(context, Specific_receipt.class);
                             context.startActivity(intent);
 
@@ -315,35 +318,7 @@ public class DatabaseLogic {
         UserData userData = new UserData(folderName,receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
     //    Map<String, Object> dataToStore = new HashMap<>();
     //    dataToStore.put("test",userData);
-        db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(userData));
+        db.collection("data").document(CurrentId.getUserId()).update(receiptInfo[0], userData);
 
-        /*
-        Map<String,Object> docData = new HashMap<>();
-        docData.put("folderName", "Default");
-        Map<String, Object> nestedReceipt = new HashMap<>();
-        nestedReceipt.put("name", receiptInfo[0]);
-        nestedReceipt.put("supplier", receiptInfo[1]);
-        nestedReceipt.put("amount", receiptInfo[2]);
-        nestedReceipt.put("comment", receiptInfo[3]);
-        nestedReceipt.put("photoRef", photoName);
-
-        docData.put("receipt", nestedReceipt);
-        DocumentReference reference = db.collection("data").document(CurrentId.getUserId());
-        reference.update("data",FieldValue.arrayUnion(docData));
-
-
-        UserData data = new UserData("Hobby;", receiptInfo[0]+";", ";"+receiptInfo[2]+";",
-                receiptInfo[3]+";", photoName+";",receiptInfo[1]+";");
-        Map<String, Object> recieptMap = new HashMap<>();
-        recieptMap.put("name", receiptInfo[0]);
-        recieptMap.put("supplier", receiptInfo[1]);
-        recieptMap.put("amount", receiptInfo[2]);
-        recieptMap.put("comment", receiptInfo[3]);
-        recieptMap.put("photoRef", photoName);
-*/
-     //   DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
-
-       // myRef.update("folder.!Default.receipts", FieldValue.arrayUnion(data));
-     //   myRef.update("folder.!Hobby.receipts", FieldValue.arrayUnion(data));
     }
 }

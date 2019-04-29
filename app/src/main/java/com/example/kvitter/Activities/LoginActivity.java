@@ -17,14 +17,16 @@ import com.example.kvitter.DataEngine;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.Logic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.CurrentUser;
+import com.example.kvitter.Util.UserData;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
     private EditText pwd, usrName;
     private Button login, newUser;
     private ProgressDialog mProgress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,8 @@ public class LoginActivity extends AppCompatActivity{
         bindViews();
         DataEngine engine = new DataEngine();
         //Testmetod för att updatera folderName
-        engine.updateFolder();
+        //  engine.updateReciept();
+     //   saveInformation();
         mProgress = new ProgressDialog(this);
         mProgress.setTitle("Kollar uppgifter...");
         mProgress.setMessage("Var snäll att vänta...");
@@ -60,8 +63,8 @@ public class LoginActivity extends AppCompatActivity{
                 userAttempt.setPassword(password);
                 CurrentUser.setUser(userAttempt);
                 engine.validateUser(getApplicationContext(), mProgress);
-        }
-    });
+            }
+        });
     }
 
 
@@ -72,4 +75,16 @@ public class LoginActivity extends AppCompatActivity{
         pwd = (EditText) findViewById(R.id.txt_pwd);
     }
 
+    private void saveInformation() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//String folderName, String name, String amount, String comment, String photoRef, String supplier)
+        UserData userData = new UserData("Företag", "bensinkvitto", "850", "företagsresa", "43dec0d4-0d3f-45cc-ac61-199175fce35e-68", "OKQ8", 1);
+        UserData userData1 = new UserData("Företag", "affärslunch", "1500", "bjöd kunder på lunch", "43dec0d4-0d3f-45cc-ac61-199175fce35e-68", "Ching Chong", 1);
+        UserData userData2 = new UserData("Hobby", "Snickarverkstad", "3000", "Hobbyverksamhet", "43dec0d4-0d3f-45cc-ac61-199175fce35e-68", "Bauhaus", 1);
+
+        db.collection("data").document(
+                "o18TaVU4vosbRukSbO8S").update("bensinkvitto", userData);
+        db.collection("data").document("o18TaVU4vosbRukSbO8S").update("affärslunch", userData1);
+        db.collection("data").document("o18TaVU4vosbRukSbO8S").update("Snickarverkstad", userData2);
+    }
 }

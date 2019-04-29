@@ -17,19 +17,46 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DataEngine {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public DataEngine() {
     }
+
+    /*
+    #####################LATHUND FÖR DATABASEN##################################
+FÖR ATT HÄMTA KEY TILL MAPP SÅ SKALL VÄRDEN VARA NULL (name = null) MEN folderName = SpecificFolderName
+FÖR ATT HÄMTA KEY TILL KVITTO SÅ ÄR DET get(namnPåKvittot)
+FÖR ATT HÄMTA ETT VÄRDE FRÅN KVITTO SÅ ÄR DET T EX ****  .get(namnPåKvittot.amount) för att få beloppet på det kvittot   *****
+
+EXEMPELKOD:
+    DocumentSnapshot document = task.getResult();
+
+###DETTA HÄMTAR SUPPLIER FÖR SPECIFIKT KVITTO
+    document.get(namnPåKvittot + ".supplier").toString();
+
+###DETTA SÄTTER ETT VÄRDE FÖR SPECIFIKT KVITTO
+    UserData newData = new UserData();
+    UserData userData = new UserData("t1","t1Kvitto","500","testarLäggaTill,"tstFoto,"henrik, 1);
+    db.collection("data").document(CurrentId.getUserId()).update("nytt kvitto", userData);
+
+######################################################################################
+ */
+
 /*
 VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser();" IS CALLED TO CREATE NEW USER
  */
@@ -58,53 +85,29 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                     }
                 });
     }
+/*
+SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
+ */
+    public void updateReciept(String oldKeyName, UserData data) {
+        Map<String, Object> newValues = new HashMap<>();
 
-    public void updateFolder() {
-        /*
-        db.collection("data")
-                .whereArrayContains("data", "data")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        String data ="";
-                        System.out.println("hittar den detta? " + queryDocumentSnapshots.getDocuments());
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            System.out.println("test");
-                            UserData userData = documentSnapshot.toObject(UserData.class);
-                            userData.setName(documentSnapshot.get("data").toString());
-                            System.out.println(userData.getName());
-                            System.out.println(documentSnapshot.getData());
+        //VALIDERAR ATT KEY MATCHAR OCH SKRIVER ÖVER BEFINTLIGT DOKUMENT
+        if (oldKeyName.contains(data.getName())) {
+            newValues.put(oldKeyName, data);
+            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(newValues);
+        }
 
-                        }
-                    }
-
-                });
-
-                .whereEqualTo("data.folderName",true)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (!task.getResult().isEmpty()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    System.out.println("Finns redan konto med dessa uppgifter");
-
-                                    //    System.out.println(document.getId() + " => " + document.getData());
-                                }
-                            }
-                            else {
-                                System.out.println("fail");
-                            }
-
-                        } else {
-                            System.out.println("Error getting documents: " + task.getException());
-                        }
-                    }
-                });
-                */
+        //OM ANVÄNDAREN BYTER NAMN PÅ KVITTO (KEY) SÅ TAS GAMLA MAPPEN BORT OCH DEN NYA SKAPAS
+        else {
+            Map<String, Object> removeOldKey = new HashMap<>();
+            removeOldKey.put(oldKeyName,FieldValue.delete());
+            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(removeOldKey);
+            String newKey = data.getName();
+            newValues.put(newKey, data);
+            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(newValues);
+        }
     }
+
     public void createFolder(Context context, String folderName) {
         UserData data = new UserData(folderName,UserData.FOLDER_TYPE);
         db = FirebaseFirestore.getInstance();
@@ -151,9 +154,6 @@ CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
                         toast.show();
                     }
                 });
-    }
-    public void updateReciept(UserData data, String newFolderName) {
-
     }
     /*
     VALIDATES PASSWORD AND PERSONAL NUMBER AND RETURNS StartActivity.class IF DATA IS CORRECT

@@ -20,7 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyReceiptActivity extends AppCompatActivity {
     private RecyclerView folderView;
@@ -62,6 +64,7 @@ public class MyReceiptActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(context);
         folderView.setLayoutManager(layoutManager);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.collection("data").document(CurrentId.getUserId())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -69,29 +72,37 @@ public class MyReceiptActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
-                            String fulLData = document.getData().toString();
-                            String[] eachObject = fulLData.split("\\{");
-                            System.out.println("COMPLETE DATA" + " => " + fulLData);
-                            populateFolders(fulLData);
-                            for(int i=0; i< folderData.size(); i++) {
+                            Map<String, Object> map = document.getData();
+
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                String folderName = document.get(key + ".folderName").toString();
+                                if (!folderData.contains(folderName)) {
+                                    folderData.add(folderName);
+                                }
+                            }
+                            for (int i = 0; i < folderData.size(); i++) {
                                 testData.add(new UserData(folderData.get(i), UserData.FOLDER_TYPE));
-                                for (int j = 2; j < eachObject.length; j++) {
-                                    String[] eachDataInObject = eachObject[j].split(",");
-                                    String[] amount = eachDataInObject[0].split("=");
-                                    String[] supplier = eachDataInObject[1].split("=");
-                                    String[] name = eachDataInObject[2].split("=");
-                                    String[] comment = eachDataInObject[3].split("=");
-                                    String[] photoRef = eachDataInObject[4].split("=");
-                                    String[] folder = eachDataInObject[5].split("=");
-                                    String[] type = eachDataInObject[6].split("=");
-                                    String curFolder = folder[folder.length-1];
-                                    if (curFolder.contains(folderData.get(i)) && type[type.length-1].contains("1")) {
-                                        testData.add(new UserData(folderData.get(i), name[name.length - 1], amount[amount.length - 1], comment[comment.length - 1], photoRef[photoRef.length - 1], supplier[supplier.length - 1], UserData.RECIEPT_TYPE));
+
+                                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                    UserData newData = new UserData();
+                                    String key = entry.getKey();
+
+                                    String curFolder = document.get(key + ".folderName").toString();
+                                    if (curFolder.contains(folderData.get(i)) && Integer.parseInt(document.get(key + ".type").toString()) == 1) {
+                                        newData.setName(key);
+                                        newData.setSupplier(document.get(key + ".supplier").toString());
+                                        newData.setAmount(document.get(key + ".amount").toString());
+                                        newData.setComment(document.get(key + ".comment").toString());
+                                        newData.setPhotoRef(document.get(key + ".photoRef").toString());
+                                        newData.setFolderName(document.get(key + ".folderName").toString());
+                                        newData.setType(Integer.parseInt(document.get(key + ".type").toString()));
+                                        testData.add(newData);
                                     }
                                 }
                             }
                         }
-                        MyAdapter adapter = new MyAdapter(testData,context);
+                        MyAdapter adapter = new MyAdapter(testData, context);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, OrientationHelper.VERTICAL, false);
                         folderView = folderView.findViewById(R.id.folder_list);
                         folderView.setLayoutManager(linearLayoutManager);
@@ -100,19 +111,6 @@ public class MyReceiptActivity extends AppCompatActivity {
                     }
                 });
     }
+}
 
-    private void populateFolders(String data) {
-        String[] eachObject = data.split("\\{");
-        for (int i = 2; i < eachObject.length; i++) {
-            String[] eachDataInObject = eachObject[i].split(",");
-            for (int j = 0; j < eachDataInObject.length; j++) {
-             String [] folderName = eachDataInObject[5].split("=");
-                String [] correctName = folderName[1].split("\\}");
-                if (!folderData.contains(correctName[0])) {
-                    folderData.add(correctName[0]);
-               }
-            }
-        }
-    }
-    }
 

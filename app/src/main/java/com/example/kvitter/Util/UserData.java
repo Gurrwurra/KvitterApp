@@ -1,5 +1,7 @@
 package com.example.kvitter.Util;
 
+import java.util.Map;
+
 public class UserData {
     public static final int FOLDER_TYPE = 0;
     public static final int RECIEPT_TYPE = 1;
@@ -19,8 +21,11 @@ public class UserData {
         this.folderName = folderName;
         this.type = type;
     }
+
     public UserData() {
     }
+
+
     public int getType() {
         return type;
     }
@@ -74,5 +79,10 @@ public class UserData {
 
     public void setSupplier(String supplier) {
         this.supplier = supplier;
+    }
+
+    @Override
+    public String toString() {
+        return "Reciept :" + "\nname: " + name + "\namount: " + amount + "\nsupplier: " + supplier + "\nphotoRef: "+ photoRef + "\n"+ "\nfolderName: "+ folderName + "\n" + "\ncomment: "+ comment + "\n";
     }
 }
