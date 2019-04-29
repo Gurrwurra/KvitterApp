@@ -1,6 +1,8 @@
 package com.example.kvitter.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +14,17 @@ import android.widget.Spinner;
 import com.example.kvitter.DataEngine;
 import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.UserData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class EditSpecificRecieptActivity extends AppCompatActivity {
 
@@ -43,35 +54,53 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         supplier = findViewById(R.id.txt_specific_supplier_edit);
         folder = findViewById(R.id.spi_folder_edit);
         comment = findViewById(R.id.txt_specific_comment_edit);
+        save = findViewById(R.id.btn_save_changes);
+        delete = findViewById(R.id.btn_delete_re);
+        change_pic = findViewById(R.id.btn_change_pic);
 
         name.setText(receipt.getName());
         amount.setText(receipt.getAmount());
         supplier.setText(receipt.getSupplier());
         comment.setText(receipt.getComment());
+        populateSpinner(this);
 
-        String[] x = new String[3];
-
-        x[0] = "test";
-        x[1] = "Båt";
-        x[2] = "Hus";
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, x);
-
-        folder.setAdapter(adapter);
-
-
-        save = findViewById(R.id.btn_save_changes);
-        delete = findViewById(R.id.btn_delete_re);
-        change_pic = findViewById(R.id.btn_change_pic);
     }
+    private void populateSpinner (Context context) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<String> folderNames = new ArrayList<>();
+        db.collection("data").document(CurrentId.getUserId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> map = document.getData();
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                int type = Integer.parseInt(document.get(key + ".type").toString());
+                                if (type == 0) {
+                                    String folderName = document.get(key + ".folderName").toString();
+                                    folderNames.add(folderName);
+                                }
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item, folderNames);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        folder.setAdapter(adapter);
+                    }
+                });
+    }
+
+
 
     private void addListiners() {
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditSpecificRecieptActivity.this, AcceptDeleteActivity.class);
-                startActivity(intent);
+                  Intent intent = new Intent(EditSpecificRecieptActivity.this, AcceptDeleteActivity.class);
+                  startActivity(intent);
             }
         });
 
@@ -83,18 +112,19 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
                 String amount_rec = amount.getText().toString();
                 String supplier_rec = supplier.getText().toString();
                 String comment_rec = comment.getText().toString();
-
+                String folderName_rec = String.valueOf(folder.getSelectedItem());
                 updatedReciept.setName(name_rec);
                 updatedReciept.setAmount(amount_rec);
                 updatedReciept.setSupplier(supplier_rec);
                 updatedReciept.setComment(comment_rec);
                 updatedReciept.setPhotoRef(receipt.getPhotoRef());
-                updatedReciept.setFolderName(receipt.getFolderName());
-
+                updatedReciept.setFolderName(folderName_rec);
+                updatedReciept.setType(1);
                 DataEngine engine = new DataEngine();
                 engine.updateReciept(receipt.getName(),updatedReciept);
-            //    DatabaseLogic logic = new DatabaseLogic();
-             //   logic.updateReceipt(receipt, name_rec, amount_rec, supplier_rec, comment_rec, null);
+
+                Intent intent = new Intent(EditSpecificRecieptActivity.this, MyReceiptActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -105,7 +135,6 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     //TODO: ändra bild

@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -85,6 +86,44 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                     }
                 });
     }
+    public void updateFolder(String newFolderName, String oldFolderName, UserData data) {
+        Map<String, Object> newValues = new HashMap<>();
+        Map<String, Object> removeOldKey = new HashMap<>();
+        removeOldKey.put(oldFolderName,FieldValue.delete());
+        db.collection("data").document(CurrentId.getUserId()).update(removeOldKey);
+        String newKey = newFolderName;
+        data.setFolderName(newFolderName);
+        newValues.put(newKey, data);
+        db.collection("data").document(CurrentId.getUserId()).update(newValues);
+        updateReceiptsInFolder(oldFolderName, newFolderName);
+    }
+
+    private void updateReceiptsInFolder(String oldFolderName, String newFolderName) {
+        db.collection("data").document(CurrentId.getUserId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> map = document.getData();
+
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                int type = Integer.parseInt(document.get(key+ ".type").toString());
+                                String folderName = document.get(key+".folderName").toString();
+                                if (folderName.contains(oldFolderName) && type ==1) {
+                                    db.collection("data").document(CurrentId.getUserId())
+                                            .update(
+                                                    key+".folderName", newFolderName);
+                                }
+
+                            }
+
+                        }
+                    }
+                });
+    }
 /*
 SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
  */
@@ -96,7 +135,6 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
             newValues.put(oldKeyName, data);
             db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
-
         //OM ANVÄNDAREN BYTER NAMN PÅ KVITTO (KEY) SÅ TAS GAMLA MAPPEN BORT OCH DEN NYA SKAPAS
         else {
             Map<String, Object> removeOldKey = new HashMap<>();
@@ -109,25 +147,21 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
     }
 
     public void createFolder(Context context, String folderName) {
-        UserData data = new UserData(folderName,UserData.FOLDER_TYPE);
-        db = FirebaseFirestore.getInstance();
-        db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(data));
-        Toast toast = Toast.makeText(context, "NEW FOLDER ADDED! ", Toast.LENGTH_LONG);
-        toast.show();
+        UserData newFolder = new UserData();
+        newFolder.setFolderName(folderName);
+        newFolder.setType(0);
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put(folderName,newFolder);
+        db.collection("data").document(CurrentId.getUserId()).update(newValues);
     }
 
     public void createFolderNewUser(String id){
-        db = FirebaseFirestore.getInstance();
-
-        System.out.println(CurrentId.getUserId());
-
-        ArrayList<String> array = new ArrayList<>();
-
-        HashMap<String, Object> folder = new HashMap<>();
-        folder.put("data", array);
-
-        db.collection("data").document(id).set(folder);
-
+        UserData newFolder = new UserData();
+        newFolder.setFolderName("Övriga kvitton");
+        newFolder.setType(0);
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("Övriga kvitton",newFolder);
+        db.collection("data").document(id).update(newValues);
     }
     /*
 CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
