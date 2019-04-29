@@ -97,6 +97,7 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
         db.collection("data").document(CurrentId.getUserId()).update(newValues);
         updateReceiptsInFolder(oldFolderName, newFolderName);
     }
+
     private void updateReceiptsInFolder(String oldFolderName, String newFolderName) {
         db.collection("data").document(CurrentId.getUserId())
                 .get()
@@ -134,7 +135,6 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
             newValues.put(oldKeyName, data);
             db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
-
         //OM ANVÄNDAREN BYTER NAMN PÅ KVITTO (KEY) SÅ TAS GAMLA MAPPEN BORT OCH DEN NYA SKAPAS
         else {
             Map<String, Object> removeOldKey = new HashMap<>();
@@ -147,25 +147,21 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
     }
 
     public void createFolder(Context context, String folderName) {
-        UserData data = new UserData(folderName,UserData.FOLDER_TYPE);
-        db = FirebaseFirestore.getInstance();
-        db.collection("data").document(CurrentId.getUserId()).update("data", FieldValue.arrayUnion(data));
-        Toast toast = Toast.makeText(context, "NEW FOLDER ADDED! ", Toast.LENGTH_LONG);
-        toast.show();
+        UserData newFolder = new UserData();
+        newFolder.setFolderName(folderName);
+        newFolder.setType(0);
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put(folderName,newFolder);
+        db.collection("data").document(CurrentId.getUserId()).update(newValues);
     }
 
     public void createFolderNewUser(String id){
-        db = FirebaseFirestore.getInstance();
-
-        System.out.println(CurrentId.getUserId());
-
-        ArrayList<String> array = new ArrayList<>();
-
-        HashMap<String, Object> folder = new HashMap<>();
-        folder.put("data", array);
-
-        db.collection("data").document(id).set(folder);
-
+        UserData newFolder = new UserData();
+        newFolder.setFolderName("Övriga kvitton");
+        newFolder.setType(0);
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("Övriga kvitton",newFolder);
+        db.collection("data").document(id).update(newValues);
     }
     /*
 CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS

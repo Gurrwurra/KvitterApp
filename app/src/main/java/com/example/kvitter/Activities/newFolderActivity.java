@@ -43,7 +43,7 @@ public class newFolderActivity extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.btn_regret_new_folder: {
-                Intent intent = new Intent(getApplicationContext(), AddReceiptActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MyReceiptActivity.class);
                 startActivity(intent);
                 break;
             }
