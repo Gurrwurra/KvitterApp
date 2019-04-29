@@ -44,7 +44,7 @@ public class DatabaseLogic {
     private StorageReference storageReference;
 
  //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
-    public void newSequenceNumber (Context context, Uri filePath, String[] receiptInfo) {
+    public void newSequenceNumber (Context context, Uri filePath, String[] receiptInfo, int validate, String fileName) {
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("photo_sequence").document("sequence");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -53,7 +53,11 @@ public class DatabaseLogic {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     int seqNumber =  Integer.parseInt(document.getData().get("seq_id").toString());
-                    savePhoto(context, filePath, seqNumber, receiptInfo);
+                    if(validate == 0) {
+                        savePhoto(context, filePath, seqNumber, receiptInfo);
+                    } else if (validate == 1){
+                        savePDF(context, filePath, seqNumber, receiptInfo, fileName);
+                    }
                     updateSequenceNumber(seqNumber);
                 } else {
                     System.out.println("Cached get failed:" + task.getException()); }
@@ -99,6 +103,55 @@ public class DatabaseLogic {
                     System.out.println("Cached get failed:" + task.getException()); }
             }
         });
+    }
+
+
+    /**
+     * Uploads image to Firebase storage
+     * @param context
+     * @param filePath
+     * @param seq
+     * @param receiptsInfo
+     */
+    private void savePDF(Context context, Uri filePath, int seq, String[] receiptsInfo, String fileName){
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Laddar upp...");
+            progressDialog.show();
+            String photoName = "reciept/"+ seq + fileName + ".pdf";
+            saveInformation("Företag",receiptsInfo, photoName);
+            StorageReference ref = storageReference.child(photoName);
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Uppladdat", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, StartActivity.class);
+                            context.startActivity(intent);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Misslyckad uppladdning:  "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uppladdat "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 
 

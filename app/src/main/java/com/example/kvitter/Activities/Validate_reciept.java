@@ -55,6 +55,8 @@ public class Validate_reciept extends AppCompatActivity {
     private File fileOfPhoto;
     Uri uri;
     int validatePhotoOrigin;
+    Uri fileUri;
+    String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +94,11 @@ public class Validate_reciept extends AppCompatActivity {
                 receiptInfo[3] = comment.getText().toString();
 
                 DatabaseLogic logic = new DatabaseLogic();
-
-                logic.newSequenceNumber(Validate_reciept.this, uri, receiptInfo);
+                if(validatePhotoOrigin == 0) {
+                    logic.newSequenceNumber(Validate_reciept.this, uri, receiptInfo, validatePhotoOrigin, null);
+                }else{
+                    logic.newSequenceNumber(Validate_reciept.this, fileUri, receiptInfo, validatePhotoOrigin, fileName);
+                }
             }
         });
     }
@@ -108,9 +113,11 @@ public class Validate_reciept extends AppCompatActivity {
         String comm = Extra.getString("comment");
         String file_of = Extra.getString("file");
         String fileOfPh = Extra.getString("fileOfPhoto");
+        validatePhotoOrigin = Extra.getInt("validate");
 
 
-        if (file_of != null) {
+
+        if (file_of != null && validatePhotoOrigin == 0) {
             file.setText(file_of);
         }
 
@@ -119,13 +126,16 @@ public class Validate_reciept extends AppCompatActivity {
         supplier.setText(supp);
         comment.setText(comm);
 
-      if(fileOfPh != null) {
+      if(fileOfPh != null ) {
             fileOfPhoto = new File(fileOfPh);
             uri = Uri.fromFile(fileOfPhoto);
             Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
             recieptImage.setImageBitmap(imageBitmap);
         }else
         {
+            fileUri = Uri.parse(Extra.getString("fileUri"));
+            fileName = Extra.getString("fileName");
+            file.setText(fileName);
             recieptImage.setVisibility(View.GONE);
         }
 

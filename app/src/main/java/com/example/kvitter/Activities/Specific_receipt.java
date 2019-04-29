@@ -1,6 +1,9 @@
 package com.example.kvitter.Activities;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,15 +19,20 @@ import com.example.kvitter.Util.GlideApp;
 import com.example.kvitter.Util.MyAppGlideModule;
 import com.example.kvitter.Util.UserData;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
 public class Specific_receipt extends AppCompatActivity {
-    private TextView name, amount, supplier, comment,photoRef, folderName;
+    private TextView name, amount, supplier, comment,photoRef, folderName, file;
     private ImageView receipt_image;
     private Button edit;
     private Button share;
     UserData receipt;
+
+    String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +47,32 @@ public class Specific_receipt extends AppCompatActivity {
         comment.setText(receipt.getComment());
         folderName.setText(receipt.getFolderName());
 
-        StorageReference mStorage = FirebaseStorage.getInstance().getReference(receipt.getPhotoRef());
+        String val = receipt.getPhotoRef();
 
-        GlideApp.with(this /* context */)
-                .load(mStorage)
-                .into(receipt_image);
+        String[] splitRef = val.split("\\.");
+        String last = splitRef[splitRef.length-1];
+
+        String first = splitRef[0];
+
+        System.out.println(last);
+
+
+        if(last.contains("pdf")) {
+            String[] fileNameSplit = first.split("\\/", 2);
+            fileName = fileNameSplit[1];
+            receipt_image.setVisibility(View.INVISIBLE);
+            file.setVisibility(View.VISIBLE);
+            file.setText(fileName);
+
+        } else
+        {
+            file.setVisibility(View.GONE);
+            StorageReference mStorage = FirebaseStorage.getInstance().getReference(receipt.getPhotoRef());
+
+            GlideApp.with(this /* context */)
+                    .load(mStorage)
+                    .into(receipt_image);
+        }
     }
 
     private void bindViews() {
@@ -55,6 +84,7 @@ public class Specific_receipt extends AppCompatActivity {
         comment = findViewById(R.id.txt_specific_comment);
         folderName = findViewById(R.id.txt_specific_folder);
         receipt_image = findViewById(R.id.specific_img);
+        file = findViewById(R.id.txt_file_from);
     }
 
     private void addListiners() {
@@ -69,5 +99,32 @@ public class Specific_receipt extends AppCompatActivity {
             }
         });
 
+        file.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StorageReference ref = FirebaseStorage.getInstance().getReference();
+                StorageReference storageRef = ref.child(receipt.getPhotoRef());
+
+                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String url = uri.toString();
+                        downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url){
+
+        DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+        dm.enqueue(request);
     }
 }
