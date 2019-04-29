@@ -76,9 +76,9 @@ public class MyReceiptActivity extends AppCompatActivity {
 
                             for (Map.Entry<String, Object> entry : map.entrySet()) {
                                 String key = entry.getKey();
-                                String folderName = document.get(key + ".folderName").toString();
-                                if (!folderData.contains(folderName)) {
-                                    folderData.add(folderName);
+                                int folderType = Integer.parseInt(document.get(key+ ".type").toString());
+                                if (folderType == 0) {
+                                    folderData.add(key);
                                 }
                             }
                             for (int i = 0; i < folderData.size(); i++) {
@@ -87,17 +87,19 @@ public class MyReceiptActivity extends AppCompatActivity {
                                 for (Map.Entry<String, Object> entry : map.entrySet()) {
                                     UserData newData = new UserData();
                                     String key = entry.getKey();
-
-                                    String curFolder = document.get(key + ".folderName").toString();
-                                    if (curFolder.contains(folderData.get(i)) && Integer.parseInt(document.get(key + ".type").toString()) == 1) {
-                                        newData.setName(key);
-                                        newData.setSupplier(document.get(key + ".supplier").toString());
-                                        newData.setAmount(document.get(key + ".amount").toString());
-                                        newData.setComment(document.get(key + ".comment").toString());
-                                        newData.setPhotoRef(document.get(key + ".photoRef").toString());
-                                        newData.setFolderName(document.get(key + ".folderName").toString());
-                                        newData.setType(Integer.parseInt(document.get(key + ".type").toString()));
-                                        testData.add(newData);
+                                    int type = Integer.parseInt(document.get(key+ ".type").toString());
+                                    if (type ==1) {
+                                        String curFolder = document.get(key + ".folderName").toString();
+                                        if (curFolder.contains(folderData.get(i)) && Integer.parseInt(document.get(key + ".type").toString()) == 1) {
+                                            newData.setName(key);
+                                            newData.setSupplier(document.get(key + ".supplier").toString());
+                                            newData.setAmount(document.get(key + ".amount").toString());
+                                            newData.setComment(document.get(key + ".comment").toString());
+                                            newData.setPhotoRef(document.get(key + ".photoRef").toString());
+                                            newData.setFolderName(document.get(key + ".folderName").toString());
+                                            newData.setType(Integer.parseInt(document.get(key + ".type").toString()));
+                                            testData.add(newData);
+                                    }
                                     }
                                 }
                             }

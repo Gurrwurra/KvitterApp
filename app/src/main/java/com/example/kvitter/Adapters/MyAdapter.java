@@ -108,6 +108,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     editFolderName.setVisibility(View.GONE);
                     txtFolderName.setVisibility(View.GONE);
                     saveFolder.setVisibility(View.GONE);
+                    String newFolderName = editFolderName.getText().toString();
+                    DataEngine engine = new DataEngine();
+                    engine.updateFolder(newFolderName,folderName.getText().toString(),mList.get(getAdapterPosition()));
                     break;
                 }
                 case R.id.btn_edit_folder: {

@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -85,6 +86,43 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                     }
                 });
     }
+    public void updateFolder(String newFolderName, String oldFolderName, UserData data) {
+        Map<String, Object> newValues = new HashMap<>();
+        Map<String, Object> removeOldKey = new HashMap<>();
+        removeOldKey.put(oldFolderName,FieldValue.delete());
+        db.collection("data").document(CurrentId.getUserId()).update(removeOldKey);
+        String newKey = newFolderName;
+        data.setFolderName(newFolderName);
+        newValues.put(newKey, data);
+        db.collection("data").document(CurrentId.getUserId()).update(newValues);
+        updateReceiptsInFolder(oldFolderName, newFolderName);
+    }
+    private void updateReceiptsInFolder(String oldFolderName, String newFolderName) {
+        db.collection("data").document(CurrentId.getUserId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> map = document.getData();
+
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                int type = Integer.parseInt(document.get(key+ ".type").toString());
+                                String folderName = document.get(key+".folderName").toString();
+                                if (folderName.contains(oldFolderName) && type ==1) {
+                                    db.collection("data").document(CurrentId.getUserId())
+                                            .update(
+                                                    key+".folderName", newFolderName);
+                                }
+
+                            }
+
+                        }
+                    }
+                });
+    }
 /*
 SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
  */
@@ -94,17 +132,17 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
         //VALIDERAR ATT KEY MATCHAR OCH SKRIVER ÖVER BEFINTLIGT DOKUMENT
         if (oldKeyName.contains(data.getName())) {
             newValues.put(oldKeyName, data);
-            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(newValues);
+            db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
 
         //OM ANVÄNDAREN BYTER NAMN PÅ KVITTO (KEY) SÅ TAS GAMLA MAPPEN BORT OCH DEN NYA SKAPAS
         else {
             Map<String, Object> removeOldKey = new HashMap<>();
             removeOldKey.put(oldKeyName,FieldValue.delete());
-            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(removeOldKey);
+            db.collection("data").document(CurrentId.getUserId()).update(removeOldKey);
             String newKey = data.getName();
             newValues.put(newKey, data);
-            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(newValues);
+            db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
     }
 
