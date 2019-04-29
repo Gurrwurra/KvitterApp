@@ -1,5 +1,6 @@
 package com.example.kvitter.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -17,23 +19,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.ImageHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class AddReceiptActivity extends AppCompatActivity {
 
-
+    private Spinner folder;
     private ImageButton recieptPic;
     private Button fileUpload;
     private Button save;
@@ -76,6 +88,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     }
 
     private void bindViews(){
+        folder = findViewById(R.id.spi_folder_edit);
         recieptPic = findViewById(R.id.receiptImage);
         fileUpload = findViewById(R.id.btn_upload_file);
         save = findViewById(R.id.btn_save);
@@ -111,7 +124,7 @@ public class AddReceiptActivity extends AppCompatActivity {
                 intent.putExtra("comment", comment.getText().toString());
                 intent.putExtra("photoPath", currentPhoto);
                 intent.putExtra("validate", validate);
-
+                String folderName_rec = String.valueOf(folder.getSelectedItem());
                 if(photoURI != null) {
                     intent.putExtra("uri", photoURI.toString() );
                     intent.putExtra("fileOfPhoto", photoFile.toString());
@@ -126,7 +139,32 @@ public class AddReceiptActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void populateSpinner (Context context) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<String> folderNames = new ArrayList<>();
+        db.collection("data").document(CurrentId.getUserId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> map = document.getData();
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                int type = Integer.parseInt(document.get(key + ".type").toString());
+                                if (type == 0) {
+                                    String folderName = document.get(key + ".folderName").toString();
+                                    folderNames.add(folderName);
+                                }
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item, folderNames);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        folder.setAdapter(adapter);
+                    }
+                });
+    }
     private void takePhoto() {
         dispatchTakePictureIntent();
     }
