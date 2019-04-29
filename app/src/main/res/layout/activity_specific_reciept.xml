@@ -131,4 +131,19 @@
         android:text="Dela"
         app:layout_constraintStart_toEndOf="@+id/btn_edit_specific_reciept"
         app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment" />
+
+    <TextView
+        android:id="@+id/txt_file_from"
+        android:layout_width="316dp"
+        android:layout_height="142dp"
+        android:layout_marginStart="177dp"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="124dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount-title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

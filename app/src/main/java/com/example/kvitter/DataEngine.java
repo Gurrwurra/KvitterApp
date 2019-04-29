@@ -94,17 +94,17 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
         //VALIDERAR ATT KEY MATCHAR OCH SKRIVER ÖVER BEFINTLIGT DOKUMENT
         if (oldKeyName.contains(data.getName())) {
             newValues.put(oldKeyName, data);
-            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(newValues);
+            db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
 
         //OM ANVÄNDAREN BYTER NAMN PÅ KVITTO (KEY) SÅ TAS GAMLA MAPPEN BORT OCH DEN NYA SKAPAS
         else {
             Map<String, Object> removeOldKey = new HashMap<>();
             removeOldKey.put(oldKeyName,FieldValue.delete());
-            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(removeOldKey);
+            db.collection("data").document(CurrentId.getUserId()).update(removeOldKey);
             String newKey = data.getName();
             newValues.put(newKey, data);
-            db.collection("data").document("o18TaVU4vosbRukSbO8S").update(newValues);
+            db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
     }
 
