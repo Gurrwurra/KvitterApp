@@ -1,19 +1,14 @@
 package com.example.kvitter.Adapters;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.kvitter.Activities.AddReceiptActivity;
-import com.example.kvitter.Activities.MyReceiptActivity;
 import com.example.kvitter.Activities.Specific_receipt;
 import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
@@ -23,13 +18,20 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<UserData> mList;
-    public String _id = "";
     public Context context;
-
+    /*
+    Constructor for MyAdapter -
+    @param list - data of all folders and their receipts for current user
+    @param context - context of application (MyReceiptActivity)
+     */
     public MyAdapter(List<UserData> list, Context context) {
         this.mList = list;
         this.context = context;
     }
+    /*
+    ViewHolder with different viewType -
+    Iterates over List<UserData> mList and returns view that matches position in List (FOLDER_TYPE) OR (RECEIPT_TYPE)
+     */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -43,10 +45,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return null;
     }
+    /*
+    Gets position of object in List<Userdata> mList and updating data for current position and type
+ */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         UserData object = mList.get(position);
-        _id = (String.valueOf(object.getPhotoRef()));
         if (object != null) {
             switch (object.getType()) {
                 case UserData.FOLDER_TYPE:
@@ -75,11 +79,15 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return 0;
     }
+
     public class FolderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView folderName, txtFolderName, receiptName, recieptAmount;
+        private TextView folderName, txtFolderName;
         private EditText editFolderName;
         private ImageButton editFolder, saveFolder;
 
+        /*
+        For each item in folderViewHolder - method binds every element in that item
+         */
         public FolderViewHolder(View itemView) {
             super(itemView);
             editFolderName = itemView.findViewById(R.id.edit_spec_folder);
@@ -97,14 +105,16 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             folderName.setTag(itemView);
             folderName.setOnClickListener(this);
         }
-
+        /*
+        OnClick listener for each item in FolderViewHolder
+        case R.id.btn_save_editFolderName - Data for new folderName from user gets collected and saved. Runs method updateFolder to update database
+        case R.id.btn_edit_folder - If user clicks on edit_folder button - information will show for user on how to edit folderName
+         */
         @Override
         public void onClick(View v) {
             ImageButton btn = (ImageButton) v;
             switch (btn.getId()) {
                 case R.id.btn_save_editFolderName: {
-                    //UPDATERA FOLDERNAME I DB
-                    System.out.println("save " + mList.get(getAdapterPosition()).getFolderName());
                     editFolderName.setVisibility(View.GONE);
                     txtFolderName.setVisibility(View.GONE);
                     saveFolder.setVisibility(View.GONE);
@@ -134,6 +144,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             recieptName.setOnClickListener(this);
         }
 
+        /*
+        onClickListener - When user clicks on specific receipt in ReceiptViewHolder - method will run Activity "Specific_receipt.class"
+         */
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, Specific_receipt.class);
