@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
-
 
 public class newFolderActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText folder;
@@ -17,7 +15,6 @@ public class newFolderActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_folder);
         bindViews();
@@ -31,13 +28,18 @@ public class newFolderActivity extends AppCompatActivity implements View.OnClick
         regretFolder.setOnClickListener(this);
     }
 
+    /**
+     * case btn_save_new_folder - method createFolder in DataEngine will run and store folder to database for that user and return view for MyReceiptActivity
+     * btn_regret_new_folder - method will return view MyReceiptActivity
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         Button btn = (Button) v;
         switch (btn.getId()) {
             case R.id.btn_save_new_folder: {
                 DataEngine engine = new DataEngine();
-                engine.createFolder(this,folder.getText().toString());
+                engine.createFolder(folder.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), MyReceiptActivity.class);
                 startActivity(intent);
                 break;
