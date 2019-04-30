@@ -37,7 +37,6 @@
         <activity android:name=".Activities.AddFolderActivity" />
         <activity android:name=".Activities.AcceptDeleteActivity" />
         <activity android:name=".Activities.EditSpecificRecieptActivity" />
-        <activity android:name=".Activities.ChoiceActivity" />
         <activity android:name=".Activities.EditAccountActivity" />
         <activity android:name=".Activities.SettingsActivity" />
         <activity android:name=".Activities.LoginActivity">
