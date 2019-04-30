@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -17,23 +18,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.ImageHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class AddReceiptActivity extends AppCompatActivity {
 
-
+    private Spinner folder;
     private ImageButton recieptPic;
     private Button imageUpload;
     private Button save;
@@ -45,9 +56,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     private TextView file;
 
     private static final int PICK_IMAGE = 100;
-
     private static final int PICK_PDF = 1000;
-
     private static final int PERMISSION_REQUEST_CODE = 1;
 
 
@@ -68,7 +77,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_receipt);
-
+        populateSpinner(this);
 
         if (Build.VERSION.SDK_INT >= 23)
         {
@@ -81,8 +90,8 @@ public class AddReceiptActivity extends AppCompatActivity {
             }
         }
     }
-
     private void bindViews(){
+        folder = findViewById(R.id.spi_addToFolder);
         recieptPic = findViewById(R.id.receiptImage);
         imageUpload = findViewById(R.id.btn_upload_image);
         PDFUpload = findViewById(R.id.btn_pdf_upload);
@@ -119,6 +128,7 @@ public class AddReceiptActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String folderName = String.valueOf(folder.getSelectedItem());
                 Intent intent = new Intent(AddReceiptActivity.this, Validate_reciept.class);
                 intent.putExtra("name", title.getText().toString());
                 intent.putExtra("amount", amount.getText().toString());
@@ -126,7 +136,7 @@ public class AddReceiptActivity extends AppCompatActivity {
                 intent.putExtra("comment", comment.getText().toString());
                 intent.putExtra("photoPath", currentPhoto);
                 intent.putExtra("validate", validate);
-
+                intent.putExtra("folderName", folderName);
                 if(photoURI != null) {
                     intent.putExtra("uri", photoURI.toString());
                     intent.putExtra("fileOfPhoto", photoFile.toString());
@@ -137,6 +147,32 @@ public class AddReceiptActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    private void populateSpinner (Context context) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<String> folderNames = new ArrayList<>();
+        db.collection("data").document(CurrentId.getUserId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> map = document.getData();
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                int type = Integer.parseInt(document.get(key + ".type").toString());
+                                if (type == 0) {
+                                    String folderName = document.get(key + ".folderName").toString();
+                                    folderNames.add(folderName);
+                                }
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item, folderNames);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        folder.setAdapter(adapter);
+                    }
+                });
     }
 
     private void takePhoto() {

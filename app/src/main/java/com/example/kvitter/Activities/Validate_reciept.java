@@ -45,7 +45,7 @@ public class Validate_reciept extends AppCompatActivity {
     private TextView supplier;
     private TextView comment;
     private TextView file;
-
+    private TextView folder;
     private ImageView recieptImage;
 
     private Button accept;
@@ -86,13 +86,13 @@ public class Validate_reciept extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String[] receiptInfo = new String[4];
+                String[] receiptInfo = new String[5];
 
                 receiptInfo[0] = title.getText().toString();
                 receiptInfo[1] = supplier.getText().toString();
                 receiptInfo[2] = amount.getText().toString();
                 receiptInfo[3] = comment.getText().toString();
-
+                receiptInfo[4] =folder.getText().toString();
                 DatabaseLogic logic = new DatabaseLogic();
                 if(validatePhotoOrigin == 0) {
                     logic.newSequenceNumber(Validate_reciept.this, uri, receiptInfo, validatePhotoOrigin, null);
@@ -104,14 +104,13 @@ public class Validate_reciept extends AppCompatActivity {
     }
 
     private void validateValues() throws IOException {
-
-
         Bundle Extra = getIntent().getExtras();
         String name = Extra.getString("name");
         String amount_of = Extra.getString("amount");
         String supp = Extra.getString("supplier");
         String comm = Extra.getString("comment");
         String file_of = Extra.getString("file");
+        String folderName = Extra.getString("folderName");
         String fileOfPh = Extra.getString("fileOfPhoto");
         validatePhotoOrigin = Extra.getInt("validate");
 
@@ -125,6 +124,7 @@ public class Validate_reciept extends AppCompatActivity {
         amount.setText(amount_of);
         supplier.setText(supp);
         comment.setText(comm);
+        folder.setText(folderName);
 
       if(fileOfPh != null ) {
             fileOfPhoto = new File(fileOfPh);
@@ -147,7 +147,7 @@ public class Validate_reciept extends AppCompatActivity {
         supplier = findViewById(R.id.txt_supplier_validate);
         comment = findViewById(R.id.txt_comment_validate);
         file = findViewById(R.id.txt_file);
-
+        folder = findViewById(R.id.txt_folderNameValidate);
         recieptImage = findViewById(R.id.img_validate_img);
 
         accept = findViewById(R.id.btn_accept_validate);

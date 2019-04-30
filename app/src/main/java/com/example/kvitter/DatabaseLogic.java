@@ -123,7 +123,7 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ seq + fileName + ".pdf";
-            saveInformation("Företag",receiptsInfo, photoName);
+            saveInformation(receiptsInfo, photoName);
             StorageReference ref = storageReference.child(photoName);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -182,7 +182,7 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-            saveInformation("Företag",receiptsInfo, photoName);
+            saveInformation(receiptsInfo, photoName);
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -361,17 +361,12 @@ public class DatabaseLogic {
      */
 
     //String folderName, String name, String amount, String comment, String photoRef, String supplier)
-    private void saveInformation(String folderName, String[] receiptInfo, String photoName) {
+    private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if (folderName == null) {
-            folderName = "Default";
-        }
-
-        UserData userData = new UserData(folderName,receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
+        UserData userData = new UserData(receiptInfo[4],receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
     //    Map<String, Object> dataToStore = new HashMap<>();
     //    dataToStore.put("test",userData);
         db.collection("data").document(CurrentId.getUserId()).update(receiptInfo[0], userData);
-
     }
 }

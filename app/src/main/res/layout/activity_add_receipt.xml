@@ -150,11 +150,11 @@
 
     <Spinner
         android:id="@+id/spi_addToFolder"
-        android:layout_width="140dp"
+        android:layout_width="108dp"
         android:layout_height="43dp"
         android:layout_marginStart="41dp"
-        android:layout_marginTop="132dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="516dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier_edit"
         app:layout_constraintTop_toTopOf="parent" />
