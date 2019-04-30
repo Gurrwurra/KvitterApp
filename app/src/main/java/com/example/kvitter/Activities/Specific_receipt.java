@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.kvitter.DatabaseLogic;
@@ -110,6 +111,7 @@ public class Specific_receipt extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         String url = uri.toString();
                         downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
+                        Toast.makeText(Specific_receipt.this, "Du har laddat hem filen: " + fileName, Toast.LENGTH_LONG).show();
                     }
                 });
             }

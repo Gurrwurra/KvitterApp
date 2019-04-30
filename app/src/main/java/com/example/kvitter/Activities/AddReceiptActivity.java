@@ -227,8 +227,6 @@ public class AddReceiptActivity extends AppCompatActivity {
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF);
-
-
     }
 
     private boolean checkPermission() {
