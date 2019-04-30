@@ -33,26 +33,6 @@ public class DataEngine {
     public DataEngine() {
     }
 
-    /*
-    #####################LATHUND FÖR DATABASEN##################################
-FÖR ATT HÄMTA KEY TILL MAPP SÅ SKALL VÄRDEN VARA NULL (name = null) MEN folderName = SpecificFolderName
-FÖR ATT HÄMTA KEY TILL KVITTO SÅ ÄR DET get(namnPåKvittot)
-FÖR ATT HÄMTA ETT VÄRDE FRÅN KVITTO SÅ ÄR DET T EX ****  .get(namnPåKvittot.amount) för att få beloppet på det kvittot   *****
-
-EXEMPELKOD:
-    DocumentSnapshot document = task.getResult();
-
-###DETTA HÄMTAR SUPPLIER FÖR SPECIFIKT KVITTO
-    document.get(namnPåKvittot + ".supplier").toString();
-
-###DETTA SÄTTER ETT VÄRDE FÖR SPECIFIKT KVITTO
-    UserData newData = new UserData();
-    UserData userData = new UserData("t1","t1Kvitto","500","testarLäggaTill,"tstFoto,"henrik, 1);
-    db.collection("data").document(CurrentId.getUserId()).update("nytt kvitto", userData);
-
-######################################################################################
- */
-
 /*
 VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser();" IS CALLED TO CREATE NEW USER
  */
@@ -67,20 +47,28 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //TODO toast message
                                     System.out.println("Finns redan konto med dessa uppgifter");
-                                    //    System.out.println(document.getId() + " => " + document.getData());
-                                }
+                               }
                             }
                                 else {
                                     createUser(context);
                                 }
 
                         } else {
+                            //TODO toast message
                             System.out.println("Error getting documents: " + task.getException());
                         }
                     }
                 });
     }
+
+    /**
+     * Method to update name of specific folder. Removes old key and creates a new object in database with newFolderName as key
+     * @param newFolderName name of new folder
+     * @param oldFolderName name of folder to change
+     * @param data object data for current folder
+     */
     public void updateFolder(String newFolderName, String oldFolderName, UserData data) {
         Map<String, Object> newValues = new HashMap<>();
         Map<String, Object> removeOldKey = new HashMap<>();
@@ -93,6 +81,12 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
         updateReceiptsInFolder(oldFolderName, newFolderName);
     }
 
+    /**
+     * Method to update folderName for all receipts in current folder that changes name
+     * Retrievs object from database and updates their folderName to new value (newFolderName)
+     * @param oldFolderName
+     * @param newFolderName
+     */
     private void updateReceiptsInFolder(String oldFolderName, String newFolderName) {
         db.collection("data").document(CurrentId.getUserId())
                 .get()
@@ -122,15 +116,20 @@ VALIDATES IF CURRENT DATA ALREADY EXISTS IN DATABASE, IF NOT, METHOD "createUser
 /*
 SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
  */
+
+    /**
+     * Method to update data in specific receipt - if keyName is unchanged then method will overwrite data in that object with value from param data
+     * else if keyName is changed (name of receipt) then method will remove that object from database and create a new one with new keyValue from data.getName
+     * @param oldKeyName
+     * @param data
+     */
     public void updateReciept(String oldKeyName, UserData data) {
         Map<String, Object> newValues = new HashMap<>();
 
-        //VALIDERAR ATT KEY MATCHAR OCH SKRIVER ÖVER BEFINTLIGT DOKUMENT
         if (oldKeyName.contains(data.getName())) {
             newValues.put(oldKeyName, data);
             db.collection("data").document(CurrentId.getUserId()).update(newValues);
         }
-        //OM ANVÄNDAREN BYTER NAMN PÅ KVITTO (KEY) SÅ TAS GAMLA MAPPEN BORT OCH DEN NYA SKAPAS
         else {
             Map<String, Object> removeOldKey = new HashMap<>();
             removeOldKey.put(oldKeyName,FieldValue.delete());
@@ -141,7 +140,11 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
         }
     }
 
-    public void createFolder(Context context, String folderName) {
+    /**
+     * Method to create new folder with folderName from user input and store it in database
+     * @param folderName
+     */
+    public void createFolder(String folderName) {
         UserData newFolder = new UserData();
         newFolder.setFolderName(folderName);
         newFolder.setType(0);
@@ -150,6 +153,10 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
         db.collection("data").document(CurrentId.getUserId()).update(newValues);
     }
 
+    /**
+     * Method to create default map for new user. Creates map "Övriga kvitton" in users data.document
+     * @param id = id of document from new user
+     */
     public void createFolderNewUser(String id){
         UserData newFolder = new UserData();
         newFolder.setFolderName("Övriga kvitton");
@@ -158,9 +165,12 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
         newValues.put("Övriga kvitton",newFolder);
         db.collection("data").document(id).update(newValues);
     }
-    /*
-CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
- */
+
+    /**
+     * Method to create new user, gets object user from static class CurrentUser.getUser()
+     * retrievs id for new document and calls method createFolderNewUser
+     * @param context
+     */
     public void createUser(Context context) {
         User user = CurrentUser.getUser();
         db = FirebaseFirestore.getInstance();
@@ -184,8 +194,13 @@ CREATES NEW USER IN COLLECTION "users" WITH USER OJECT FROM STATIC CLASS
                     }
                 });
     }
-    /*
-    VALIDATES PASSWORD AND PERSONAL NUMBER AND RETURNS StartActivity.class IF DATA IS CORRECT
+
+    /**
+     * Method to validate user input with database. Searching database to see if field for personalNumber and password matches
+     * user input - to determine if user enter correct data.  If successful method will return Activity "StartActivity.class"
+     * else method will show toast and ask user to try again
+     * @param context
+     * @param mProgress
      */
     public void validateUser(Context context, ProgressDialog mProgress) {
         User user = CurrentUser.getUser();

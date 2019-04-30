@@ -39,7 +39,7 @@ public class newFolderActivity extends AppCompatActivity implements View.OnClick
         switch (btn.getId()) {
             case R.id.btn_save_new_folder: {
                 DataEngine engine = new DataEngine();
-                engine.createFolder(this,folder.getText().toString());
+                engine.createFolder(folder.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), MyReceiptActivity.class);
                 startActivity(intent);
                 break;

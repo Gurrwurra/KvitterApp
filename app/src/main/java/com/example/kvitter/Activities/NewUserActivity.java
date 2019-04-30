@@ -37,7 +37,11 @@ public class NewUserActivity extends AppCompatActivity implements View.OnClickLi
         save = findViewById(R.id.btn_saveUser);
         regret = findViewById(R.id.btn_regret_user);
     }
-
+    /*
+    onClickListener -
+    case btn_saveUser : Method will retrieve all data from user input - create new User object as static.class (CurrentUser) and validate it in method checkIfUserExists
+    case btn_regret_user : Method will redirect to Activity "LoginActivity.class"
+     */
     public void onClick(View v) {
         Button btn = (Button) v;
         switch (btn.getId()) {
