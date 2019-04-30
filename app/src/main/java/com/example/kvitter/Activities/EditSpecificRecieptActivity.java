@@ -135,17 +135,12 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
      */
     private void setValuesUpdate() {
         UserData updatedReceipt = new UserData();
-        String name_rec = name.getText().toString();
-        String amount_rec = amount.getText().toString();
-        String supplier_rec = supplier.getText().toString();
-        String comment_rec = comment.getText().toString();
-        String folderName_rec = String.valueOf(folder.getSelectedItem());
-        updatedReceipt.setName(name_rec);
-        updatedReceipt.setAmount(amount_rec);
-        updatedReceipt.setSupplier(supplier_rec);
-        updatedReceipt.setComment(comment_rec);
+        updatedReceipt.setName(name.getText().toString());
+        updatedReceipt.setAmount(amount.getText().toString());
+        updatedReceipt.setSupplier(supplier.getText().toString());
+        updatedReceipt.setComment(comment.getText().toString());
         updatedReceipt.setPhotoRef(receipt.getPhotoRef());
-        updatedReceipt.setFolderName(folderName_rec);
+        updatedReceipt.setFolderName(String.valueOf(folder.getSelectedItem()));
         updatedReceipt.setType(1);
         DataEngine engine = new DataEngine();
         engine.updateReciept(receipt.getName(), updatedReceipt);
