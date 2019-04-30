@@ -9,32 +9,25 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-/**
- * Denna klass ansvarar för att spara bilden som användaren tog för att lägga till en produkt lokalt samt
- * "formaterar"/skalar om den till en thumbnail.
- */
 public class ImageHelper {
 
     private static final Integer MAX_IMAGE_DIMENSION = 512;
     private static final int ROTATION_DEGREES = 90;
 
-
-    static byte[] data;
-
+    /**
+     * Creates a temporary file for the photo the user has taken.
+     * @param context
+     * @return
+     * @throws IOException
+     */
     public static File createImageFile(Context context) throws IOException {
-
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -46,26 +39,15 @@ public class ImageHelper {
         return image;
     }
 
-    /*public static Bitmap scaleImage(int targetW, int targetH, String photoPath) throws IOException {
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(photoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-       // photoFile is a File class.
-
-        return BitmapFactory.decodeFile(photoPath, bmOptions);
-    }*/
-
+    /**
+     * Checks if the orientation of the photo is wrong and then corrects it. It uses method getOrientation
+     * to get the current orientation of the photo.
+     * @param context context from the activity
+     * @param photoUri the Uri of the photo
+     * @return
+     * @throws IOException
+     */
     public static Bitmap getCorrectlyOrientedImage(Context context, Uri photoUri) throws IOException {
-
         InputStream is = context.getContentResolver().openInputStream(photoUri);
         BitmapFactory.Options dbo = new BitmapFactory.Options();
         dbo.inJustDecodeBounds = true;
@@ -99,20 +81,22 @@ public class ImageHelper {
         }
         is.close();
 
-        // if the orientation is not 0, we have to do a rotation.
         if (orientation > 0) {
             Matrix matrix = new Matrix();
             matrix.postRotate(orientation);
 
             srcBitmap = Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.getWidth(), srcBitmap.getHeight(), matrix, true);
         }
-
         return srcBitmap;
     }
 
-
+    /**
+     * Gets the orientation of the photo
+     * @param photoUri Uri from the photo
+     * @return
+     * @throws IOException
+     */
     public static int getOrientation(Uri photoUri) throws IOException {
-
         ExifInterface exif = new ExifInterface(photoUri.getPath());
         int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 
@@ -127,13 +111,18 @@ public class ImageHelper {
                 orientation = ROTATION_DEGREES * 3;
                 break;
             default:
-                // Default case, image is not rotated
                 orientation = 0;
         }
 
         return orientation;
     }
 
+    /**
+     * Returns the file path for the file.
+     * @param context from the activity
+     * @param contentUri uri from the photo
+     * @return
+     */
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
