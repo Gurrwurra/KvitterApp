@@ -224,34 +224,6 @@ public class DatabaseLogic {
                     });
         }
     }
-    /**
-     * The user creates a new folder for receipts
-     * @param folderName
-     * @param context
-     */
-    public void addNewfolder(String folderName, Context context){
-
-
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        System.out.println(CurrentId.getUserId());
-        DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
-
-        if(folderName != null || folderName != "") {
-
-            Map<String, Object> folder = new HashMap<>();
-            Map<String, Object> addFolder = new HashMap<>();
-            addFolder.put("!" + folderName, "");
-            folder.put("folder", addFolder);
-            myRef.set(folder, SetOptions.merge());
-
-            Toast.makeText(context, "Mappen " + folderName + " har lagts till.", Toast.LENGTH_SHORT).show();
-        }else{
-            //TODO: Kolla om mappen användaren skapar redan finns
-            Toast.makeText(context, "Namnet på mappen finns redan.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     /**
      * Deletes the receipt from database
