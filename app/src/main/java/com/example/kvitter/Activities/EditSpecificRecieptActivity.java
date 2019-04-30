@@ -45,7 +45,9 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_specific_recipet);
 
         bindViews();
+        setText();
         addListiners();
+        populateSpinner(this);
     }
 
     /**
@@ -60,12 +62,12 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         save = findViewById(R.id.btn_save_changes);
         delete = findViewById(R.id.btn_delete_re);
         change_pic = findViewById(R.id.btn_change_pic);
-
+    }
+    private void setText() {
         name.setText(receipt.getName());
         amount.setText(receipt.getAmount());
         supplier.setText(receipt.getSupplier());
         comment.setText(receipt.getComment());
-        populateSpinner(this);
     }
 
     /**
