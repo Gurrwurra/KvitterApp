@@ -5,16 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.example.kvitter.Activities.EditSpecificRecieptActivity;
 import com.example.kvitter.Activities.Specific_receipt;
 import com.example.kvitter.Activities.StartActivity;
-import com.example.kvitter.Activities.Validate_reciept;
 import com.example.kvitter.Util.CurrentId;
-import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.ImageHelper;
 import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +31,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 public class DatabaseLogic {
@@ -43,7 +38,15 @@ public class DatabaseLogic {
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
- //GETS CURRENT SEQ. NO AND RUNS METHOD "updateSequenceNumber" WITH SEQ. NO AS PARAMETER
+
+    /**
+     * Fetches the sequence number to give a photo/ file reference a unique value
+     * @param context from the activity
+     * @param filePath uri from photo or file
+     * @param receiptInfo receipt information that will be send to method saveInformation
+     * @param validate validation of it is a file or photo
+     * @param fileName if it is a file name of the file
+     */
     public void newSequenceNumber (Context context, Uri filePath, String[] receiptInfo, int validate, String fileName) {
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("photo_sequence").document("sequence");
@@ -65,7 +68,10 @@ public class DatabaseLogic {
         });
     }
 
-//UPDATES SEQ.NO IN DOCS BY 1.
+    /**
+     * Updates the sequence number to reference a unique photo or file
+     * @param seqNo old sequence number
+     */
     public void updateSequenceNumber(int seqNo) {
         int newSeq = seqNo +1;
         Map<String, Object> seq = new HashMap<>();
@@ -87,7 +93,13 @@ public class DatabaseLogic {
                 });
     }
 
-
+    /**
+     * Gets Sequence number for the updated photo from old receipt.
+     * Calls method updateSequenceNumber to update the sequence number
+     * @param context from activity
+     * @param filePath uri from the photo
+     * @param receipt object of the receipt to update the photo
+     */
     public void newSequenceNumberForNewPhoto (Context context, Uri filePath, UserData receipt) {
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("photo_sequence").document("sequence");
@@ -108,10 +120,10 @@ public class DatabaseLogic {
 
     /**
      * Uploads image to Firebase storage
-     * @param context
-     * @param filePath
-     * @param seq
-     * @param receiptsInfo
+     * @param context from the activity
+     * @param filePath uri from the photo to upload
+     * @param seq sequence number from method newSequenceNumber
+     * @param receiptsInfo receipt information that will be send to method saveInformation
      */
     private void savePDF(Context context, Uri filePath, int seq, String[] receiptsInfo, String fileName){
         storage = FirebaseStorage.getInstance();
@@ -157,10 +169,10 @@ public class DatabaseLogic {
 
     /**
      * Uploads image to Firebase storage
-     * @param context
-     * @param filePath
-     * @param seq
-     * @param receiptsInfo
+     * @param context from the activity
+     * @param filePath uri from the photo to upload
+     * @param seq sequence number from method newSequenceNumber
+     * @param receiptsInfo receipt information that will be send to method saveInformation
      */
     private void savePhoto(Context context, Uri filePath, int seq, String[] receiptsInfo){
         storage = FirebaseStorage.getInstance();
@@ -219,6 +231,8 @@ public class DatabaseLogic {
      */
     public void addNewfolder(String folderName, Context context){
 
+
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         System.out.println(CurrentId.getUserId());
         DocumentReference myRef = db.collection("user_data").document(CurrentId.getUserId());
@@ -239,6 +253,10 @@ public class DatabaseLogic {
 
     }
 
+    /**
+     * Deletes the receipt from database
+     * @param receipt object of the receipt
+     */
     public void deleteReceipt(UserData receipt){
         db = FirebaseFirestore.getInstance();
 
@@ -266,10 +284,10 @@ public class DatabaseLogic {
     }
 
     /**
-     * Uploads image to Firebase storage
-     * @param context
-     * @param filePath
-     * @param seq
+     * Updates photo from a receipt
+     * @param context from activity
+     * @param filePath uri of the photo
+     * @param seq sequence number for the photo
      */
     private void updatePhoto(Context context, Uri filePath, int seq, UserData receipt){
         storage = FirebaseStorage.getInstance();
@@ -327,18 +345,15 @@ public class DatabaseLogic {
         }
     }
     /**
-     * Saves reveipt to default folder for a specific user
-     * @param receiptInfo
-     * @param photoName
+     * Saves receipt that users created
+     * @param receiptInfo the values that the user entered from AddReceiptActivity
+     * @param photoName photo/file reference from method savePhoto or savePDF
      */
 
-    //String folderName, String name, String amount, String comment, String photoRef, String supplier)
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         UserData userData = new UserData(receiptInfo[4],receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
-    //    Map<String, Object> dataToStore = new HashMap<>();
-    //    dataToStore.put("test",userData);
         db.collection("data").document(CurrentId.getUserId()).update(receiptInfo[0], userData);
     }
 }

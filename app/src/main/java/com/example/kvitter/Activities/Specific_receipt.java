@@ -19,7 +19,6 @@ import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Specific_receipt extends AppCompatActivity {
@@ -27,9 +26,8 @@ public class Specific_receipt extends AppCompatActivity {
     private ImageView receipt_image;
     private Button edit;
     private Button share;
-    UserData receipt;
-
-    String fileName;
+    private UserData receipt;
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +36,7 @@ public class Specific_receipt extends AppCompatActivity {
         bindViews();
         setListiners();
         setValues();
+        setListiners();
     }
 
     /**
