@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.kvitter.DataEngine;
-import com.example.kvitter.DatabaseLogic;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.CurrentReceipt;
@@ -39,6 +38,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
     private Button change_pic;
 
     UserData receipt = CurrentReceipt.getReceipt();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,9 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         addListiners();
     }
 
+    /**
+     * Binds elements to the right view
+     */
     private void bindViews() {
         name = findViewById(R.id.txt_specific_name_edit);
         amount = findViewById(R.id.txt_specific_amount_edit);
@@ -63,9 +66,14 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         supplier.setText(receipt.getSupplier());
         comment.setText(receipt.getComment());
         populateSpinner(this);
-
     }
-    private void populateSpinner (Context context) {
+
+    /**
+     * Populates the dropdownlist with the different folders the user has created.
+     *
+     * @param context from the activity
+     */
+    private void populateSpinner(Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<String> folderNames = new ArrayList<>();
         db.collection("data").document(CurrentId.getUserId())
@@ -85,44 +93,29 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item, folderNames);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, folderNames);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         folder.setAdapter(adapter);
                     }
                 });
     }
 
-
-
+    /**
+     * Sets the different buttons to the correct functions
+     */
     private void addListiners() {
-
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  Intent intent = new Intent(EditSpecificRecieptActivity.this, AcceptDeleteActivity.class);
-                  startActivity(intent);
+                Intent intent = new Intent(EditSpecificRecieptActivity.this, AcceptDeleteActivity.class);
+                startActivity(intent);
             }
         });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserData updatedReciept = new UserData();
-                String name_rec = name.getText().toString();
-                String amount_rec = amount.getText().toString();
-                String supplier_rec = supplier.getText().toString();
-                String comment_rec = comment.getText().toString();
-                String folderName_rec = String.valueOf(folder.getSelectedItem());
-                updatedReciept.setName(name_rec);
-                updatedReciept.setAmount(amount_rec);
-                updatedReciept.setSupplier(supplier_rec);
-                updatedReciept.setComment(comment_rec);
-                updatedReciept.setPhotoRef(receipt.getPhotoRef());
-                updatedReciept.setFolderName(folderName_rec);
-                updatedReciept.setType(1);
-                DataEngine engine = new DataEngine();
-                engine.updateReciept(receipt.getName(),updatedReciept);
-
+                setValuesUpdate();
                 Intent intent = new Intent(EditSpecificRecieptActivity.this, MyReceiptActivity.class);
                 startActivity(intent);
             }
@@ -137,6 +130,24 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         });
     }
 
-    //TODO: ändra bild
-
+    /**
+     * Sets the values the user has written to update the object. Starts updateReciept in DataEngine-class
+     */
+    private void setValuesUpdate() {
+        UserData updatedReceipt = new UserData();
+        String name_rec = name.getText().toString();
+        String amount_rec = amount.getText().toString();
+        String supplier_rec = supplier.getText().toString();
+        String comment_rec = comment.getText().toString();
+        String folderName_rec = String.valueOf(folder.getSelectedItem());
+        updatedReceipt.setName(name_rec);
+        updatedReceipt.setAmount(amount_rec);
+        updatedReceipt.setSupplier(supplier_rec);
+        updatedReceipt.setComment(comment_rec);
+        updatedReceipt.setPhotoRef(receipt.getPhotoRef());
+        updatedReceipt.setFolderName(folderName_rec);
+        updatedReceipt.setType(1);
+        DataEngine engine = new DataEngine();
+        engine.updateReciept(receipt.getName(), updatedReceipt);
+    }
 }

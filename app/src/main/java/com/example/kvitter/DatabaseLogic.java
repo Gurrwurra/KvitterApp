@@ -265,33 +265,6 @@ public class DatabaseLogic {
         });
     }
 
-    public void updateReceipt(UserData receipt, String name, String amount, String supplier, String comment, String photoRef){
-
-
-        db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> removeReceipt = new HashMap<>();
-        removeReceipt.put("data", FieldValue.arrayRemove(receipt));
-
-        db.collection("data").document(CurrentId.getUserId())
-                .update(removeReceipt);
-
-        if(photoRef != null){
-            receipt.setPhotoRef(photoRef);
-        }
-
-        receipt.setName(name);
-        receipt.setAmount(amount);
-        receipt.setSupplier(supplier);
-        receipt.setComment(comment);
-
-       Map<String, Object> addUserToArrayMap = new HashMap<>();
-       addUserToArrayMap.put("data", FieldValue.arrayUnion(receipt));
-
-
-       db.collection("data").document(CurrentId.getUserId()).update(addUserToArrayMap);
-    }
-
     /**
      * Uploads image to Firebase storage
      * @param context
@@ -331,7 +304,6 @@ public class DatabaseLogic {
                             DataEngine engine = new DataEngine();
                             receipt.setPhotoRef(photoName);
                             engine.updateReciept(receipt.getName(),receipt);
-                       //     updateReceipt(receipt, receipt.getName(), receipt.getAmount(), receipt.getSupplier(), receipt.getComment(), photoName);
                             Intent intent = new Intent(context, Specific_receipt.class);
                             context.startActivity(intent);
 

@@ -36,8 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +88,10 @@ public class AddReceiptActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Binds elements to the right view
+     */
     private void bindViews(){
         folder = findViewById(R.id.spi_addToFolder);
         recieptPic = findViewById(R.id.receiptImage);
@@ -103,11 +105,14 @@ public class AddReceiptActivity extends AppCompatActivity {
         file = findViewById(R.id.txt_file_path);
     }
 
+    /**
+     * Sets the different buttons to the correct functions
+     */
     private void setListiners(){
         recieptPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               takePhoto();
+                dispatchTakePictureIntent();
             }
         });
 
@@ -121,11 +126,16 @@ public class AddReceiptActivity extends AppCompatActivity {
         PDFUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDownloads();
+                openFiles();
             }
         });
 
         save.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Sets temporary keys too the values the user has written and Uri and file of the photo/document the user has choosen
+             * so it can validated in validate_receipt-activity.
+             * @param v
+             */
             @Override
             public void onClick(View v) {
                 String folderName = String.valueOf(folder.getSelectedItem());
@@ -148,6 +158,11 @@ public class AddReceiptActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Populates the dropdownlist with the different folders the user has created.
+     * @param context from the activity
+     */
     private void populateSpinner (Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<String> folderNames = new ArrayList<>();
@@ -175,10 +190,9 @@ public class AddReceiptActivity extends AppCompatActivity {
                 });
     }
 
-    private void takePhoto() {
-        dispatchTakePictureIntent();
-    }
-
+    /**
+     * Starts the camera and starts method thats creates temporary file.
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -198,6 +212,13 @@ public class AddReceiptActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * When photo/file is taken on result its sets Uri for the photo/file depending if the user has taken, chosen a photo
+     * or choosen a PDF.
+     * @param requestCode for the different options, if the user has choosen a file, photo or taken one.
+     * @param resultCode if the procedure went right or wrong
+     * @param data from the result
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -219,12 +240,17 @@ public class AddReceiptActivity extends AppCompatActivity {
                     }
                 }else if(requestCode == PICK_PDF && resultCode == RESULT_OK){
                     fileUri = data.getData();
-
                     fileName = getFileName(fileUri);
+                    file.setText(fileName);
                     validate = 1;
                 }
     }
 
+    /**
+     * Sets the the picture the user choosen or taken to a thumbnail. Starts getCorrectlyOrientedImage in class ImageHelper
+     * to get correct position of the photo.
+     * @throws IOException
+     */
     private void setPic() throws IOException {
         Uri uri = Uri.fromFile(photoFile);
         Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
@@ -253,20 +279,28 @@ public class AddReceiptActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens gallery of photos on the users phone
+     */
     private void openGallery(){
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
-    private void openDownloads(){
+    /**
+     * Open the users documents folder on their phone and allows them to choose documents with the format PDF.
+     */
+    private void openFiles(){
         Intent intent = new Intent();
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF);
-
-
     }
 
+    /**
+     * Checks if the user has granted the application to access their camera, photo gallery or documents folder.
+     * @return
+     */
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(AddReceiptActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (result == PackageManager.PERMISSION_GRANTED) {
@@ -276,6 +310,9 @@ public class AddReceiptActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ask the user permission to access their camera, photo gallery and documents folder.
+     */
     private void requestPermission() {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(AddReceiptActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -285,6 +322,12 @@ public class AddReceiptActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Writes if the user has granted it or not.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -298,6 +341,11 @@ public class AddReceiptActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Returns the name of the file the user has choosen
+     * @param uri from the file the user has choosen.
+     * @return
+     */
     public String getFileName(Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
