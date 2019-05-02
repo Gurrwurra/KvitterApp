@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MyReceiptActivity">
+    tools:context=".Activities.MyReceiptActivity"
+    android:background="@color/background_color">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/folder_list"
@@ -12,7 +13,7 @@
         android:layout_height="520dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintBottom_toTopOf="@+id/FAB_folder"
         app:layout_constraintTop_toBottomOf="@+id/btn_sort"
         tools:layout_editor_absoluteX="0dp" />
 
