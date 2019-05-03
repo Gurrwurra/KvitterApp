@@ -9,7 +9,7 @@ import android.widget.EditText;
 import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
 
-public class newFolderActivity extends AppCompatActivity implements View.OnClickListener {
+public class newFolderActivity extends NavigationActivity implements View.OnClickListener {
     private EditText folder;
     private Button saveFolder, regretFolder;
 
@@ -18,6 +18,7 @@ public class newFolderActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_folder);
         bindViews();
+        runNavigation(R.id.activity_newFolder);
     }
 
     private void bindViews() {
