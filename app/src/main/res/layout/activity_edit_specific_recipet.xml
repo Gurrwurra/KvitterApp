@@ -7,158 +7,198 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_light">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_color"
-        android:textAlignment="viewStart">
+    <ScrollView
+        android:layout_width="80dp"
+        android:layout_height="683dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" >
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="218dp"
-        android:layout_height="264dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="97dp"
-        android:src="@drawable/english"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:textAlignment="viewStart">
 
-    <EditText
-        android:id="@+id/txt_specific_name_edit"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="218dp"
+                android:layout_height="264dp"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="97dp"
+                android:src="@drawable/english"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/txt_specific_supplier_edit"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_name_edit" />
+            <EditText
+                android:id="@+id/txt_specific_name_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_title" />
 
-    <EditText
-        android:id="@+id/txt_specific_comment_edit"
-        android:layout_width="332dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="46dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_supplier_edit" />
+            <EditText
+                android:id="@+id/txt_specific_supplier_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_supplier_title" />
 
-    <EditText
-        android:id="@+id/txt_specific_amount_edit"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="49dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txt_specific_comment_edit"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            <EditText
+                android:id="@+id/txt_specific_comment_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_note_title" />
 
-    <TextView
-        android:id="@+id/txt_specific_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="83dp"
-        android:text="Rubrik"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount_edit"
-        app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/txt_specific_amount_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount-title" />
 
-    <TextView
-        android:id="@+id/txt_specific_amount-title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="102dp"
-        android:text="Belopp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount_edit"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:text="Namn"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <TextView
-        android:id="@+id/txt_specific_supplier_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="21dp"
-        android:text="Leverantör"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_supplier_edit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_name_edit" />
+            <TextView
+                android:id="@+id/txt_specific_amount-title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:text="Belopp"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_name_edit" />
 
-    <TextView
-        android:id="@+id/txt_specific_folder_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="133dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="102dp"
-        android:text="Mapp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier_title"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount_edit" />
+            <TextView
+                android:id="@+id/txt_specific_supplier_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:text="Leverantör"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount_edit" />
 
-    <TextView
-        android:id="@+id/txt_specific_note_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
-        android:layout_marginEnd="168dp"
-        android:text="Kommentar"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_comment_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_folder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="188dp"
+                android:layout_marginTop="20dp"
+                android:text="Mapp"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment_edit" />
 
-    <Button
-        android:id="@+id/btn_save_changes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:layout_marginEnd="208dp"
-        android:text="Spara ändringar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment_edit" />
+            <TextView
+                android:id="@+id/txt_specific_note_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:text="Kommentar"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_supplier_edit" />
 
-    <Button
-        android:id="@+id/btn_delete_re"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:layout_marginEnd="88dp"
-        android:text="Ta bort"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment_edit" />
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="160dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="125dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorPrimary"
+                android:drawableRight="@drawable/ic_save_black_24dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Spara ändringar"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toTopOf="@+id/btn_delete_re"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_change_pic" />
 
-    <Spinner
-        android:id="@+id/spi_folder_edit"
-        android:layout_width="140dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginEnd="49dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier_edit"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_folder_title" />
+            <Button
+                android:id="@+id/btn_delete_re"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="145dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/button_secondary"
+                android:drawableRight="@drawable/ic_delete_black_24dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Ta bort"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button2" />
 
-    <Button
-        android:id="@+id/btn_change_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="162dp"
-        android:text="Ändra bild"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment_edit" />
-    </android.support.constraint.ConstraintLayout>
+            <Spinner
+                android:id="@+id/spi_folder_edit"
+                android:layout_width="151dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="128dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_folder_title" />
+
+            <Button
+                android:id="@+id/btn_change_pic"
+                android:layout_width="160dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="125dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/colorPrimary"
+                android:drawableRight="@drawable/ic_save_black_24dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Ändra bild/PDF"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spi_folder_edit"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
