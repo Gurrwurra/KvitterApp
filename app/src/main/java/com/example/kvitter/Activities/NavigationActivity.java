@@ -13,6 +13,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.kvitter.R;
+import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.CurrentReceipt;
+import com.example.kvitter.Util.CurrentUser;
 
 public class NavigationActivity extends AppCompatActivity {
     private DrawerLayout dl;
@@ -22,6 +25,7 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     public void runNavigation(int id) {
         dl = (DrawerLayout)findViewById(id);
         t = new ActionBarDrawerToggle(this, dl,R.string.common_open_on_phone, R.string.app_name);
@@ -35,12 +39,29 @@ public class NavigationActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 switch(id)
                 {
-                    case R.id.account:
-                        Toast.makeText(getApplicationContext(), "My Account",Toast.LENGTH_SHORT).show();break;
-                    case R.id.settings:
-                        Toast.makeText(getApplicationContext(), "Settings",Toast.LENGTH_SHORT).show();break;
-                    case R.id.mycart:
-                        Toast.makeText(getApplicationContext(), "My Cart",Toast.LENGTH_SHORT).show();break;
+                    case R.id.myAccount:
+                        Toast.makeText(getApplicationContext(), "Mina sidor",Toast.LENGTH_SHORT).show();
+                        Intent myAccount = new Intent(getApplicationContext(), MyAccountActivity.class);
+                        startActivity(myAccount);
+                        break;
+                    case R.id.myReciepts:
+                        Toast.makeText(getApplicationContext(), "Mina kvitton",Toast.LENGTH_SHORT).show();
+                        Intent myReciept = new Intent(getApplicationContext(), MyReceiptActivity.class);
+                        startActivity(myReciept);
+                        break;
+                    case R.id.newReceipt:
+                        Toast.makeText(getApplicationContext(), "Nytt kvitto",Toast.LENGTH_SHORT).show();
+                        Intent newReciept = new Intent(getApplicationContext(), AddReceiptActivity.class);
+                        startActivity(newReciept);
+                        break;
+                    case R.id.logOut:
+                        Toast.makeText(getApplicationContext(), "Loggar ut..",Toast.LENGTH_SHORT).show();
+                        Intent logOut  = new Intent(getApplicationContext(), LoginActivity.class);
+                        CurrentId.setUserId(null);
+                        CurrentUser.setUser(null);
+                        CurrentReceipt.setReceipt(null);
+                        startActivity(logOut);
+                        break;
                     default:
                         return true;
                 }
@@ -48,6 +69,7 @@ public class NavigationActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
