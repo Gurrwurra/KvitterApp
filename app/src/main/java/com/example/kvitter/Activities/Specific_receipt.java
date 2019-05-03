@@ -21,7 +21,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
-public class Specific_receipt extends AppCompatActivity {
+public class Specific_receipt extends NavigationActivity {
     private TextView name, amount, supplier, comment, folderName, file;
     private ImageView receipt_image;
     private Button edit;
@@ -34,7 +34,7 @@ public class Specific_receipt extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_reciept);
         bindViews();
-        setListiners();
+        runNavigation(R.id.activity_specificReceipt);
         setValues();
         setListiners();
     }

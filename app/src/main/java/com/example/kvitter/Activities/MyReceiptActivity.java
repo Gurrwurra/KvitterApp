@@ -3,7 +3,6 @@ package com.example.kvitter.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,9 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MyReceiptActivity extends AppCompatActivity {
+public class MyReceiptActivity extends NavigationActivity {
     private RecyclerView folderView;
-    private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton fab;
     List<UserData> usersReceiptList = new ArrayList<>();
     List<String> folderData = new ArrayList<>();
@@ -31,12 +29,11 @@ public class MyReceiptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_receipt);
+        runNavigation(R.id.activity_myReceipt);
         bindViews();
         populateAdapterList(this);
         addListiners();
     }
-
-
     /*
     OnClick - Starts activity "newFolderActivity" to add new folder
      */
