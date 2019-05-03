@@ -5,7 +5,7 @@
         android:icon="@drawable/common_google_signin_btn_icon_light_focused"
         android:title="My Account"/>
     <item android:id="@+id/settings"
-        android:icon="@drawable/kvitterlogo"
+        android:icon="@drawable/common_google_signin_btn_icon_light_normal"
         android:title="Settings"/>
     <item android:id="@+id/mycart"
         android:icon="@drawable/common_google_signin_btn_icon_light_normal_background"

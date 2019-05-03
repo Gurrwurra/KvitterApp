@@ -1,5 +1,6 @@
 package com.example.kvitter.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +11,16 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
@@ -41,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 
 public class AddReceiptActivity extends AppCompatActivity {
-
     private Spinner folder;
     private ImageButton recieptPic;
     private Button imageUpload;
@@ -52,31 +56,29 @@ public class AddReceiptActivity extends AppCompatActivity {
     private EditText supplier;
     private EditText comment;
     private TextView file;
-
     private static final int PICK_IMAGE = 100;
     private static final int PICK_PDF = 1000;
     private static final int PERMISSION_REQUEST_CODE = 1;
 
-
     private String currentPhoto;
-
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final String CURRENT_PHOTO = "currentPhoto";
-
     int validate = 0;
     Uri photoURI = null;
     File photoFile = null;
-
     Uri fileUri = null;
-
     String fileName = null;
+
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_receipt);
         populateSpinner(this);
-
+        getNavigation();
         if (Build.VERSION.SDK_INT >= 23)
         {
             if (checkPermission())
@@ -87,6 +89,34 @@ public class AddReceiptActivity extends AppCompatActivity {
                 requestPermission(); // Code for permission
             }
         }
+
+
+    }
+    public void getNavigation() {
+        dl = (DrawerLayout)findViewById(R.id.activity_addReceipt);
+        t = new ActionBarDrawerToggle(this, dl,R.string.common_open_on_phone, R.string.action_sign_in);
+        dl.addDrawerListener(t);
+        t.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        nv = (NavigationView)findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.account:
+                        Toast.makeText(getApplicationContext(), "My Account",Toast.LENGTH_SHORT).show();break;
+                    case R.id.settings:
+                        Toast.makeText(getApplicationContext(), "Settings",Toast.LENGTH_SHORT).show();break;
+                    case R.id.mycart:
+                        Toast.makeText(getApplicationContext(), "My Cart",Toast.LENGTH_SHORT).show();break;
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
     }
 
     /**
