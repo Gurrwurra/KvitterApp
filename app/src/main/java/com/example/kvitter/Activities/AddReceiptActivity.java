@@ -130,24 +130,29 @@ public class AddReceiptActivity extends NavigationActivity {
              */
             @Override
             public void onClick(View v) {
-                String folderName = String.valueOf(folder.getSelectedItem());
-                Intent intent = new Intent(AddReceiptActivity.this, Validate_reciept.class);
-                intent.putExtra("name", title.getText().toString());
-                intent.putExtra("amount", amount.getText().toString());
-                intent.putExtra("supplier", supplier.getText().toString());
-                intent.putExtra("comment", comment.getText().toString());
-                intent.putExtra("photoPath", currentPhoto);
-                intent.putExtra("validate", validate);
-                intent.putExtra("folderName", folderName);
-                if(photoURI != null) {
-                    intent.putExtra("uri", photoURI.toString());
-                    intent.putExtra("fileOfPhoto", photoFile.toString());
-                }else if(fileUri != null) {
-                    intent.putExtra("fileUri", fileUri.toString());
-                    intent.putExtra("fileName", fileName);
-                }
-                startActivity(intent);
-            }
+                String titleValidate = title.getText().toString();
+                System.out.println(titleValidate);
+                if(photoURI == null || fileUri == null && titleValidate.equals(null) || titleValidate == ""){
+                    Toast.makeText(AddReceiptActivity.this, "Du måste fylla i ett namn och ladda upp bild eller fil av fotot", Toast.LENGTH_LONG).show();
+
+            }else{
+                    String folderName = String.valueOf(folder.getSelectedItem());
+                    Intent intent = new Intent(AddReceiptActivity.this, Validate_reciept.class);
+                    intent.putExtra("name", title.getText().toString());
+                    intent.putExtra("amount", amount.getText().toString());
+                    intent.putExtra("supplier", supplier.getText().toString());
+                    intent.putExtra("comment", comment.getText().toString());
+                    intent.putExtra("photoPath", currentPhoto);
+                    intent.putExtra("validate", validate);
+                    intent.putExtra("folderName", folderName);
+                    if(photoURI != null) {
+                        intent.putExtra("uri", photoURI.toString());
+                        intent.putExtra("fileOfPhoto", photoFile.toString());
+                    }else if(fileUri != null) {
+                        intent.putExtra("fileUri", fileUri.toString());
+                        intent.putExtra("fileName", fileName);
+                    }
+                    startActivity(intent);}}
         });
     }
 
