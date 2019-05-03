@@ -19,9 +19,10 @@ public class NewUserActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user);
+        getSupportActionBar().hide();
+        bindViews();
         save.setOnClickListener(this);
         regret.setOnClickListener(this);
-        bindViews();
     }
 
     private void bindViews() {

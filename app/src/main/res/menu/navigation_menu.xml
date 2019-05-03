@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/myAccount"
-        android:icon="@drawable/common_google_signin_btn_icon_light_focused"
+        android:icon="@drawable/ic_my_pages_outline_black_24dp"
         android:title="Mina sidor"/>
     <item android:id="@+id/myReciepts"
-        android:icon="@drawable/common_google_signin_btn_icon_light_normal"
+        android:icon="@drawable/ic_receipt_black_24dp"
         android:title="Mina kvitton"/>
     <item android:id="@+id/newReceipt"
-        android:icon="@drawable/common_google_signin_btn_icon_light_focused"
+        android:icon="@drawable/ic_note_add_black_24dp"
         android:title="Lägga till kvitto"/>
     <item android:id="@+id/logOut"
-        android:icon="@drawable/common_google_signin_btn_icon_light_normal_background"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
         android:title="Logga ut"/>
 </menu>
