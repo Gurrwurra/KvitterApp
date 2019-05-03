@@ -25,17 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class EditSpecificRecieptActivity extends AppCompatActivity {
+public class EditSpecificRecieptActivity extends NavigationActivity {
 
-    private EditText name;
-    private EditText amount;
-    private EditText supplier;
+    private EditText name,amount,supplier,comment;
     private Spinner folder;
-    private EditText comment;
-
-    private Button delete;
-    private Button save;
-    private Button change_pic;
+    private Button delete,save,change_pic;
 
     UserData receipt = CurrentReceipt.getReceipt();
 
@@ -48,6 +42,7 @@ public class EditSpecificRecieptActivity extends AppCompatActivity {
         setText();
         addListiners();
         populateSpinner(this);
+        runNavigation(R.id.activity_editSpecReceipt);
     }
 
     /**

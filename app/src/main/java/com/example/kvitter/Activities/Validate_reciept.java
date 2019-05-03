@@ -17,29 +17,22 @@ import com.example.kvitter.Util.ImageHelper;
 import java.io.File;
 import java.io.IOException;
 
-public class Validate_reciept extends AppCompatActivity {
+public class Validate_reciept extends NavigationActivity {
 
-    private TextView title;
-    private TextView amount;
-    private TextView supplier;
-    private TextView comment;
-    private TextView file;
-    private TextView folder;
+    private TextView title, amount,supplier, comment,file, folder;
     private ImageView recieptImage;
-
-    private Button accept;
-    private Button deny;
+    private Button accept,deny;
 
     private File fileOfPhoto;
-    Uri uri;
+    Uri uri, fileUri;
     int validatePhotoOrigin;
-    Uri fileUri;
     String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_validate_reciept);
+        runNavigation(R.id.activity_validate);
         bindViews();
         try {
             validateValues();

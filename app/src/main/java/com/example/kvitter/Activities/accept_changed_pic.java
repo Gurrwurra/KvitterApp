@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import com.example.kvitter.Util.UserData;
 
-public class accept_changed_pic extends AppCompatActivity {
+public class accept_changed_pic extends NavigationActivity {
     private String currentPhoto;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -34,9 +34,9 @@ public class accept_changed_pic extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_changed_pic);
-
         bindViews();
         setListiners();
+        runNavigation(R.id.activity_accChangedPic);
     }
 
     /**

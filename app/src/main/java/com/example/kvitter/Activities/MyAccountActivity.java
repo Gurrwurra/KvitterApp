@@ -8,13 +8,14 @@ import android.widget.Button;
 
 import com.example.kvitter.R;
 
-public class MyAccountActivity extends AppCompatActivity implements View.OnClickListener{
+public class MyAccountActivity extends NavigationActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
         setListiners();
+        runNavigation(R.id.activity_myAcc);
     }
 
     private void setListiners() {

@@ -11,7 +11,7 @@ import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.UserData;
 
-public class AcceptDeleteActivity extends AppCompatActivity {
+public class AcceptDeleteActivity extends NavigationActivity {
 
     private Button accept;
     private Button decline;
@@ -23,6 +23,7 @@ public class AcceptDeleteActivity extends AppCompatActivity {
 
         bindViews();
         addListiners();
+        runNavigation(R.id.activityAcceptRemoval);
     }
 
     private void addListiners() {
