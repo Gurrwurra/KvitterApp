@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,8 +48,8 @@ import java.util.Map;
 
 public class AddReceiptActivity extends NavigationActivity {
     private Spinner folder;
-    private ImageButton recieptPic;
-    private Button imageUpload, save, PDFUpload;
+    private ImageView recieptPic;
+    private Button imageUpload, save, PDFUpload, takePic;
     private EditText title, amount, supplier, comment;
     private TextView file;
     private static final int PICK_IMAGE = 100;
@@ -95,13 +96,14 @@ public class AddReceiptActivity extends NavigationActivity {
         supplier = findViewById(R.id.etxt_supplier);
         comment = findViewById(R.id.etxt_note_reciept);
         file = findViewById(R.id.txt_file_path);
+        takePic = findViewById(R.id.btn_take_pic);
     }
 
     /**
      * Sets the different buttons to the correct functions
      */
     private void setListiners(){
-        recieptPic.setOnClickListener(new View.OnClickListener() {
+        takePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
@@ -236,6 +238,8 @@ public class AddReceiptActivity extends NavigationActivity {
                         e.printStackTrace();
                     }
                 }else if(requestCode == PICK_PDF && resultCode == RESULT_OK){
+                    recieptPic.setVisibility(View.GONE);
+                    photoURI = null;
                     fileUri = data.getData();
                     fileName = getFileName(fileUri);
                     file.setText(fileName);
@@ -249,6 +253,7 @@ public class AddReceiptActivity extends NavigationActivity {
      * @throws IOException
      */
     private void setPic() throws IOException {
+        recieptPic.setVisibility(View.VISIBLE);
         Uri uri = Uri.fromFile(photoFile);
         Bitmap imageBitmap = ImageHelper.getCorrectlyOrientedImage(getApplicationContext(), uri);
         recieptPic.setImageBitmap(imageBitmap);
