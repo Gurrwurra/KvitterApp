@@ -24,10 +24,12 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 public class Specific_receipt extends NavigationActivity {
     private TextView name, amount, supplier, comment, folderName, file;
     private ImageView receipt_image;
-    private Button edit;
-    private Button share;
+    private Button edit, share, download;
     private UserData receipt;
     private String fileName;
+
+    int validate = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class Specific_receipt extends NavigationActivity {
         folderName = findViewById(R.id.txt_specific_folder);
         receipt_image = findViewById(R.id.specific_img);
         file = findViewById(R.id.txt_file_from);
+        download = findViewById(R.id.btn_download);
     }
 
 
@@ -69,7 +72,7 @@ public class Specific_receipt extends NavigationActivity {
             }
         });
 
-        file.setOnClickListener(new View.OnClickListener() {
+        download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StorageReference ref = FirebaseStorage.getInstance().getReference();
@@ -79,7 +82,11 @@ public class Specific_receipt extends NavigationActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         String url = uri.toString();
-                        downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
+                        if(validate == 1) {
+                            downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
+                        } else {
+                            downloadFile(Specific_receipt.this, fileName, ".jpeg", DIRECTORY_DOWNLOADS, url);
+                        }
                         Toast.makeText(Specific_receipt.this, "Du har laddat hem filen: " + fileName, Toast.LENGTH_LONG).show();
                     }
                 });
@@ -112,6 +119,7 @@ public class Specific_receipt extends NavigationActivity {
             receipt_image.setVisibility(View.INVISIBLE);
             file.setVisibility(View.VISIBLE);
             file.setText(fileName);
+            validate = 1;
         } else
         {
             file.setVisibility(View.GONE);
@@ -120,6 +128,7 @@ public class Specific_receipt extends NavigationActivity {
             GlideApp.with(this /* context */)
                     .load(mStorage)
                     .into(receipt_image);
+            validate = 0;
         }
     }
 

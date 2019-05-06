@@ -7,152 +7,224 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_light">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_color"
-        android:textAlignment="viewStart">
-    <ImageView
-        android:id="@+id/specific_img"
-        android:layout_width="218dp"
-        android:layout_height="264dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="97dp"
-        android:src="@drawable/english"
+    <ScrollView
+        android:layout_width="399dp"
+        android:layout_height="729dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/txt_specific_name"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/specific_img" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:textAlignment="viewStart">
 
-    <TextView
-        android:id="@+id/txt_specific_supplier"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_name" />
+            <ImageView
+                android:id="@+id/specific_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="96dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="97dp"
+                android:src="@drawable/english"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txt_specific_comment"
-        android:layout_width="332dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="46dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_supplier" />
+            <TextView
+                android:id="@+id/txt_specific_name"
+                android:layout_width="144dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toStartOf="@+id/txt_specific_amount"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_title" />
 
-    <TextView
-        android:id="@+id/txt_specific_folder"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="49dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount" />
+            <TextView
+                android:id="@+id/txt_specific_supplier"
+                android:layout_width="144dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toStartOf="@+id/txt_specific_folder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_name" />
 
-    <TextView
-        android:id="@+id/txt_specific_amount"
-        android:layout_width="144dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="49dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/specific_img" />
+            <TextView
+                android:id="@+id/txt_specific_comment"
+                android:layout_width="247dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="82dp"
+                android:layout_marginEnd="82dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_note_title" />
 
-    <TextView
-        android:id="@+id/txt_specific_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="83dp"
-        android:text="Rubrik"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_name"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_folder"
+                android:layout_width="144dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="30dp"
+                app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_folder_title" />
 
-    <TextView
-        android:id="@+id/txt_specific_amount-title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="102dp"
-        android:text="Belopp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_amount"
+                android:layout_width="144dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="30dp"
+                app:layout_constraintStart_toEndOf="@+id/txt_specific_name"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount-title" />
 
-    <TextView
-        android:id="@+id/txt_specific_supplier_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:text="Leverantör"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_supplier"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="131dp"
+                android:text="Namn"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/txt_specific_amount-title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn-download" />
 
-    <TextView
-        android:id="@+id/txt_specific_folder_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="102dp"
-        android:text="Mapp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_folder"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_amount-title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="147dp"
+                android:text="Belopp"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txt_specific_name"
+                app:layout_constraintTop_toBottomOf="@+id/btn-download" />
 
-    <TextView
-        android:id="@+id/txt_specific_note_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
-        android:layout_marginEnd="168dp"
-        android:text="Kommentar"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_comment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/txt_specific_supplier_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="96dp"
+                android:text="Leverantör"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txt_specific_supplier"
+                app:layout_constraintEnd_toStartOf="@+id/txt_specific_folder_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_name" />
 
-    <Button
-        android:id="@+id/btn_edit_specific_reciept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="30dp"
-        android:text="Redigera"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment" />
+            <TextView
+                android:id="@+id/txt_specific_folder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="156dp"
+                android:text="Mapp"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txt_specific_folder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txt_specific_supplier"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount" />
 
-    <Button
-        android:id="@+id/btn_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="143dp"
-        android:layout_marginTop="30dp"
-        android:text="Dela"
-        app:layout_constraintStart_toEndOf="@+id/btn_edit_specific_reciept"
-        app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment" />
+            <TextView
+                android:id="@+id/txt_specific_note_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="163dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="163dp"
+                android:layout_marginBottom="1dp"
+                android:text="Kommentar"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/txt_specific_comment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_folder" />
 
-    <TextView
-        android:id="@+id/txt_file_from"
-        android:layout_width="316dp"
-        android:layout_height="142dp"
-        android:layout_marginStart="177dp"
-        android:layout_marginEnd="176dp"
-        android:layout_marginBottom="124dp"
-        android:text="TextView"
-        android:textSize="24sp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/txt_specific_amount-title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="parent" />
-</android.support.constraint.ConstraintLayout>
+            <Button
+                android:id="@+id/btn_edit_specific_reciept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="128dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="127dp"
+                android:background="@drawable/button_action"
+                android:drawableRight="@drawable/ic_edit_black_24dp"
+                android:text="Redigera"
+                android:textAlignment="viewStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_specific_comment" />
+
+            <Button
+                android:id="@+id/btn_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="127dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="127dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_action"
+                android:drawableRight="@drawable/ic_share_black_24dp"
+                android:text="Dela"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_edit_specific_reciept"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/txt_file_from"
+                android:layout_width="316dp"
+                android:layout_height="142dp"
+                android:layout_marginStart="177dp"
+                android:layout_marginEnd="176dp"
+                android:layout_marginBottom="40dp"
+                android:text="TextView"
+                android:textSize="24sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/btn-download"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.525"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn-download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_action"
+                android:layout_marginStart="161dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="162dp"
+                android:text="Ladda ned bild/pdf"
+                android:drawableRight="@drawable/ic_file_download_black_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/specific_img" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
 <android.support.design.widget.NavigationView
 android:layout_width="wrap_content"
 android:layout_height="match_parent"

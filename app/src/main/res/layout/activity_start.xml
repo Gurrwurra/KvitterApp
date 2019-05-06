@@ -15,12 +15,12 @@
 
         <Button
             android:id="@+id/btn_addReceipt"
-            android:layout_width="210dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="116dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button"
             android:drawableRight="@drawable/ic_navigate_next_black_24dp"
             android:paddingLeft="5dp"
             android:text="Lägg till kvitto"
@@ -31,12 +31,12 @@
 
         <Button
             android:id="@+id/btn_myReceipt"
-            android:layout_width="210dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="102dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="102dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button"
             android:drawableRight="@drawable/ic_navigate_next_black_24dp"
             android:paddingLeft="5dp"
             android:text="Mina kvitton"
@@ -47,12 +47,12 @@
 
         <Button
             android:id="@+id/btn_account"
-            android:layout_width="210dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="116dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button"
             android:drawableRight="@drawable/ic_navigate_next_black_24dp"
             android:paddingLeft="5dp"
             android:text="Mitt konto"
@@ -63,12 +63,12 @@
 
         <Button
             android:id="@+id/btn_logOut"
-            android:layout_width="210dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
             android:layout_marginTop="36dp"
             android:layout_marginEnd="116dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button"
             android:drawableRight="@drawable/ic_navigate_next_black_24dp"
             android:text="logga ut"
             android:textAlignment="textStart"
@@ -79,8 +79,8 @@
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="230dp"
-            android:layout_height="169dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="142dp"
             android:layout_marginTop="88dp"
             android:layout_marginEnd="140dp"
