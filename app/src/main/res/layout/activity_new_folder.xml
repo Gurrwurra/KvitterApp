@@ -12,64 +12,65 @@
         android:layout_height="match_parent"
         android:background="@color/background_color"
         android:textAlignment="viewStart">
-    <TextView
-        android:id="@+id/txt_new_folder_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="64dp"
-        android:text="Namn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_add_new_folder" />
 
-    <TextView
-        android:id="@+id/txt_add_new_folder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="155dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="129dp"
-        android:text="Lägg till en ny mapp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/txt_new_folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="98dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="270dp"
+            android:text="Namn"
+            android:textColor="@color/grey_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/new_folder_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/new_folder_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintStart_toEndOf="@+id/txt_new_folder_name"
-        app:layout_constraintTop_toBottomOf="@+id/txt_add_new_folder" />
+        <EditText
+            android:id="@+id/new_folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="98dp"
+            android:layout_marginEnd="99dp"
+            android:background="@drawable/custom_edit_text"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/btn_save_new_folder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_new_folder_name" />
 
-    <Button
-        android:id="@+id/btn_save_new_folder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="72dp"
-        android:text="Spara"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_folder_name" />
+        <Button
+            android:id="@+id/btn_save_new_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="127dp"
+            android:background="@drawable/button_action"
+            android:drawableRight="@drawable/ic_save_black_24dp"
+            android:text="Spara"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_folder_name" />
 
-    <Button
-        android:id="@+id/btn_regret_new_folder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="8dp"
-        android:text="Ångra"
-        app:layout_constraintEnd_toStartOf="@+id/btn_save_new_folder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_folder_name" />
+        <Button
+            android:id="@+id/btn_regret_new_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="127dp"
+            android:background="@drawable/button_secondary"
+            android:drawableRight="@drawable/ic_cancel_black_24dp"
+            android:text="Avbryt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_save_new_folder" />
     </android.support.constraint.ConstraintLayout>
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"

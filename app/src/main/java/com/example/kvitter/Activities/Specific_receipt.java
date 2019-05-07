@@ -20,14 +20,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class Specific_receipt extends NavigationActivity {
     private TextView name, amount, supplier, comment, folderName, file;
     private ImageView receipt_image;
-    private Button edit;
-    private Button share;
+    private Button edit, share, download;
     private UserData receipt;
     private String fileName;
+
+    int validate = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class Specific_receipt extends NavigationActivity {
         folderName = findViewById(R.id.txt_specific_folder);
         receipt_image = findViewById(R.id.specific_img);
         file = findViewById(R.id.txt_file_from);
+        download = findViewById(R.id.btn_download);
     }
 
 
@@ -69,7 +73,7 @@ public class Specific_receipt extends NavigationActivity {
             }
         });
 
-        file.setOnClickListener(new View.OnClickListener() {
+        download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StorageReference ref = FirebaseStorage.getInstance().getReference();
@@ -79,8 +83,14 @@ public class Specific_receipt extends NavigationActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         String url = uri.toString();
-                        downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
-                        Toast.makeText(Specific_receipt.this, "Du har laddat hem filen: " + fileName, Toast.LENGTH_LONG).show();
+                        if(validate == 1) {
+                            downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
+                            Toast.makeText(Specific_receipt.this, "Du har laddat hem filen: " + fileName, Toast.LENGTH_LONG).show();
+                        } else {
+                            downloadFile(Specific_receipt.this, fileName, ".jpeg", DIRECTORY_PICTURES, url);
+                            Toast.makeText(Specific_receipt.this, "Du har laddat hem bilden: " + fileName  + "\n Den finns nu i ditt galleri."
+                                    , Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -99,19 +109,24 @@ public class Specific_receipt extends NavigationActivity {
         comment.setText(receipt.getComment());
         folderName.setText(receipt.getFolderName());
 
-        String val = receipt.getPhotoRef();
+        String last = null;
 
-        String[] splitRef = val.split("\\.");
-        String last = splitRef[splitRef.length-1];
-
-        String first = splitRef[0];
-
-        if(last.contains("pdf")) {
+        try {
+            String val = receipt.getPhotoRef();
+            String[] splitRef = val.split("\\.");
+            last = splitRef[splitRef.length - 1];
+            String first = splitRef[0];
             String[] fileNameSplit = first.split("\\/", 2);
             fileName = fileNameSplit[1];
-            receipt_image.setVisibility(View.INVISIBLE);
+        } catch (Exception e){
+
+        }
+
+        if(last.contains("pdf")) {
+            receipt_image.setVisibility(View.GONE);
             file.setVisibility(View.VISIBLE);
             file.setText(fileName);
+            validate = 1;
         } else
         {
             file.setVisibility(View.GONE);
@@ -120,6 +135,7 @@ public class Specific_receipt extends NavigationActivity {
             GlideApp.with(this /* context */)
                     .load(mStorage)
                     .into(receipt_image);
+            validate = 0;
         }
     }
 
