@@ -1,6 +1,5 @@
 package com.example.kvitter.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,22 +10,17 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,7 +43,8 @@ import java.util.Map;
 public class AddReceiptActivity extends NavigationActivity {
     private Spinner folder;
     private ImageView recieptPic;
-    private Button imageUpload, save, PDFUpload, takePic;
+    private Button imageUpload, save, PDFUpload, takePic, add_folder, save_folder, cancel_folder;
+    private ConstraintLayout add_folder_layout;
     private EditText title, amount, supplier, comment;
     private TextView file;
     private static final int PICK_IMAGE = 100;
@@ -97,6 +92,11 @@ public class AddReceiptActivity extends NavigationActivity {
         comment = findViewById(R.id.etxt_note_reciept);
         file = findViewById(R.id.txt_file_path);
         takePic = findViewById(R.id.btn_take_pic);
+
+        add_folder = findViewById(R.id.btn_add_folder_recact);
+        cancel_folder = findViewById(R.id.btn_cancel_add_folder);
+        add_folder_layout = findViewById(R.id.add_folder_layout);
+        save_folder = findViewById(R.id.btn_save_folder_recact);
     }
 
     /**
@@ -134,7 +134,7 @@ public class AddReceiptActivity extends NavigationActivity {
             public void onClick(View v) {
                 String titleValidate = title.getText().toString();
                 System.out.println(titleValidate);
-                if(photoURI == null || fileUri == null && titleValidate.equals(null) || titleValidate == ""){
+                if(photoURI == null || file.getText().toString() == null && titleValidate.equals(null)){
                     Toast.makeText(AddReceiptActivity.this, "Du måste fylla i ett namn och ladda upp bild eller fil av fotot", Toast.LENGTH_LONG).show();
 
             }else{
@@ -156,6 +156,21 @@ public class AddReceiptActivity extends NavigationActivity {
                     }
                     startActivity(intent);}}
         });
+
+        add_folder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_folder_layout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cancel_folder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_folder_layout.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     /**
@@ -224,6 +239,8 @@ public class AddReceiptActivity extends NavigationActivity {
                 if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
                     try {
                         setPic();
+                        fileUri = null;
+                        file.setVisibility(View.INVISIBLE);
                         validate = 0;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -233,6 +250,8 @@ public class AddReceiptActivity extends NavigationActivity {
                     photoFile = new File(ImageHelper.getRealPathFromURI(getApplicationContext(), photoURI));
                     try {
                         setPic();
+                        fileUri = null;
+                        file.setVisibility(View.INVISIBLE);
                         validate = 0;
                     } catch (IOException e) {
                         e.printStackTrace();

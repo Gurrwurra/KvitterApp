@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -100,7 +101,7 @@ public class DatabaseLogic {
      * @param filePath uri from the photo
      * @param receipt object of the receipt to update the photo
      */
-    public void newSequenceNumberForNewPhoto (Context context, Uri filePath, UserData receipt) {
+    public void newSequenceNumberForNewPhoto (Context context, Uri filePath, UserData receipt, int validate, String fileName) {
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("photo_sequence").document("sequence");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -109,7 +110,11 @@ public class DatabaseLogic {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     int seqNumber =  Integer.parseInt(document.getData().get("seq_id").toString());
-                    updatePhoto(context, filePath, seqNumber, receipt);
+                    if(validate == 0) {
+                        updatePhoto(context, filePath, seqNumber, receipt);
+                    } else {
+                        updatePDF(context, filePath, seqNumber, receipt, fileName);
+                    }
                     updateSequenceNumber(seqNumber);
                 } else {
                     System.out.println("Cached get failed:" + task.getException()); }
@@ -253,6 +258,57 @@ public class DatabaseLogic {
                 //todo:meddelande
             }
         });
+    }
+
+    /**
+     * Updates PDF from a receipt
+     * @param context from activity
+     * @param filePath uri of the photo
+     * @param seq sequence number for the photo
+     */
+    private void updatePDF(Context context, Uri filePath, int seq, UserData receipt, String fileName){
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Laddar upp...");
+            progressDialog.show();
+            String photoName = "reciept/"+ seq + fileName + ".pdf";
+            StorageReference ref = storageReference.child(photoName);
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Nya PDFen är uppladdad", Toast.LENGTH_SHORT).show();
+                            StorageReference storageRef = storage.getReference();
+                            StorageReference desertRef = storageRef.child(receipt.getPhotoRef());
+                            desertRef.delete();
+                            DataEngine engine = new DataEngine();
+                            receipt.setPhotoRef(photoName);
+                            engine.updateReciept(receipt.getName(),receipt);
+                            Intent intent = new Intent(context, Specific_receipt.class);
+                            context.startActivity(intent);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(context, "Misslyckad uppladdning:  "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uppladdat "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 
     /**

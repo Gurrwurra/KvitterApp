@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class Specific_receipt extends NavigationActivity {
     private TextView name, amount, supplier, comment, folderName, file;
@@ -84,10 +85,12 @@ public class Specific_receipt extends NavigationActivity {
                         String url = uri.toString();
                         if(validate == 1) {
                             downloadFile(Specific_receipt.this, fileName, ".pdf", DIRECTORY_DOWNLOADS, url);
+                            Toast.makeText(Specific_receipt.this, "Du har laddat hem filen: " + fileName, Toast.LENGTH_LONG).show();
                         } else {
-                            downloadFile(Specific_receipt.this, fileName, ".jpeg", DIRECTORY_DOWNLOADS, url);
+                            downloadFile(Specific_receipt.this, fileName, ".jpeg", DIRECTORY_PICTURES, url);
+                            Toast.makeText(Specific_receipt.this, "Du har laddat hem bilden: " + fileName  + "\n Den finns nu i ditt galleri."
+                                    , Toast.LENGTH_LONG).show();
                         }
-                        Toast.makeText(Specific_receipt.this, "Du har laddat hem filen: " + fileName, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -106,17 +109,21 @@ public class Specific_receipt extends NavigationActivity {
         comment.setText(receipt.getComment());
         folderName.setText(receipt.getFolderName());
 
-        String val = receipt.getPhotoRef();
+        String last = null;
 
-        String[] splitRef = val.split("\\.");
-        String last = splitRef[splitRef.length-1];
-
-        String first = splitRef[0];
-
-        if(last.contains("pdf")) {
+        try {
+            String val = receipt.getPhotoRef();
+            String[] splitRef = val.split("\\.");
+            last = splitRef[splitRef.length - 1];
+            String first = splitRef[0];
             String[] fileNameSplit = first.split("\\/", 2);
             fileName = fileNameSplit[1];
-            receipt_image.setVisibility(View.INVISIBLE);
+        } catch (Exception e){
+
+        }
+
+        if(last.contains("pdf")) {
+            receipt_image.setVisibility(View.GONE);
             file.setVisibility(View.VISIBLE);
             file.setText(fileName);
             validate = 1;

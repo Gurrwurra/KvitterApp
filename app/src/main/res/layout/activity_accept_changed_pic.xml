@@ -28,29 +28,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_accept_change"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="174dp"
-        android:layout_marginEnd="265dp"
-        android:text="Ja"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_make_sure" />
+        <Button
+            android:id="@+id/btn_accept_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="127dp"
+            android:background="@drawable/button_action"
+            android:drawableRight="@drawable/ic_camera_alt_black_24dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="Ta en bild"
+            android:textAlignment="viewStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_make_sure" />
 
-    <Button
-        android:id="@+id/btn_decline_change"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="172dp"
-        android:layout_marginEnd="79dp"
-        android:text="Nej"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_accept_change"
-        app:layout_constraintTop_toBottomOf="@+id/txt_make_sure" />
+        <Button
+            android:id="@+id/btn_decline_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="127dp"
+            android:background="@drawable/button_secondary"
+            android:drawableRight="@drawable/ic_cancel_black_24dp"
+            android:padding="10dp"
+            android:text="avbryt"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_accept_pdf" />
+
+        <Button
+            android:id="@+id/btn_accept_get_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="127dp"
+            android:background="@drawable/button_action"
+            android:drawableRight="@drawable/ic_photo_library_black_24dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="Hämta bild"
+            android:textAlignment="viewStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_accept_change" />
+
+        <Button
+            android:id="@+id/btn_accept_pdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="127dp"
+            android:background="@drawable/button_action"
+            android:drawableRight="@drawable/ic_picture_as_pdf_black_24dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="Hämta PDF"
+            android:textAlignment="viewStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_accept_get_pic" />
     </android.support.constraint.ConstraintLayout>
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
