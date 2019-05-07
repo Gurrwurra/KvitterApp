@@ -9,8 +9,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
@@ -32,6 +36,8 @@ public class NavigationActivity extends AppCompatActivity {
         dl.addDrawerListener(t);
         t.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"black\">" + getString(R.string.title_navigation) + "</font>"));
         nv = (NavigationView)findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -72,16 +78,24 @@ public class NavigationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(t.onOptionsItemSelected(item))
+        if(t.onOptionsItemSelected(item)) {
             return true;
-
+        }
+            if(item.getItemId()== R.id.loggOut) {
+            Toast.makeText(getApplicationContext(), "Loggar ut..", Toast.LENGTH_SHORT).show();
+            Intent logOut = new Intent(getApplicationContext(), LoginActivity.class);
+            CurrentId.setUserId(null);
+            CurrentUser.setUser(null);
+            CurrentReceipt.setReceipt(null);
+            startActivity(logOut);
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_meny,menu);
+        return true;
     }
-
 }
