@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -30,6 +31,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -140,13 +145,14 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ seq + fileName + ".pdf";
-            saveInformation(receiptsInfo, photoName);
+
             StorageReference ref = storageReference.child(photoName);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
+                            saveInformation(receiptsInfo, photoName);
                             Toast.makeText(context, "Uppladdat", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, StartActivity.class);
                             context.startActivity(intent);
@@ -199,13 +205,14 @@ public class DatabaseLogic {
             progressDialog.setTitle("Laddar upp...");
             progressDialog.show();
             String photoName = "reciept/"+ UUID.randomUUID().toString() + "-" + seq;
-            saveInformation(receiptsInfo, photoName);
+
             StorageReference ref = storageReference.child(photoName);
             ref.putBytes(bytePhoto)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
+                            saveInformation(receiptsInfo, photoName);
                             Toast.makeText(context, "Uppladdat", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, StartActivity.class);
                             context.startActivity(intent);
@@ -380,8 +387,7 @@ public class DatabaseLogic {
 
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        UserData userData = new UserData(receiptInfo[4],receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1);
+        UserData userData = new UserData(receiptInfo[4],receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1, new Date());
         db.collection("data").document(CurrentId.getUserId()).update(receiptInfo[0], userData);
     }
 }

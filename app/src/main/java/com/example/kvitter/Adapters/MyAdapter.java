@@ -60,6 +60,13 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case UserData.RECIEPT_TYPE:
                     ((ReceiptViewHolder) holder).recieptName.setText(object.getName());
                     ((ReceiptViewHolder) holder).recieptAmount.setText("Amount: " +object.getAmount() + "\nMapp: " + object.getFolderName());
+                    String date = object.getDate();
+                    System.out.println("datuM : "+ date);
+                    String [] dateSplit = date.split(" ");
+                    String day = dateSplit[2];
+                    String month = dateSplit[1];
+                    ((ReceiptViewHolder) holder).txtDateDay.setText(day);
+                    ((ReceiptViewHolder) holder).txtDateMonth.setText(month);
                     break;
             }
         }
@@ -104,8 +111,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             editFolder = itemView.findViewById(R.id.btn_edit_folder);
             editFolder.setTag(itemView);
             editFolder.setOnClickListener(this);
-            folderName.setTag(itemView);
-            folderName.setOnClickListener(this);
             editFolderLayout = itemView.findViewById(R.id.edit_folder_layout);
 
         }
@@ -139,12 +144,13 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class ReceiptViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView recieptName;
-        private TextView recieptAmount;
+        private TextView recieptName,recieptAmount, txtDateDay, txtDateMonth;
         public ReceiptViewHolder(View itemView) {
             super(itemView);
             recieptName = (TextView) itemView.findViewById(R.id.receipt_name);
             recieptAmount = (TextView) itemView.findViewById(R.id.receipt_amount);
+            txtDateDay = (TextView) itemView.findViewById(R.id.txt_dateDay);
+            txtDateMonth = (TextView) itemView.findViewById(R.id.txt_DateMonth);
             recieptName.setTag(itemView);
             recieptName.setOnClickListener(this);
         }
