@@ -23,18 +23,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/etxt_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginEnd="98dp"
-                    android:background="@drawable/custom_edit_text"
-                    android:ems="10"
-                    android:inputType="textPersonName"
+                <ImageView
+                    android:id="@+id/receiptImage"
+                    android:layout_width="132dp"
+                    android:layout_height="124dp"
+                    android:layout_marginStart="139dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="140dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/ic_launcher" />
 
                 <Button
                     android:id="@+id/btn_upload_image"
@@ -53,134 +53,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_take_pic" />
 
-                <TextView
-                    android:id="@+id/txt_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="269dp"
-                    android:text="Namn"
-                    android:textColor="@color/grey_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_file_path" />
-
-                <TextView
-                    android:id="@+id/txt_file_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="177dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="176dp"
-                    android:textColor="@color/grey_color"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.482"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_pdf_upload" />
-
-                <EditText
-                    android:id="@+id/etxt_note_reciept"
-                    android:layout_width="211dp"
-                    android:layout_height="64dp"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginEnd="101dp"
-                    android:background="@drawable/custom_edit_text"
-                    android:ems="10"
-                    android:inputType="text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_comment" />
-
-                <Spinner
-                    android:id="@+id/spi_addToFolder"
-                    android:layout_width="151dp"
-                    android:layout_height="43dp"
-                    android:layout_marginStart="128dp"
-                    android:layout_marginEnd="132dp"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintBottom_toTopOf="@+id/btn_add_folder_recact"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                <TextView
-                    android:id="@+id/txt_suppier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="19dp"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="234dp"
-                    android:text="Leverantör"
-                    android:textColor="@color/grey_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etxt_total_amount" />
-
-                <Button
-                    android:id="@+id/btn_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/button_action"
-                    android:text="Gå vidare"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_folder_layout" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="185dp"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginEnd="185dp"
-                    android:text="Välj mapp"
-                    android:textColor="@color/grey_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/spi_addToFolder"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etxt_note_reciept" />
-
-                <EditText
-                    android:id="@+id/etxt_supplier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginEnd="98dp"
-                    android:background="@drawable/custom_edit_text"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_suppier" />
-
-                <TextView
-                    android:id="@+id/txt_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="99dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="262dp"
-                    android:text="Belopp"
-                    android:textColor="@color/grey_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etxt_name" />
-
                 <Button
                     android:id="@+id/btn_take_pic"
                     android:layout_width="match_parent"
@@ -198,18 +70,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/receiptImage" />
 
-                <ImageView
-                    android:id="@+id/receiptImage"
-                    android:layout_width="132dp"
-                    android:layout_height="124dp"
-                    android:layout_marginStart="139dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="140dp"
-                    android:visibility="gone"
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_action"
+                    android:text="Gå vidare"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    app:layout_constraintTop_toBottomOf="@+id/add_folder_layout" />
 
                 <Button
                     android:id="@+id/btn_pdf_upload"
@@ -228,8 +100,67 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_upload_image" />
 
+                <TextView
+                    android:id="@+id/txt_file_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="177dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="176dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.482"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_pdf_upload" />
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="269dp"
+                    android:text="Namn"
+                    android:textColor="@color/grey_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_file_path" />
+
                 <EditText
-                    android:id="@+id/etxt_total_amount"
+                    android:id="@+id/txt_name_validate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginEnd="98dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+
+                <TextView
+                    android:id="@+id/txt_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="262dp"
+                    android:text="Belopp"
+                    android:textColor="@color/grey_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_name_validate" />
+
+                <EditText
+                    android:id="@+id/txt_amount_validate"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginStart="99dp"
@@ -254,7 +185,76 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etxt_supplier" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_supplier_validate" />
+
+                <EditText
+                    android:id="@+id/txt_comment_validate"
+                    android:layout_width="211dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginEnd="101dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:ems="10"
+                    android:inputType="text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_comment" />
+
+                <TextView
+                    android:id="@+id/txt_suppier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="234dp"
+                    android:text="Leverantör"
+                    android:textColor="@color/grey_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_amount_validate" />
+
+                <EditText
+                    android:id="@+id/txt_supplier_validate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginEnd="98dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_suppier" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="185dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="185dp"
+                    android:text="Välj mapp"
+                    android:textColor="@color/grey_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/spi_addToFolder"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_comment_validate" />
+
+                <Spinner
+                    android:id="@+id/spi_addToFolder"
+                    android:layout_width="151dp"
+                    android:layout_height="43dp"
+                    android:layout_marginStart="128dp"
+                    android:layout_marginEnd="132dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_add_folder_recact"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
                 <Button
                     android:id="@+id/btn_add_folder_recact"

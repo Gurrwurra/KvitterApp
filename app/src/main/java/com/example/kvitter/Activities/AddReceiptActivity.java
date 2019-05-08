@@ -86,10 +86,10 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
     private void bindViews(){
         folder = findViewById(R.id.spi_addToFolder);
         recieptPic = findViewById(R.id.receiptImage);
-        title = findViewById(R.id.etxt_name);
-        amount = findViewById(R.id.etxt_total_amount);
-        supplier = findViewById(R.id.etxt_supplier);
-        comment = findViewById(R.id.etxt_note_reciept);
+        title = findViewById(R.id.txt_name_validate);
+        amount = findViewById(R.id.txt_amount_validate);
+        supplier = findViewById(R.id.txt_supplier_validate);
+        comment = findViewById(R.id.txt_comment_validate);
         file = findViewById(R.id.txt_file_path);
         folderName = findViewById(R.id.etxt_add_folder_recact);
 
