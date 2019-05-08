@@ -120,6 +120,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     saveFolder.setVisibility(View.GONE);
                     String newFolderName = editFolderName.getText().toString();
                     DataEngine engine = new DataEngine();
+                    //TODO krashar om null värde skickas in till update (kolla att det finns värde)
                     engine.updateFolder(newFolderName,folderName.getText().toString(),mList.get(getAdapterPosition()));
                     break;
                 }

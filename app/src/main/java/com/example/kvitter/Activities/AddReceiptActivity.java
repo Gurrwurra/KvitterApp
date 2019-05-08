@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.ImageHelper;
@@ -40,12 +41,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AddReceiptActivity extends NavigationActivity {
+public class AddReceiptActivity extends NavigationActivity implements View.OnClickListener {
     private Spinner folder;
     private ImageView recieptPic;
-    private Button imageUpload, save, PDFUpload, takePic, add_folder, save_folder, cancel_folder;
+
+
+
     private ConstraintLayout add_folder_layout;
-    private EditText title, amount, supplier, comment;
+    private EditText title, amount, supplier, comment, folderName;
     private TextView file;
     private static final int PICK_IMAGE = 100;
     private static final int PICK_PDF = 1000;
@@ -71,7 +74,7 @@ public class AddReceiptActivity extends NavigationActivity {
             if (checkPermission())
             {
                 bindViews();
-                setListiners();
+                setListeners();
             } else {
                 requestPermission(); // Code for permission
             }
@@ -83,61 +86,59 @@ public class AddReceiptActivity extends NavigationActivity {
     private void bindViews(){
         folder = findViewById(R.id.spi_addToFolder);
         recieptPic = findViewById(R.id.receiptImage);
-        imageUpload = findViewById(R.id.btn_upload_image);
-        PDFUpload = findViewById(R.id.btn_pdf_upload);
-        save = findViewById(R.id.btn_save);
         title = findViewById(R.id.etxt_name);
         amount = findViewById(R.id.etxt_total_amount);
         supplier = findViewById(R.id.etxt_supplier);
         comment = findViewById(R.id.etxt_note_reciept);
         file = findViewById(R.id.txt_file_path);
-        takePic = findViewById(R.id.btn_take_pic);
+        folderName = findViewById(R.id.etxt_add_folder_recact);
 
-        add_folder = findViewById(R.id.btn_add_folder_recact);
-        cancel_folder = findViewById(R.id.btn_cancel_add_folder);
+
         add_folder_layout = findViewById(R.id.add_folder_layout);
-        save_folder = findViewById(R.id.btn_save_folder_recact);
     }
-
+    private void setListeners() {
+        findViewById(R.id.btn_save_folder_recact).setOnClickListener(this);
+        findViewById(R.id.btn_take_pic).setOnClickListener(this);
+        findViewById(R.id.btn_upload_image).setOnClickListener(this);
+        findViewById(R.id.btn_pdf_upload).setOnClickListener(this);
+        findViewById(R.id.btn_save).setOnClickListener(this);
+        findViewById(R.id.btn_add_folder_recact).setOnClickListener(this);
+        findViewById(R.id.btn_cancel_add_folder).setOnClickListener(this);
+    }
     /**
      * Sets the different buttons to the correct functions
      */
-    private void setListiners(){
-        takePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        Button btn = (Button) v;
+        switch (btn.getId()) {
+            case R.id.btn_save_folder_recact: {
+                DataEngine engine = new DataEngine();
+                engine.createFolder(folderName.getText().toString());
+                populateSpinner(AddReceiptActivity.this);
+                add_folder_layout.setVisibility(View.GONE);
+                break;
+            }
+            case R.id.btn_take_pic: {
                 dispatchTakePictureIntent();
+                break;
             }
-        });
-
-        imageUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.btn_upload_image: {
                 openGallery();
+                break;
             }
-        });
-
-        PDFUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.btn_pdf_upload: {
                 openFiles();
+                break;
             }
-        });
-
-        save.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Sets temporary keys too the values the user has written and Uri and file of the photo/document the user has choosen
-             * so it can validated in validate_receipt-activity.
-             * @param v
-             */
-            @Override
-            public void onClick(View v) {
+            case R.id.btn_save: {
                 String titleValidate = title.getText().toString();
                 System.out.println(titleValidate);
-                if(photoURI == null || file.getText().toString() == null && titleValidate.equals(null)){
+                if (photoURI == null || file.getText().toString() == null && titleValidate.equals(null)) {
                     Toast.makeText(AddReceiptActivity.this, "Du måste fylla i ett namn och ladda upp bild eller fil av fotot", Toast.LENGTH_LONG).show();
+                    break;
 
-            }else{
+                } else {
                     String folderName = String.valueOf(folder.getSelectedItem());
                     Intent intent = new Intent(AddReceiptActivity.this, Validate_reciept.class);
                     intent.putExtra("name", title.getText().toString());
@@ -147,30 +148,26 @@ public class AddReceiptActivity extends NavigationActivity {
                     intent.putExtra("photoPath", currentPhoto);
                     intent.putExtra("validate", validate);
                     intent.putExtra("folderName", folderName);
-                    if(photoURI != null) {
+                    if (photoURI != null) {
                         intent.putExtra("uri", photoURI.toString());
                         intent.putExtra("fileOfPhoto", photoFile.toString());
-                    }else if(fileUri != null) {
+                    } else if (fileUri != null) {
                         intent.putExtra("fileUri", fileUri.toString());
                         intent.putExtra("fileName", fileName);
                     }
-                    startActivity(intent);}}
-        });
-
-        add_folder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    startActivity(intent);
+                    break;
+                }
+            }
+            case R.id.btn_add_folder_recact: {
                 add_folder_layout.setVisibility(View.VISIBLE);
+                break;
             }
-        });
-
-        cancel_folder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.btn_cancel_add_folder: {
                 add_folder_layout.setVisibility(View.GONE);
+                break;
             }
-        });
-
+        }
     }
 
     /**

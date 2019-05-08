@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void setProgressBar() {
         mProgress = new ProgressDialog(this);
-        mProgress.setTitle("Kollar uppgifter...");
+        mProgress.setTitle("Validerar uppgifter");
         mProgress.setMessage("Var god vänta...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
