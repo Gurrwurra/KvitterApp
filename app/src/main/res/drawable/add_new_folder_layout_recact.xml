@@ -3,4 +3,5 @@
 
     <stroke android:width="2dp" android:color="@color/button_secondary"></stroke>
     <corners android:radius="10dp"></corners>
+    <gradient android:startColor="@color/background_color" android:endColor="@color/background_color"></gradient>
 </shape>

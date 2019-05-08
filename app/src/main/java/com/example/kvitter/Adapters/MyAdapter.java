@@ -105,7 +105,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             editFolder.setTag(itemView);
             editFolder.setOnClickListener(this);
             folderName.setTag(itemView);
-            folderName.setOnClickListener(this);
+            //folderName.setOnClickListener(this);
             editFolderLayout = itemView.findViewById(R.id.edit_folder_layout);
 
         }
