@@ -30,7 +30,7 @@
                 android:layout_width="200dp"
                 android:layout_height="275dp"
                 android:layout_marginStart="170dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="169dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,62 +42,162 @@
                 android:layout_width="190dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="110dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="110dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_validate_img" />
 
             <TextView
-                android:id="@+id/txt_name_validate"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="65dp"
-                android:layout_marginTop="52dp"
-                android:text="name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_file" />
-
-            <TextView
-                android:id="@+id/txt_folderNameValidate"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="40dp"
-                android:text="folderName"
-                app:layout_constraintStart_toEndOf="@+id/txt_supplier_validate"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-            <TextView
-                android:id="@+id/txt_amount_validate"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="40dp"
-                android:text="amount"
-                app:layout_constraintStart_toEndOf="@+id/txt_name_validate"
-                app:layout_constraintTop_toBottomOf="@+id/txt_val_amo" />
-
-            <TextView
-                android:id="@+id/txt_supplier_validate"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="65dp"
-                android:text="supplier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_val_sup" />
-
-            <TextView
-                android:id="@+id/txt_comment_validate"
-                android:layout_width="match_parent"
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="88dp"
-                android:layout_marginEnd="88dp"
-                android:layout_marginBottom="20dp"
-                android:text="comment"
-                app:layout_constraintBottom_toTopOf="@+id/btn_accept_validate"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="356dp"
+                android:layout_marginEnd="270dp"
+                android:text="Namn"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/txt_name_validate"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginEnd="98dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+
+            <TextView
+                android:id="@+id/txt_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="262dp"
+                android:text="Belopp"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_val_com" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_name_validate" />
+
+            <EditText
+                android:id="@+id/txt_amount_validate"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginEnd="98dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_amount" />
+
+            <TextView
+                android:id="@+id/txt_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="227dp"
+                android:text="Kommentar"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_supplier_validate" />
+
+            <EditText
+                android:id="@+id/txt_comment_validate"
+                android:layout_width="211dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginEnd="101dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                android:inputType="text"
+                app:layout_constraintBottom_toTopOf="@+id/btn_accept_validate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_comment"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/txt_suppier"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="234dp"
+                android:text="Leverantör"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_folderNameValidate" />
+
+            <EditText
+                android:id="@+id/txt_supplier_validate"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginEnd="98dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_suppier" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="234dp"
+                android:text="Mapp"
+                android:textColor="@color/grey_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_amount_validate" />
+
+            <EditText
+                android:id="@+id/txt_folderNameValidate"
+                style="@style/Widget.AppCompat.AutoCompleteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="99dp"
+                android:layout_marginEnd="98dp"
+                android:background="@drawable/custom_edit_text"
+                android:ems="10"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.491"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <Button
                 android:id="@+id/btn_deny_validate"
@@ -120,7 +220,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="128dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="127dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_action"
@@ -130,77 +229,7 @@
                 android:textAlignment="textStart"
                 app:layout_constraintBottom_toTopOf="@+id/btn_deny_validate"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_comment_validate"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/txt_val_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="65dp"
-                android:layout_marginTop="34dp"
-                android:text="Namn"
-                android:textColor="@color/grey_color"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_name_validate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_file" />
-
-            <TextView
-                android:id="@+id/txt_val_sup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="65dp"
-                android:layout_marginTop="35dp"
-                android:text="Leverantör"
-                android:textColor="@color/grey_color"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_name_validate" />
-
-            <TextView
-                android:id="@+id/txt_val_amo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="32dp"
-                android:text="Belopp"
-                android:textColor="@color/grey_color"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/txt_name_validate"
-                app:layout_constraintTop_toBottomOf="@+id/txt_file" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="35dp"
-                android:text="Mapp"
-                android:textColor="@color/grey_color"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/txt_supplier_validate"
-                app:layout_constraintTop_toBottomOf="@+id/txt_amount_validate" />
-
-            <TextView
-                android:id="@+id/txt_val_com"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="88dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="238dp"
-                android:text="Kommentar"
-                android:textColor="@color/grey_color"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_supplier_validate" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

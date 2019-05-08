@@ -1,14 +1,17 @@
 package com.example.kvitter.Util;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
 import java.util.Map;
 
 public class UserData {
     public static final int FOLDER_TYPE = 0;
     public static final int RECIEPT_TYPE = 1;
-    private String folderName, name, amount, comment, photoRef, supplier;
+    private String folderName, name, amount, comment, photoRef, supplier, date;
     private int type;
 
-    public UserData(String folderName, String name, String amount, String comment, String photoRef, String supplier, int type) {
+    public UserData(String folderName, String name, String amount, String comment, String photoRef, String supplier, int type, Date date) {
         this.folderName = folderName;
         this.type = type;
         this.name = name;
@@ -16,6 +19,7 @@ public class UserData {
         this.comment = comment;
         this.photoRef = photoRef;
         this.supplier = supplier;
+        this.date = date.toString();
     }
     public UserData(String folderName, int type) {
         this.folderName = folderName;
@@ -25,7 +29,8 @@ public class UserData {
     public UserData() {
     }
 
-
+    public String getDate() {return date;}
+    public void setDate(String date) { this.date = date; }
     public int getType() {
         return type;
     }

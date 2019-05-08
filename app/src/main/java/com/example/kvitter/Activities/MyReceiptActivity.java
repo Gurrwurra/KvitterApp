@@ -13,9 +13,11 @@ import com.example.kvitter.Adapters.MyAdapter;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.UserData;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +91,7 @@ public class MyReceiptActivity extends NavigationActivity {
                                         newData.setPhotoRef(document.get(key + ".photoRef").toString());
                                         newData.setFolderName(document.get(key + ".folderName").toString());
                                         newData.setType(Integer.parseInt(document.get(key + ".type").toString()));
+                                        newData.setDate(document.get(key+".date").toString());
                                         usersReceiptList.add(newData);
                                 }
                                 }

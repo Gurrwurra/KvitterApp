@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +20,8 @@ import java.io.IOException;
 
 public class Validate_reciept extends NavigationActivity {
 
-    private TextView title, amount,supplier, comment,file, folder;
+    private EditText title, amount,supplier, comment, folder;
+    private TextView file;
     private ImageView recieptImage;
     private Button accept,deny;
 
