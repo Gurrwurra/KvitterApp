@@ -1,6 +1,7 @@
 package com.example.kvitter.Adapters;
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +85,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView folderName, txtFolderName;
         private EditText editFolderName;
         private ImageButton editFolder, saveFolder;
+        ConstraintLayout editFolderLayout;
 
         /*
         For each item in folderViewHolder - method binds every element in that item
@@ -91,19 +93,21 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public FolderViewHolder(View itemView) {
             super(itemView);
             editFolderName = itemView.findViewById(R.id.edit_spec_folder);
-            editFolderName.setVisibility(View.GONE);
+            //editFolderName.setVisibility(View.GONE);
             txtFolderName = itemView.findViewById(R.id.txt_editFolder_name);
-            txtFolderName.setVisibility(View.GONE);
+            //txtFolderName.setVisibility(View.GONE);
             folderName = itemView.findViewById(R.id.folder_name);
             saveFolder = itemView.findViewById(R.id.btn_save_editFolderName);
             saveFolder.setTag(itemView);
             saveFolder.setOnClickListener(this);
-            saveFolder.setVisibility(View.GONE);
+            //saveFolder.setVisibility(View.GONE);
             editFolder = itemView.findViewById(R.id.btn_edit_folder);
             editFolder.setTag(itemView);
             editFolder.setOnClickListener(this);
             folderName.setTag(itemView);
             folderName.setOnClickListener(this);
+            editFolderLayout = itemView.findViewById(R.id.edit_folder_layout);
+
         }
         /*
         OnClick listener for each item in FolderViewHolder
@@ -115,9 +119,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ImageButton btn = (ImageButton) v;
             switch (btn.getId()) {
                 case R.id.btn_save_editFolderName: {
-                    editFolderName.setVisibility(View.GONE);
-                    txtFolderName.setVisibility(View.GONE);
-                    saveFolder.setVisibility(View.GONE);
+                    editFolderLayout.setVisibility(View.GONE);
                     String newFolderName = editFolderName.getText().toString();
                     DataEngine engine = new DataEngine();
                     //TODO krashar om null värde skickas in till update (kolla att det finns värde)
@@ -125,9 +127,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     break;
                 }
                 case R.id.btn_edit_folder: {
-                    editFolderName.setVisibility(View.VISIBLE);
-                    txtFolderName.setVisibility(View.VISIBLE);
-                    saveFolder.setVisibility(View.VISIBLE);
+                    if(editFolderLayout.getVisibility() == View.VISIBLE){
+                        editFolderLayout.setVisibility(View.GONE);
+                    } else{
+                        editFolderLayout.setVisibility(View.VISIBLE);
+                    }
                     break;
                 }
             }
