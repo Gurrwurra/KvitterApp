@@ -20,8 +20,8 @@ import java.io.IOException;
 
 public class Validate_reciept extends NavigationActivity {
 
-    private EditText title, amount,supplier, comment, folder;
-    private TextView file;
+    private EditText title, amount,supplier, comment;
+    private TextView file, folder;
     private ImageView recieptImage;
     private Button accept,deny;
 
