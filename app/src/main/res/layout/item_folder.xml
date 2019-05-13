@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
-    android:background="@color/button_secondary"
+    android:background="@color/colorPrimary"
     android:padding="10dp"
     card_view:cardCornerRadius="4dp">
 
@@ -26,13 +26,11 @@
         android:id="@+id/btn_edit_folder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="26dp"
         android:background="@drawable/edit_button"
         android:padding="8dp"
         card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toEndOf="@+id/folder_name"
         card_view:layout_constraintTop_toTopOf="parent"
         card_view:srcCompat="@drawable/ic_edit_black_24dp" />
 
