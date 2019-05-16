@@ -21,7 +21,7 @@ import java.io.IOException;
 public class Validate_reciept extends NavigationActivity {
 
     private EditText title, amount,supplier, comment;
-    private TextView file, folder;
+    private TextView file, date,folder;
     private ImageView recieptImage;
     private Button accept,deny;
 
@@ -59,13 +59,15 @@ public class Validate_reciept extends NavigationActivity {
             @Override
             public void onClick(View v) {
 
-                String[] receiptInfo = new String[5];
+                String[] receiptInfo = new String[6];
 
                 receiptInfo[0] = title.getText().toString();
                 receiptInfo[1] = supplier.getText().toString();
                 receiptInfo[2] = amount.getText().toString();
                 receiptInfo[3] = comment.getText().toString();
                 receiptInfo[4] =folder.getText().toString();
+                receiptInfo[5] = date.getText().toString();
+
                 DatabaseLogic logic = new DatabaseLogic();
 
                 //depending if its photo or file it will start different methods for uploading the document
@@ -91,6 +93,7 @@ public class Validate_reciept extends NavigationActivity {
         String file_of = Extra.getString("file");
         String folderName = Extra.getString("folderName");
         String fileOfPh = Extra.getString("fileOfPhoto");
+        String dateOfReceipt = Extra.getString("date");
         validatePhotoOrigin = Extra.getInt("validate");
 
         if (file_of != null && validatePhotoOrigin == 0) {
@@ -101,6 +104,8 @@ public class Validate_reciept extends NavigationActivity {
         supplier.setText(supp);
         comment.setText(comm);
         folder.setText(folderName);
+        date.setText(dateOfReceipt);
+
 
       if(fileOfPh != null ) {
             fileOfPhoto = new File(fileOfPh);
@@ -127,7 +132,7 @@ public class Validate_reciept extends NavigationActivity {
         file = findViewById(R.id.txt_file);
         folder = findViewById(R.id.txt_folderNameValidate);
         recieptImage = findViewById(R.id.img_validate_img);
-
+        date = findViewById(R.id.txt_dateValidate);
         accept = findViewById(R.id.btn_accept_validate);
         deny = findViewById(R.id.btn_deny_validate);
     }

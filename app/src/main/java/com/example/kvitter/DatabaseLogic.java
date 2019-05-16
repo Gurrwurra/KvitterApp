@@ -387,7 +387,7 @@ public class DatabaseLogic {
 
     private void saveInformation(String[] receiptInfo, String photoName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        UserData userData = new UserData(receiptInfo[4],receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1, new Date());
+        UserData userData = new UserData(receiptInfo[4],receiptInfo[0],receiptInfo[2],receiptInfo[3],photoName,receiptInfo[1], 1,receiptInfo[5]);
         db.collection("data").document(CurrentId.getUserId()).update(receiptInfo[0], userData);
     }
 }
