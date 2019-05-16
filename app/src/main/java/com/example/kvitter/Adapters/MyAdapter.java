@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.kvitter.Activities.Specific_receipt;
@@ -94,6 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private ImageButton editFolder, saveFolder;
         ConstraintLayout editFolderLayout;
 
+
         /*
         For each item in folderViewHolder - method binds every element in that item
          */
@@ -121,8 +123,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
          */
         @Override
         public void onClick(View v) {
-            ImageButton btn = (ImageButton) v;
-            switch (btn.getId()) {
+            //ImageButton btn = (ImageButton) v;
+            switch (v.getId()) {
                 case R.id.btn_save_editFolderName: {
                     editFolderLayout.setVisibility(View.GONE);
                     String newFolderName = editFolderName.getText().toString();
@@ -145,6 +147,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public class ReceiptViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView recieptName,recieptAmount, txtDateDay, txtDateMonth;
+        ConstraintLayout itemReceipt;
+
         public ReceiptViewHolder(View itemView) {
             super(itemView);
             recieptName = (TextView) itemView.findViewById(R.id.receipt_name);
@@ -152,7 +156,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             txtDateDay = (TextView) itemView.findViewById(R.id.txt_dateDay);
             txtDateMonth = (TextView) itemView.findViewById(R.id.txt_DateMonth);
             recieptName.setTag(itemView);
-            recieptName.setOnClickListener(this);
+            itemReceipt = itemView.findViewById(R.id.item_receipt);
+            itemReceipt.setOnClickListener(this);
         }
 
         /*
@@ -160,11 +165,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
          */
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, Specific_receipt.class);
-            Toast toast = Toast.makeText(context, "DU VALDE ATT KLICKA PÅ KVITTOT: " + mList.get(getLayoutPosition()).getName(), Toast.LENGTH_LONG);
-            toast.show();
-            CurrentReceipt.setReceipt(mList.get(getLayoutPosition()));
-            context.startActivity(intent);
+                    Intent intent = new Intent(context, Specific_receipt.class);
+                    Toast toast = Toast.makeText(context, "DU VALDE ATT KLICKA PÅ KVITTOT: " + mList.get(getLayoutPosition()).getName(), Toast.LENGTH_LONG);
+                    toast.show();
+                    CurrentReceipt.setReceipt(mList.get(getLayoutPosition()));
+                    context.startActivity(intent);
         }
     }
 }

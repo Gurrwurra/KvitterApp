@@ -43,7 +43,7 @@ public class MyReceiptActivity extends NavigationActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyReceiptActivity.this, newFolderActivity.class);
+                Intent intent = new Intent(MyReceiptActivity.this, AddReceiptActivity.class);
                 startActivity(intent);
             }
         });
