@@ -61,15 +61,54 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((ReceiptViewHolder) holder).recieptName.setText(object.getName());
                     ((ReceiptViewHolder) holder).recieptAmount.setText("Amount: " +object.getAmount() + "\nMapp: " + object.getFolderName());
                     String date = object.getDate();
-                    System.out.println("datuM : "+ date);
-                    String [] dateSplit = date.split(" ");
-                    String day = dateSplit[2];
+                    String [] dateSplit = date.split("/");
+                    String day = dateSplit[0];
                     String month = dateSplit[1];
+                    month = getMonth(month);
                     ((ReceiptViewHolder) holder).txtDateDay.setText(day);
                     ((ReceiptViewHolder) holder).txtDateMonth.setText(month);
                     break;
             }
         }
+    }
+    private String getMonth(String month) {
+        if (month.contains("1")) {
+            return "Jan";
+        }
+        if (month.contains("2")) {
+            return "Feb";
+        }
+        if (month.contains("3")) {
+            return "Mar";
+        }
+        if (month.contains("4")) {
+            return "Apr";
+        }
+        if (month.contains("5")) {
+            return "Maj";
+        }
+        if (month.contains("6")) {
+            return "Jun";
+        }
+        if (month.contains("7")) {
+            return "Jul";
+        }
+        if (month.contains("8")) {
+            return "Aug";
+        }
+        if (month.contains("9")) {
+            return "Sep";
+        }
+        if (month.contains("10")) {
+            return "Okt";
+        }
+        if (month.contains("11")) {
+            return "Nov";
+        }
+        if (month.contains("12")) {
+            return "Dec";
+        }
+        return month;
     }
     @Override
     public int getItemCount() {
