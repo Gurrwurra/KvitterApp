@@ -54,11 +54,41 @@
                     app:layout_constraintTop_toBottomOf="@+id/btn_take_pic" />
 
                 <Button
+                    android:id="@+id/button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/button_action"
+                    android:onClick="setDate"
+                    android:text="Ändra datum"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.48"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_date" />
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="99dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="98dp"
+                    android:background="@drawable/custom_edit_text"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_pdf_upload" />
+
+                <Button
                     android:id="@+id/btn_take_pic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="115dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="116dp"
                     android:background="@drawable/button_action"
                     android:drawableRight="@drawable/ic_camera_alt_black_24dp"
@@ -67,6 +97,7 @@
                     android:text="Ny bild"
                     android:textAlignment="viewStart"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/receiptImage" />
 
@@ -105,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="177dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="176dp"
                     android:textAlignment="center"
                     android:textColor="@color/grey_color"
@@ -114,7 +145,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.482"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_pdf_upload" />
+                    app:layout_constraintTop_toBottomOf="@+id/button1" />
 
                 <TextView
                     android:id="@+id/txt_name"
@@ -141,6 +172,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
@@ -357,6 +389,7 @@
                         app:layout_constraintHorizontal_bias="0.501"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btn_save_folder_recact" />
+
                 </android.support.constraint.ConstraintLayout>
             </android.support.constraint.ConstraintLayout>
         </ScrollView>

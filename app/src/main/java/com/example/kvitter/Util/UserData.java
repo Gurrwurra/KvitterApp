@@ -11,7 +11,7 @@ public class UserData {
     private String folderName, name, amount, comment, photoRef, supplier, date;
     private int type;
 
-    public UserData(String folderName, String name, String amount, String comment, String photoRef, String supplier, int type, Date date) {
+    public UserData(String folderName, String name, String amount, String comment, String photoRef, String supplier, int type, String date) {
         this.folderName = folderName;
         this.type = type;
         this.name = name;
@@ -19,7 +19,7 @@ public class UserData {
         this.comment = comment;
         this.photoRef = photoRef;
         this.supplier = supplier;
-        this.date = date.toString();
+        this.date = date;
     }
     public UserData(String folderName, int type) {
         this.folderName = folderName;

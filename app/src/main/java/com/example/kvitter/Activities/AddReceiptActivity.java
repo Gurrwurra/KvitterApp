@@ -1,5 +1,7 @@
 package com.example.kvitter.Activities;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -38,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -49,10 +53,13 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
 
     private ConstraintLayout add_folder_layout;
     private EditText title, amount, supplier, comment, folderName;
-    private TextView file;
+    private TextView file, date;
     private static final int PICK_IMAGE = 100;
     private static final int PICK_PDF = 1000;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private int year, month, day;
 
     private String currentPhoto;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -75,6 +82,11 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
             {
                 bindViews();
                 setListeners();
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                showDate(year, month+1, day);
             } else {
                 requestPermission(); // Code for permission
             }
@@ -90,10 +102,9 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
         amount = findViewById(R.id.txt_amount_validate);
         supplier = findViewById(R.id.txt_supplier_validate);
         comment = findViewById(R.id.txt_comment_validate);
+        date = findViewById(R.id.txt_date);
         file = findViewById(R.id.txt_file_path);
         folderName = findViewById(R.id.etxt_add_folder_recact);
-
-
         add_folder_layout = findViewById(R.id.add_folder_layout);
     }
     private void setListeners() {
@@ -104,6 +115,10 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
         findViewById(R.id.btn_save).setOnClickListener(this);
         findViewById(R.id.btn_add_folder_recact).setOnClickListener(this);
         findViewById(R.id.btn_cancel_add_folder).setOnClickListener(this);
+    }
+    private void showDate(int year, int month, int day) {
+        date.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
     }
     /**
      * Sets the different buttons to the correct functions
@@ -148,6 +163,7 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
                     intent.putExtra("photoPath", currentPhoto);
                     intent.putExtra("validate", validate);
                     intent.putExtra("folderName", folderName);
+                    intent.putExtra("date", date.getText().toString());
                     if (photoURI != null) {
                         intent.putExtra("uri", photoURI.toString());
                         intent.putExtra("fileOfPhoto", photoFile.toString());
@@ -169,6 +185,36 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
             }
         }
     }
+    @SuppressWarnings("deprecation")
+    public void setDate(View view) {
+        showDialog(999);
+        Toast.makeText(getApplicationContext(), "ca",
+                Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this,
+                    myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new
+            DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker arg0,
+                                      int arg1, int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                    // arg1 = year
+                    // arg2 = month
+                    // arg3 = day
+                    showDate(arg1, arg2+1, arg3);
+                }
+            };
 
     /**
      * Populates the dropdownlist with the different folders the user has created.
