@@ -30,15 +30,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginStart="99dp"
-                android:layout_marginTop="30dp"
                 android:layout_marginEnd="98dp"
-                android:background="@drawable/custom_edit_text"
                 android:ems="10"
+                android:textAlignment="center"
                 android:inputType="textPersonName"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.478"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_file" />
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
             <ImageView
                 android:id="@+id/img_validate_img"
                 android:layout_width="200dp"
@@ -71,7 +71,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="270dp"
                 android:text="Namn"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,6 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
@@ -101,7 +100,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="262dp"
                 android:text="Belopp"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +128,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="227dp"
                 android:text="Kommentar"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +160,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="234dp"
                 android:text="Leverantör"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -190,7 +189,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="234dp"
                 android:text="Mapp"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -241,11 +240,25 @@
                 android:padding="10dp"
                 android:text="Spara"
                 android:textAlignment="textStart"
-                app:layout_constraintBottom_toTopOf="@+id/btn_deny_validate"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_folderNameValidate" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="165dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="165dp"
+                android:text="Inköpsdatum"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_file" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

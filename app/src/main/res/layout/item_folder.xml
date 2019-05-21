@@ -5,12 +5,9 @@
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    android:background="@color/folderBackground"
-    android:layout_marginTop="10dp"
+    android:background="@color/background_color"
     android:layout_marginBottom="10dp"
-    android:padding="10dp"
-    card_view:cardCornerRadius="4dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/folder_name"
