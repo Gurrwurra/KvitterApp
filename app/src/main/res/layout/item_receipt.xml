@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemConstraint"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="20dp"
@@ -10,7 +11,8 @@
     android:background="@drawable/receipt_layout_adapter_view"
     android:orientation="vertical"
     android:paddingLeft="24dp"
-    android:paddingBottom="2dp">
+    android:paddingBottom="2dp"
+    tools:visibility="gone">
 
     <TextView
         android:id="@+id/receipt_name"

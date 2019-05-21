@@ -3,6 +3,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<UserData> mList;
     public Context context;
+    private String currentFolderName;
     /*
     Constructor for MyAdapter -
     @param list - data of all folders and their receipts for current user
@@ -56,10 +58,13 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             switch (object.getType()) {
                 case UserData.FOLDER_TYPE:
                     ((FolderViewHolder) holder).folderName.setText(object.getFolderName());
+                    currentFolderName = object.getFolderName();
                     break;
                 case UserData.RECIEPT_TYPE:
+                    holder.itemView.setVisibility(View.GONE);
                     ((ReceiptViewHolder) holder).recieptName.setText(object.getName());
-                    ((ReceiptViewHolder) holder).recieptAmount.setText("Amount: " +object.getAmount() + "\nMapp: " + object.getFolderName());
+                    ((ReceiptViewHolder) holder).recieptAmount.setText(object.getFolderName());
+                    //TODO "Amount: " +object.getAmount() + "\nMapp: " +
                     String date = object.getDate();
                     String [] dateSplit = date.split("/");
                     String day = dateSplit[0];
@@ -151,7 +156,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             editFolder.setTag(itemView);
             editFolder.setOnClickListener(this);
             editFolderLayout = itemView.findViewById(R.id.edit_folder_layout);
-
         }
         /*
         OnClick listener for each item in FolderViewHolder
@@ -184,6 +188,8 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public class ReceiptViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView recieptName,recieptAmount, txtDateDay, txtDateMonth;
+        private ConstraintLayout recieptLayout;
+
         public ReceiptViewHolder(View itemView) {
             super(itemView);
             recieptName = (TextView) itemView.findViewById(R.id.receipt_name);
@@ -192,7 +198,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             txtDateMonth = (TextView) itemView.findViewById(R.id.txt_DateMonth);
             recieptName.setTag(itemView);
             recieptName.setOnClickListener(this);
+            recieptLayout = itemView.findViewById(R.id.itemConstraint);
+
         }
+
 
         /*
         onClickListener - When user clicks on specific receipt in ReceiptViewHolder - method will run Activity "Specific_receipt.class"
