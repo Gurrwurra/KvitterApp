@@ -13,6 +13,6 @@
         android:width="20pt">
     </size>
     <gradient
-        android:startColor="@color/background_color"
-        android:endColor="@color/background_color"></gradient>
+        android:startColor="@color/colorPrimary"
+        android:endColor="@color/colorPrimary"></gradient>
 </shape>
