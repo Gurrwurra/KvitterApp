@@ -16,11 +16,18 @@ import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.UserData;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<UserData> mList;
     public Context context;
+    private ConstraintLayout itemReceipt;
+    private List<RecyclerView.ViewHolder> list = new ArrayList<>();
+    private List<String> recList = new ArrayList<>();
+    private List<Boolean> curStates = new ArrayList<>();
+
     /*
     Constructor for MyAdapter -
     @param list - data of all folders and their receipts for current user
@@ -30,6 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.mList = list;
         this.context = context;
     }
+
     /*
     ViewHolder with different viewType -
     Iterates over List<UserData> mList and returns view that matches position in List (FOLDER_TYPE) OR (RECEIPT_TYPE)
@@ -47,6 +55,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return null;
     }
+
     /*
     Gets position of object in List<Userdata> mList and updating data for current position and type
  */
@@ -59,19 +68,29 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     ((FolderViewHolder) holder).folderName.setText(object.getFolderName());
                     break;
                 case UserData.RECIEPT_TYPE:
+                    System.out.println(holder.getAdapterPosition());
                     ((ReceiptViewHolder) holder).recieptName.setText(object.getName());
-                    ((ReceiptViewHolder) holder).recieptAmount.setText("Amount: " +object.getAmount() + "\nMapp: " + object.getFolderName());
+                    ((ReceiptViewHolder) holder).recieptAmount.setText("Amount: " + object.getAmount() + "\nMapp: " + object.getFolderName());
                     String date = object.getDate();
-                    String [] dateSplit = date.split("/");
+                    String[] dateSplit = date.split("/");
                     String day = dateSplit[0];
                     String month = dateSplit[1];
                     month = getMonth(month);
                     ((ReceiptViewHolder) holder).txtDateDay.setText(day);
                     ((ReceiptViewHolder) holder).txtDateMonth.setText(month);
+
+                    ViewGroup.LayoutParams layoutParams =holder.itemView.getLayoutParams();
+                    layoutParams.width= View.GONE;
+                    layoutParams.height= View.GONE;
+                    holder.itemView.setLayoutParams(layoutParams);
+                    recList.add(object.getFolderName());
+                    curStates.add(false);
+                    list.add(holder);
                     break;
             }
         }
     }
+
     private String getMonth(String month) {
         if (month.contains("1")) {
             return "Jan";
@@ -111,12 +130,14 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         return month;
     }
+
     @Override
     public int getItemCount() {
         if (mList == null)
             return 0;
         return mList.size();
     }
+
     @Override
     public int getItemViewType(int position) {
         if (mList != null) {
@@ -132,7 +153,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView folderName, txtFolderName;
         private EditText editFolderName;
         private ImageButton editFolder, saveFolder;
-        ConstraintLayout editFolderLayout;
+        ConstraintLayout editFolderLayout, constraintLayout;
 
 
         /*
@@ -153,8 +174,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             editFolder.setTag(itemView);
             editFolder.setOnClickListener(this);
             editFolderLayout = itemView.findViewById(R.id.edit_folder_layout);
-
+            constraintLayout = itemView.findViewById(R.id.constraintLayout2);
+            constraintLayout.setOnClickListener(this);
         }
+
         /*
         OnClick listener for each item in FolderViewHolder
         case R.id.btn_save_editFolderName - Data for new folderName from user gets collected and saved. Runs method updateFolder to update database
@@ -169,24 +192,58 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     String newFolderName = editFolderName.getText().toString();
                     DataEngine engine = new DataEngine();
                     //TODO krashar om null värde skickas in till update (kolla att det finns värde)
-                    engine.updateFolder(newFolderName,folderName.getText().toString(),mList.get(getAdapterPosition()));
+                    engine.updateFolder(newFolderName, folderName.getText().toString(), mList.get(getAdapterPosition()));
                     break;
                 }
                 case R.id.btn_edit_folder: {
-                    if(editFolderLayout.getVisibility() == View.VISIBLE){
+                    if (editFolderLayout.getVisibility() == View.VISIBLE) {
                         editFolderLayout.setVisibility(View.GONE);
-                    } else{
+                    } else {
                         editFolderLayout.setVisibility(View.VISIBLE);
                     }
                     break;
                 }
+                case R.id.constraintLayout2: {
+
+                    String curFolder = folderName.getText().toString();
+                    for(int i =0; i< recList.size(); i++) {
+                        if (recList.get(i).contains(curFolder)) {
+                            onBindReceipts(list.get(i),curStates.get(i),i);
+                        }
+                        else {
+                            Toast.makeText(context, "Finns inget kvitto här", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    break;
+                }
+                }
+        }
+        private void onBindReceipts(RecyclerView.ViewHolder holder, Boolean curState, int posOfState) {
+            ViewGroup.LayoutParams layoutParams =holder.itemView.getLayoutParams();
+
+            if (curState==true) {
+                onTrue(holder, posOfState);
             }
+            else if (curState == false) {
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                holder.itemView.setLayoutParams(layoutParams);
+                curStates.set(posOfState,true);
+            }
+        }
+        private void onTrue(RecyclerView.ViewHolder holder, int i) {
+            ViewGroup.LayoutParams layoutParams =holder.itemView.getLayoutParams();
+            layoutParams.width= View.GONE;
+            layoutParams.height= View.GONE;
+            holder.itemView.setLayoutParams(layoutParams);
+            curStates.set(i,false);
+
         }
     }
 
-    public class ReceiptViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView recieptName,recieptAmount, txtDateDay, txtDateMonth;
-        ConstraintLayout itemReceipt;
+    public class ReceiptViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView recieptName, recieptAmount, txtDateDay, txtDateMonth;
+
 
         public ReceiptViewHolder(View itemView) {
             super(itemView);
@@ -204,11 +261,17 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
          */
         @Override
         public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.item_receipt: {
                     Intent intent = new Intent(context, Specific_receipt.class);
                     Toast toast = Toast.makeText(context, "DU VALDE ATT KLICKA PÅ KVITTOT: " + mList.get(getLayoutPosition()).getName(), Toast.LENGTH_LONG);
                     toast.show();
                     CurrentReceipt.setReceipt(mList.get(getLayoutPosition()));
                     context.startActivity(intent);
+                    break;
+                }
+
+            }
         }
     }
 }
