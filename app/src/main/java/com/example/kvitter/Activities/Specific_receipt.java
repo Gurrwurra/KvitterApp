@@ -119,7 +119,7 @@ public class Specific_receipt extends NavigationActivity {
             String[] fileNameSplit = first.split("\\/", 2);
             fileName = fileNameSplit[1];
         } catch (Exception e){
-
+            Toast.makeText(this, "FUNKAR JU INTE", Toast.LENGTH_LONG).show();
         }
 
         if(last.contains("pdf")) {

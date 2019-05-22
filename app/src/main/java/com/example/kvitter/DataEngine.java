@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
+
+import com.example.kvitter.Activities.AddReceiptActivity;
 import com.example.kvitter.Activities.LoginActivity;
 import com.example.kvitter.Activities.StartActivity;
 import com.example.kvitter.Activities.User;
 import com.example.kvitter.Util.CurrentId;
+import com.example.kvitter.Util.CurrentReceipt;
 import com.example.kvitter.Util.CurrentUser;
 import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,8 @@ import java.util.Map;
 public class DataEngine {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private List<Boolean> state = new ArrayList<>();
+    private List <String> keys = new ArrayList<>();
     public DataEngine() {
     }
 
@@ -233,5 +239,37 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
                     }
                 });
     }
-}
+
+    public void checkReceiptName(String name, Context context, Intent intent){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("data").document(CurrentId.getUserId())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Map<String, Object> map = document.getData();
+
+                            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                                String key = entry.getKey();
+                                System.out.println(key);
+                                if(key.equals(name)){
+                                    keys.add(key);
+                                    System.out.println("test: " + name  + "    " + key);
+                                    Toast.makeText(context, "Det verkar som att du redan har ett kvitto med detta namn", Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+
+                        }
+                    });
+        for (int i=0; i < keys.size(); i++) {
+            if (!keys.get(i).equals(name)) {
+                keys.add("no");
+                context.startActivity(intent);
+            }
+        }
+        }
+    }
+
+
 

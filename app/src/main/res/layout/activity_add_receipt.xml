@@ -21,7 +21,8 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:focusableInTouchMode="true">
 
                 <ImageView
                     android:id="@+id/receiptImage"
@@ -173,10 +174,9 @@
                     android:layout_marginEnd="98dp"
                     android:background="@drawable/custom_edit_text"
                     android:ems="10"
-                    android:textColor="@color/black"
                     android:inputType="textPersonName"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 

@@ -20,10 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.NavigationActivity"></activity>
-        <activity android:name=".Activities.accept_changed_pic" />
-        <activity android:name=".Activities.newFolderActivity" />
-        <activity android:name=".Activities.NewUserActivity" />
+        <activity android:name=".Activities.NavigationActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activities.accept_changed_pic" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.newFolderActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.NewUserActivity" android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -35,23 +35,23 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Activities.AcceptDeleteActivity" />
-        <activity android:name=".Activities.EditSpecificRecieptActivity" />
-        <activity android:name=".Activities.EditAccountActivity" />
-        <activity android:name=".Activities.SettingsActivity" />
-        <activity android:name=".Activities.LoginActivity">
+        <activity android:name=".Activities.AcceptDeleteActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.EditSpecificRecieptActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.EditAccountActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Activities.SettingsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.MyAccountActivity" />
-        <activity android:name=".Activities.AddReceiptActivity" />
-        <activity android:name=".Activities.MyReceiptActivity" />
-        <activity android:name=".Activities.StartActivity" />
-        <activity android:name=".Activities.Specific_receipt" />
-        <activity android:name=".Activities.Validate_reciept" />
+        <activity android:name=".Activities.MyAccountActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.AddReceiptActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MyReceiptActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.StartActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Specific_receipt" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Validate_reciept" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

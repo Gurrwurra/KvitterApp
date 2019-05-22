@@ -20,7 +20,7 @@
             android:textAlignment="viewStart">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/img_edit_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="96dp"
@@ -80,6 +80,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/txt_specific_amount-title" />
 
             <TextView
+                android:id="@+id/txt_file_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="119dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="119dp"
+                android:layout_marginBottom="20dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/btn_change_pic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_edit_image" />
+
+            <TextView
                 android:id="@+id/txt_specific_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,10 +105,11 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="269dp"
                 android:text="Namn"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_change_pic" />
 
@@ -102,7 +121,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="262dp"
                 android:text="Belopp"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +136,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="234dp"
                 android:text="Leverantör"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +151,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="182dp"
                 android:text="Mapp"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +166,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="227dp"
                 android:text="Kommentar"
-                android:textColor="@color/grey_color"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -207,17 +226,15 @@
                 android:layout_marginStart="125dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="126dp"
-                android:layout_marginBottom="20dp"
                 android:background="@color/colorPrimary"
                 android:drawableRight="@drawable/ic_save_black_24dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="Ändra bild/PDF"
                 android:textAlignment="textStart"
-                app:layout_constraintBottom_toTopOf="@+id/txt_specific_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_file_edit" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

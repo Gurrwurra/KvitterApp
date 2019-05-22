@@ -30,10 +30,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="228dp"
         android:text="Lösenord"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_usr" />
 
@@ -42,9 +44,11 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="99dp"
-        android:ems="10"
+        android:layout_marginEnd="98dp"
         android:background="@drawable/custom_edit_text"
+        android:ems="10"
         android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -54,10 +58,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
         android:layout_marginTop="176dp"
+        android:layout_marginEnd="173dp"
         android:text="Personnummer"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,9 +72,11 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="99dp"
-        android:inputType="numberDecimal"
-        android:ems="10"
+        android:layout_marginEnd="98dp"
         android:background="@drawable/custom_edit_text"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 

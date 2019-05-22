@@ -128,37 +128,7 @@ public class accept_changed_pic extends NavigationActivity {
             validate = 1;
             String fileName = getFileName(uri);
             logic.newSequenceNumberForNewPhoto(this, uri, receipt, validate, fileName);
-
         }
-
-      /* todo: if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            try {
-                setPic();
-                fileUri = null;
-                file.setVisibility(View.INVISIBLE);
-                validate = 0;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestCode == PICK_IMAGE && resultCode == RESULT_OK ) {
-            photoURI = data.getData();
-            photoFile = new File(ImageHelper.getRealPathFromURI(getApplicationContext(), photoURI));
-            try {
-                setPic();
-                fileUri = null;
-                file.setVisibility(View.INVISIBLE);
-                validate = 0;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else if(requestCode == PICK_PDF && resultCode == RESULT_OK){
-            recieptPic.setVisibility(View.GONE);
-            photoURI = null;
-            fileUri = data.getData();
-            fileName = getFileName(fileUri);
-            file.setText(fileName);
-            validate = 1;
-        }*/
     }
 
     @Override

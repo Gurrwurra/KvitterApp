@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -147,33 +148,22 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
                 break;
             }
             case R.id.btn_save: {
-                String titleValidate = title.getText().toString();
-                System.out.println(titleValidate);
-                if (photoURI == null || file.getText().toString() == null && titleValidate.equals(null)) {
+                DataEngine engine = new DataEngine();
+                add_folder_layout.setVisibility(View.GONE);
+                if (TextUtils.isEmpty(title.getText().toString())) {
                     Toast.makeText(AddReceiptActivity.this, "Du måste fylla i ett namn och ladda upp bild eller fil av fotot", Toast.LENGTH_LONG).show();
                     break;
-
-                } else {
-                    String folderName = String.valueOf(folder.getSelectedItem());
-                    Intent intent = new Intent(AddReceiptActivity.this, Validate_reciept.class);
-                    intent.putExtra("name", title.getText().toString());
-                    intent.putExtra("amount", amount.getText().toString());
-                    intent.putExtra("supplier", supplier.getText().toString());
-                    intent.putExtra("comment", comment.getText().toString());
-                    intent.putExtra("photoPath", currentPhoto);
-                    intent.putExtra("validate", validate);
-                    intent.putExtra("folderName", folderName);
-                    intent.putExtra("date", date.getText().toString());
-                    if (photoURI != null) {
-                        intent.putExtra("uri", photoURI.toString());
-                        intent.putExtra("fileOfPhoto", photoFile.toString());
-                    } else if (fileUri != null) {
-                        intent.putExtra("fileUri", fileUri.toString());
-                        intent.putExtra("fileName", fileName);
-                    }
-                    startActivity(intent);
-                    break;
                 }
+                else if(fileUri == null && photoURI != null){
+                    startValidate();
+                }
+                else if(photoURI == null && fileUri != null){
+                    startValidate();
+                }
+                else{
+                    Toast.makeText(AddReceiptActivity.this, "Du måste fylla i ett namn och ladda upp bild eller fil av fotot", Toast.LENGTH_LONG).show();
+                }
+                break;
             }
             case R.id.btn_add_folder_recact: {
                 add_folder_layout.setVisibility(View.VISIBLE);
@@ -185,6 +175,33 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
             }
         }
     }
+
+    public void startValidate(){
+
+        DataEngine engine = new DataEngine();
+
+
+        String folderName = String.valueOf(folder.getSelectedItem());
+        Intent intent = new Intent(this, Validate_reciept.class);
+
+            intent.putExtra("name", title.getText().toString());
+            intent.putExtra("amount", amount.getText().toString());
+            intent.putExtra("supplier", supplier.getText().toString());
+            intent.putExtra("comment", comment.getText().toString());
+            intent.putExtra("photoPath", currentPhoto);
+            intent.putExtra("validate", validate);
+            intent.putExtra("folderName", folderName);
+            intent.putExtra("date", date.getText().toString());
+            if (photoURI != null) {
+                intent.putExtra("uri", photoURI.toString());
+                intent.putExtra("fileOfPhoto", photoFile.toString());
+            } else if (fileUri != null) {
+                intent.putExtra("fileUri", fileUri.toString());
+                intent.putExtra("fileName", fileName);
+            }
+        engine.checkReceiptName(title.getText().toString(), this, intent);
+    }
+
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);
@@ -203,8 +220,7 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
         return null;
     }
 
-    private DatePickerDialog.OnDateSetListener myDateListener = new
-            DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker arg0,
                                       int arg1, int arg2, int arg3) {

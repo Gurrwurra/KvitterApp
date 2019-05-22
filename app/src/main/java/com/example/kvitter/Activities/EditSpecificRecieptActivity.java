@@ -9,17 +9,23 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
 import com.example.kvitter.Util.CurrentId;
 import com.example.kvitter.Util.CurrentReceipt;
+import com.example.kvitter.Util.GlideApp;
 import com.example.kvitter.Util.UserData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +36,8 @@ public class EditSpecificRecieptActivity extends NavigationActivity {
     private EditText name,amount,supplier,comment;
     private Spinner folder;
     private Button delete,save,change_pic;
+    private ImageView receipt_image;
+    private TextView file;
 
     UserData receipt = CurrentReceipt.getReceipt();
 
@@ -54,15 +62,47 @@ public class EditSpecificRecieptActivity extends NavigationActivity {
         supplier = findViewById(R.id.txt_specific_supplier_edit);
         folder = findViewById(R.id.spi_folder_edit);
         comment = findViewById(R.id.txt_specific_comment_edit);
+        receipt_image = findViewById(R.id.img_edit_image);
+        file = findViewById(R.id.txt_file_edit);
         save = findViewById(R.id.btn_save_changes);
         delete = findViewById(R.id.btn_delete_re);
         change_pic = findViewById(R.id.btn_change_pic);
     }
     private void setText() {
+
+        String fileName = null;
+
         name.setText(receipt.getName());
         amount.setText(receipt.getAmount());
         supplier.setText(receipt.getSupplier());
         comment.setText(receipt.getComment());
+
+        String last = null;
+
+        try {
+            String val = receipt.getPhotoRef();
+            String[] splitRef = val.split("\\.");
+            last = splitRef[splitRef.length - 1];
+            String first = splitRef[0];
+            String[] fileNameSplit = first.split("\\/", 2);
+            fileName = fileNameSplit[1];
+        } catch (Exception e){
+            Toast.makeText(this, "FUNKAR JU INTE", Toast.LENGTH_LONG).show();
+        }
+
+        if(last.contains("pdf")) {
+            receipt_image.setVisibility(View.GONE);
+            file.setVisibility(View.VISIBLE);
+            file.setText(fileName);
+        } else
+        {
+            file.setVisibility(View.GONE);
+            StorageReference mStorage = FirebaseStorage.getInstance().getReference(receipt.getPhotoRef());
+
+            GlideApp.with(this /* context */)
+                    .load(mStorage)
+                    .into(receipt_image);
+        }
     }
 
     /**
