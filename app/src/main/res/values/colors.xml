@@ -11,4 +11,5 @@
     <color name="black">#000</color>
     <color name="folderBackground">#F6F6F6</color>
     <color name="receiptBackground">#FFCC00</color>
+    <color name="ReceiptBackground">#003366</color>
 </resources>

@@ -33,6 +33,8 @@ public class AcceptDeleteActivity extends NavigationActivity {
                UserData receipt = CurrentReceipt.getReceipt();
                DatabaseLogic logic = new DatabaseLogic();
                logic.deleteReceipt(receipt);
+               Intent intent = new Intent(AcceptDeleteActivity.this, MyReceiptActivity.class);
+               startActivity(intent);
            }
        });
 

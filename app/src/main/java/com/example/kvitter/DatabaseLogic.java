@@ -245,10 +245,12 @@ public class DatabaseLogic {
         db = FirebaseFirestore.getInstance();
 
         Map<String, Object> removeReceipt = new HashMap<>();
-        removeReceipt.put("data", FieldValue.arrayRemove(receipt));
+        removeReceipt.put(receipt.getName(), FieldValue.delete());
 
         db.collection("data").document(CurrentId.getUserId())
                 .update(removeReceipt);
+
+        storage = FirebaseStorage.getInstance();
 
         StorageReference storageRef = storage.getReference();
 

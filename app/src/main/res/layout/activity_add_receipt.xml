@@ -22,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:focusableInTouchMode="true">
+                android:focusableInTouchMode="true"
+                android:background="@color/background_color">
 
                 <ImageView
                     android:id="@+id/receiptImage"
@@ -316,11 +317,11 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/add_folder_layout"
-                    android:layout_width="387dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="253dp"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/add_new_folder_layout_recact"
                     android:visibility="gone"
@@ -353,7 +354,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="257dp"
                         android:text="Namn"
-                        android:textColor="@color/grey_color"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/etxt_add_folder_recact"
