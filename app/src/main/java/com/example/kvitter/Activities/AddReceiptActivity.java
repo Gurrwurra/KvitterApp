@@ -256,6 +256,9 @@ public class AddReceiptActivity extends NavigationActivity implements View.OnCli
                                 }
                             }
                         }
+                        if (folderNames.isEmpty()) {
+                            folderNames.add("Övriga kvitton");
+                        }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item, folderNames);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         folder.setAdapter(adapter);

@@ -47,7 +47,7 @@ public class NavigationActivity extends AppCompatActivity {
                 {
                     case R.id.myAccount:
                         Toast.makeText(getApplicationContext(), "Mina sidor",Toast.LENGTH_SHORT).show();
-                        Intent myAccount = new Intent(getApplicationContext(), MyAccountActivity.class);
+                        Intent myAccount = new Intent(getApplicationContext(), StartActivity.class);
                         startActivity(myAccount);
                         break;
                     case R.id.myReciepts:
