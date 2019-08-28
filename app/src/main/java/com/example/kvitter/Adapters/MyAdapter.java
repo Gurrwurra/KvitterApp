@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.kvitter.Activities.MyReceiptActivity;
 import com.example.kvitter.Activities.Specific_receipt;
 import com.example.kvitter.DataEngine;
 import com.example.kvitter.R;
@@ -191,8 +193,9 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     editFolderLayout.setVisibility(View.GONE);
                     String newFolderName = editFolderName.getText().toString();
                     DataEngine engine = new DataEngine();
-                    //TODO krashar om null värde skickas in till update (kolla att det finns värde)
                     engine.updateFolder(newFolderName, folderName.getText().toString(), mList.get(getAdapterPosition()));
+                    Intent myAccount = new Intent(context, MyReceiptActivity.class);
+                    context.startActivity(myAccount);
                     break;
                 }
                 case R.id.btn_edit_folder: {
@@ -209,9 +212,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     for(int i =0; i< recList.size(); i++) {
                         if (recList.get(i).contains(curFolder)) {
                             onBindReceipts(list.get(i),curStates.get(i),i);
-                        }
-                        else {
-                            Toast.makeText(context, "Finns inget kvitto här", Toast.LENGTH_SHORT).show();
                         }
                     }
                     break;
@@ -264,8 +264,6 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             switch (v.getId()) {
                 case R.id.item_receipt: {
                     Intent intent = new Intent(context, Specific_receipt.class);
-                    Toast toast = Toast.makeText(context, "DU VALDE ATT KLICKA PÅ KVITTOT: " + mList.get(getLayoutPosition()).getName(), Toast.LENGTH_LONG);
-                    toast.show();
                     CurrentReceipt.setReceipt(mList.get(getLayoutPosition()));
                     context.startActivity(intent);
                     break;

@@ -180,6 +180,7 @@ public class EditSpecificRecieptActivity extends NavigationActivity {
         updatedReceipt.setFolderName(String.valueOf(folder.getSelectedItem()));
         updatedReceipt.setDate(receipt.getDate());
         updatedReceipt.setType(1);
+        updatedReceipt.setDate(receipt.getDate());
         DataEngine engine = new DataEngine();
         engine.updateReciept(receipt.getName(), updatedReceipt);
     }

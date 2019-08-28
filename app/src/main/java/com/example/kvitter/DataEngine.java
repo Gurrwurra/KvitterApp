@@ -169,7 +169,7 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
         newFolder.setType(0);
         Map<String, Object> newValues = new HashMap<>();
         newValues.put("Övriga kvitton",newFolder);
-        db.collection("data").document(id).update(newValues);
+        db.collection("data").document(id).set(newValues);
     }
 
     /**
@@ -255,19 +255,19 @@ SKICKAR MED KEY FÖR SPECIFIKT KVITTO OCH ALL DATA SOM SKALL UPPDATERAS
                                 if(key.equals(name)){
                                     keys.add(key);
                                     System.out.println("test: " + name  + "    " + key);
-                                    Toast.makeText(context, "Det verkar som att du redan har ett kvitto med detta namn", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(context, "Det verkar som att du redan har ett kvitto med detta namn", Toast.LENGTH_LONG).show();
 
                                 }
                             }
 
                         }
                     });
-        for (int i=0; i < keys.size(); i++) {
-            if (!keys.get(i).equals(name)) {
+       // for (int i=0; i < keys.size(); i++) {
+            //if (!keys.get(i).equals(name)) {
                 keys.add("no");
                 context.startActivity(intent);
-            }
-        }
+            //}
+        //}
         }
     }
 

@@ -13,20 +13,19 @@
         android:background="@color/background_color"
         android:textAlignment="viewStart">
 
-    <TextView
-        android:id="@+id/txt_make_sure"
-        android:layout_width="296dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="57dp"
-        android:text="Är du säker på att du vill byta bild? \n \n Det går tyvär inte att ångra sig efter"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/txt_make_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="62dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="63dp"
+            android:text="Är du säker på att du vill byta bild? \n \n Det går tyvär inte att ångra sig efter"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_accept_change"
